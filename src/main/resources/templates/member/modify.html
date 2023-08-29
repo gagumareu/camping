@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
-  <th:block th:fragment="content">
 
+<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">-->
+<!--  <th:block th:fragment="content">-->
+
+<div class="container content" layout:fragment="contnet">
   <h1>member modify page</h1>
 
   <form th:action="@{/member/modify}" method="post">
@@ -18,13 +19,13 @@
       <input type="hidden" name="email" th:value="${#authentication.principal.username}">
       <button type="submit">수정</button>
   </form>
+</div>
 
-<script th:inline="javascript">
+<script th:inline="javascript" layout:fragment="script">
 
 
 
 </script>
-  </th:block>
-</th:block>
-</body>
+<!--  </th:block>-->
+<!--</th:block>-->
 </html>

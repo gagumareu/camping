@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        .login-form-wrapper{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 85px;
+        }
+
+
+        .social-login{
+            /*font-size: 1.5em;*/
+            height: 32px;
+            margin-bottom: 6px;
+        }
+
+        .social-login a img{
+            height: 100%;
+        }
+
+        .input-group{
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        #registerForm{
+            width: 300px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-login-box{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* row-gap: 5px; */
+            /* font-size: 13px; */
+            font-size: 1.2em;
+        }
+
+    </style>
+
 </head>
 
-<style>
-    .login-form-wrapper{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 85px;
-    }
 
 
-    .social-login{
-        /*font-size: 1.5em;*/
-        height: 32px;
-        margin-bottom: 6px;
-    }
-
-    .social-login a img{
-        height: 100%;
-    }
-
-    .input-group{
-        width: 100%;
-        margin-bottom: 12px;
-    }
-
-    #registerForm{
-        width: 300px;
-        margin-bottom: 14px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .social-login-box{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* row-gap: 5px; */
-        /* font-size: 13px; */
-        font-size: 1.2em;
-    }
-
-</style>
-
-<body>
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content} )}">
-  <th:blocK th:fragment="content">
+<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content} )}">-->
+  <div class="container content" layout:fragment="content">
 
       <div class="login-form-wrapper">
 
@@ -96,8 +100,7 @@
 
 
 
-  </th:blocK>
-</th:block>
+  </div>
+<!--</th:block>-->
 
-</body>
 </html>

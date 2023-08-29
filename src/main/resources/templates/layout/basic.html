@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{layout/basic.html}">
-<th:block th:fragment="setContent(content)">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--<th:block th:fragment="setContent(content)">-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -101,72 +100,74 @@
         }
     </style>
 <body>
-<div class="wrapper">
-    <div class="container">
-        <div class="header">
+    <div class="wrapper">
 
-            <a th:href="@{/board/list}" style="font-size: 2.2em">HOME</a>
+        <div class="container">
 
-            <div class="header-category">
-                <a th:href="@{/board/list(category='talk')}">커뮤니티</a>
-                <a th:href="@{/board/list(category='party')}">캠핑모임</a>
-                <a th:href="@{/board/list(category='place')}">캠핑장</a>
-                <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
-                <a th:href="@{/member/myGear}">마이기어</a>
-            </div>
+            <div class="header">
 
-            <div class="header-memberPage">
-                <div sec:authorize="isAnonymous()" class="header-category">
-                    <a th:href="@{/member/login}">
-                        로그인
-                    </a>
-                </div>
-                <div  class="header-category" sec:authorize="isAuthenticated()">
-                    <a th:href="@{/logout}" >
-                        로그아웃
-                    </a>
-                </div>
-                <div class="header-category" sec:authorize="isAnonymous()">
-                    <a href="/member/join">
-                        회원가입
-                    </a>
-                </div>
+                <a th:href="@{/board/list}" style="font-size: 2.2em">HOME</a>
+
                 <div class="header-category">
-                    <a th:href="@{/member/myPage}" style="margin-right: 0px">
-                        마이페이지
-                    </a>
+                    <a th:href="@{/board/list(category='talk')}">커뮤니티</a>
+                    <a th:href="@{/board/list(category='party')}">캠핑모임</a>
+                    <a th:href="@{/board/list(category='place')}">캠핑장</a>
+                    <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
+                    <a th:href="@{/member/myGear}">마이기어</a>
                 </div>
 
+                <div class="header-memberPage">
+                    <div sec:authorize="isAnonymous()" class="header-category">
+                        <a th:href="@{/member/login}">
+                            로그인
+                        </a>
+                    </div>
+                    <div  class="header-category" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/logout}" >
+                            로그아웃
+                        </a>
+                    </div>
+                    <div class="header-category" sec:authorize="isAnonymous()">
+                        <a href="/member/join">
+                            회원가입
+                        </a>
+                    </div>
+                    <div class="header-category">
+                        <a th:href="@{/member/myPage}" style="margin-right: 0px">
+                            마이페이지
+                        </a>
+                    </div>
+
+                </div>
             </div>
-
-
-
         </div>
+
+        <div class="container content" layout:fragment="content">
+
+    <!--        <th:block th:replace="${content}">-->
+
+    <!--        </th:block>-->
+        </div>
+
+        <div class="container footer">
+            <div>
+                <p>박정환</p>
+                <p>udekang2@naver.com</p>
+            </div>
+            <div>
+                <p>참고 도서: 코드로 배우는 스프링 부트 웹 프로젝트 / 자바 웹 개발 워크북</p>
+            </div>
+            <div>
+                <p>참고: https://poler.com</p>
+            </div>
+        </div>
+
     </div>
 
-    <div class="container content">
-        <th:block th:replace="${content}">
+<th:block layout:fragment="script">
 
-        </th:block>
-    </div>
-
-    <div class="container footer">
-        <div>
-            <p>박정환</p>
-            <p>udekang2@naver.com</p>
-        </div>
-        <div>
-            <p>참고 도서: 코드로 배우는 스프링 부트 웹 프로젝트 / 자바 웹 개발 워크북</p>
-        </div>
-        <div>
-            <p>참고: https://poler.com</p>
-        </div>
-    </div>
-
-</div>
-
-
+</th:block>
 
 </body>
-</th:block>
+
 </html>

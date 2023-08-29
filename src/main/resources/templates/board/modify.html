@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-</head>
 
   <style>
     form{
@@ -46,11 +47,13 @@
       flex: 20%;
     }
   </style>
+</head>
 
-<body>
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
-    <th:blocK th:fragment="content">
 
+
+<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">-->
+<!--    <th:blocK th:fragment="content">-->
+  <div class="container content" layout:fragment="content">
     <form th:action="@{/board/modify}" method="post">
 
       <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
@@ -248,61 +251,60 @@
 
         </ul>
       </div>
+  </div>
+  <script layout:fragment="script" th:inline="javascript">
 
-      <script th:inline="javascript">
+    $(document).ready(function (){
 
-        $(document).ready(function (){
+      $(".registBtn").on("click", function (e){
 
-          $(".registBtn").on("click", function (e){
+        e.preventDefault();
 
-            e.preventDefault();
+        var str = "";
 
-            var str = "";
+        $(".uploadResultUL li").each(function (i, dto){
 
-            $(".uploadResultUL li").each(function (i, dto){
+          var target = $(dto);
 
-              var target = $(dto);
+          str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
+          str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
+          str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
+          str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
 
-              str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
-              str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
-              str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
-              str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+        });
 
-            });
+        $(".hiddenBox").html(str);
+        $("form").submit();
 
-            $(".hiddenBox").html(str);
-            $("form").submit();
+      }); // register event
 
-          }); // register event
+      $(".listBackBtn").on("click", function (){
 
-          $(".listBackBtn").on("click", function (){
+        var page = $("input[name='page']");
+        var type = $("input[name='type']");
+        var keyword = $("input[name='keyword']");
+        var category = $("input[name='category']");
 
-            var page = $("input[name='page']");
-            var type = $("input[name='type']");
-            var keyword = $("input[name='keyword']");
-            var category = $("input[name='category']");
+        var actionForm = $("form");
 
-            var actionForm = $("form");
+        actionForm.empty();
+        actionForm.append(page);
+        actionForm.append(type);
+        actionForm.append(keyword);
+        actionForm.append(category);
 
-            actionForm.empty();
-            actionForm.append(page);
-            actionForm.append(type);
-            actionForm.append(keyword);
-            actionForm.append(category);
-
-            actionForm.attr("action", "/board/list").attr("method", "get").submit();
-
-
-          });
+        actionForm.attr("action", "/board/list").attr("method", "get").submit();
 
 
-        }); // the end
+      });
 
 
-      </script>
+    }); // the end
 
 
-    </th:blocK>
-</th:block>
-</body>
+  </script>
+
+
+<!--    </th:blocK>-->
+<!--</th:block>-->
 </html>
