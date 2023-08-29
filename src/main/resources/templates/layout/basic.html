@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/basic.html}">
+<th:block th:fragment="setContent(content)">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>-->
+
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+
+    <!--    summernote editor original-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <!--    summernote editor with bootstrap5 -->
+<!--    &lt;!&ndash; include libraries(jQuery, bootstrap) &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>-->
+
+<!--    &lt;!&ndash; include summernote css/js &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>-->
+
+
+    <style>
+        .wrapper{
+            display:flex;
+            flex-direction: column;
+            min-height : 100vh;
+        }
+
+        html{
+            height: 100%
+        }
+
+        .header a {
+            text-decoration: none;
+        }
+
+        .header{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        footer{
+            margin-top: auto;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        .footer{
+            padding : 30px 0;
+        }
+
+        .header-memberPage{
+            display: flex;
+            flex-direction: row;
+            font-size: 12px;
+        }
+
+        .header-category{
+            display: flex;
+            flex-direction: row;
+            font-size: 1.2em;
+        }
+
+        .header-category a{
+            margin-right: 20px;
+        }
+
+        .footer{
+            border-top: 1px solid lightblue;
+        }
+
+        .content{
+            flex: 1;
+            margin-bottom: 50px;
+        }
+    </style>
+<body>
+<div class="wrapper">
+    <div class="container">
+        <div class="header">
+
+            <a th:href="@{/board/list}" style="font-size: 2.2em">HOME</a>
+
+            <div class="header-category">
+                <a th:href="@{/board/list(category='talk')}">커뮤니티</a>
+                <a th:href="@{/board/list(category='party')}">캠핑모임</a>
+                <a th:href="@{/board/list(category='place')}">캠핑장</a>
+                <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
+                <a th:href="@{/member/myGear}">마이기어</a>
+            </div>
+
+            <div class="header-memberPage">
+                <div sec:authorize="isAnonymous()" class="header-category">
+                    <a th:href="@{/member/login}">
+                        로그인
+                    </a>
+                </div>
+                <div  class="header-category" sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}" >
+                        로그아웃
+                    </a>
+                </div>
+                <div class="header-category" sec:authorize="isAnonymous()">
+                    <a href="/member/join">
+                        회원가입
+                    </a>
+                </div>
+                <div class="header-category">
+                    <a th:href="@{/member/myPage}" style="margin-right: 0px">
+                        마이페이지
+                    </a>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="container content">
+        <th:block th:replace="${content}">
+
+        </th:block>
+    </div>
+
+    <div class="container footer">
+        <div>
+            <p>박정환</p>
+            <p>udekang2@naver.com</p>
+        </div>
+        <div>
+            <p>참고 도서: 코드로 배우는 스프링 부트 웹 프로젝트 / 자바 웹 개발 워크북</p>
+        </div>
+        <div>
+            <p>참고: https://poler.com</p>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</th:block>
+</html>
