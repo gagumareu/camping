@@ -22,7 +22,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("board")
 @Log4j2
 @RequiredArgsConstructor
 @Transactional
