@@ -98,7 +98,7 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<Tuple> result = tuple.fetch();
 
-        log.info("result: " + result);
+//        log.info("result: " + result);
 
         Long count = tuple.fetchCount();
 
