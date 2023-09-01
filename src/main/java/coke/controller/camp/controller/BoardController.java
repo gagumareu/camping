@@ -56,7 +56,8 @@ public class BoardController {
 
     }
 
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/register")
     public String register(String category, Model model, Principal principal, Long gno){
 
