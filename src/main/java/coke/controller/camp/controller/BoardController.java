@@ -59,7 +59,7 @@ public class BoardController {
 //    @PreAuthorize("hasRole('USER')")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/register")
-    public String register(String category, Model model, Principal principal, Long gno){
+    public void register(String category, Model model, Long gno){
 
         log.info("----------register method getMapping..........");
 
@@ -67,28 +67,14 @@ public class BoardController {
 
             log.info("------------register for secondHands------------");
 
-//            log.info(principal.getName());
-
-//            List<GearDTO> gearList = gearService.getList(principal.getName());
-
-//            log.info(gearList);
-
-//            if (gno != null){
-//                GearDTO gearDTO = gearService.getByGno(gno);
-//                model.addAttribute("gearDTO", gearDTO);
-//            }
             GearDTO gearDTO = gearService.getByGno(gno);
             model.addAttribute("gearDTO", gearDTO);
-//
-//            model.addAttribute("gearList", gearList);
             model.addAttribute("tellCategory", category);
-//            model.addAttribute("principalName", principal.getName());
 
         }
 
         model.addAttribute("tellCategory", category);
 
-        return "/board/register";
     }
 
     @PreAuthorize("principal.username == #boardDTO.email")
@@ -140,7 +126,6 @@ public class BoardController {
         log.info("boardImageList: " + boardImageList);
 
         if (boardImageList != null && boardImageList.size() > 0){
-//            deleteFiles(boardImageList);
             boardImageList.forEach(boardImageDTO -> {
                 String fileName = boardImageDTO.getUuid() + "_" + boardImageDTO.getFileName();
                 s3Uploader.removeS3File(fileName);
