@@ -176,6 +176,14 @@ public class BoardController {
         return "redirect:/board/read";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/test")
+    public void test(){
+
+
+
+    }
+
 
 
 
