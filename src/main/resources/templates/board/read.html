@@ -267,22 +267,17 @@
               console.info(reply);
 
               $.ajax({
-                  url:'/replies/',
-                  method: 'POST',
+                  url:'/replies',
+                  type: 'POST',
                   data: JSON.stringify(reply),
                   contentType: 'application/json; charset=utf-8',
                   dataType: 'json',
                   success: function (result){
-
-                      if (result == "success"){
-                          console.info(result+ "번 댓글 작성 성공");
-
-                      }
+                      console.info(result+ "번 댓글 작성 성공");
                       loadReplyList();
                       // self.location.reload();
                       $("textarea[name='text']").val("");
                   }
-
               }); // ajax
 
           }); // insertReplyBtn event

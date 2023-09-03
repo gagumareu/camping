@@ -22,6 +22,9 @@ public class ReplyController {
     @PostMapping("")
     public ResponseEntity<Long> register(@RequestBody ReplyDTO replyDTO){
 
+        log.info("------register a reply---------------");
+        log.info(replyDTO);
+
         Long rno = replyService.register(replyDTO);
 
         return new ResponseEntity<>(rno, HttpStatus.OK);
@@ -47,6 +50,8 @@ public class ReplyController {
     @DeleteMapping("/{rno}")
     public ResponseEntity<String> delete(@PathVariable("rno") Long rno){
 
+        log.info("---------delete a reply -----------");
+
         replyService.remove(rno);
 
         return new ResponseEntity<>("success", HttpStatus.OK);
@@ -54,6 +59,9 @@ public class ReplyController {
 
     @PutMapping("/{rno}")
     public ResponseEntity<String> modify(@RequestBody ReplyDTO replyDTO){
+
+        log.info("----------modify a reply -------------");
+        log.info(replyDTO);
 
         replyService.modify(replyDTO);
 
