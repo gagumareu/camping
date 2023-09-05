@@ -106,9 +106,10 @@
 
             <div class="header">
 
-                <a th:href="@{/board/list}" style="font-size: 2.2em">HOME</a>
+                <a th:href="@{/}" style="font-size: 2.2em">HOME</a>
 
                 <div class="header-category">
+                    <a th:href="@{/board/list}">전체글</a>
                     <a th:href="@{/board/list(category='talk')}">커뮤니티</a>
                     <a th:href="@{/board/list(category='party')}">캠핑모임</a>
                     <a th:href="@{/board/list(category='place')}">캠핑장</a>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -74,8 +75,6 @@ public class S3Uploader {
 
        deleteObjectRequestList.add(new DeleteObjectRequest(bucket, fileName));
        deleteObjectRequestList.add(new DeleteObjectRequest(bucket, thumbnail));
-
-       log.info(deleteObjectRequestList);
 
        deleteObjectRequestList.forEach(deleteObjectRequest -> {
            amazonS3Client.deleteObject(deleteObjectRequest);

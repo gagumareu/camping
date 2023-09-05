@@ -26,7 +26,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -41,7 +40,6 @@ public class CustomSecurityConfig {
 
         http.formLogin().loginPage("/member/login").successHandler(authenticationSuccessHandler());
         http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.logout().logoutSuccessHandler(logoutSuccessHandler());
 
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());

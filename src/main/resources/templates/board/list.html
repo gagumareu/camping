@@ -137,8 +137,6 @@
     </style>
 
 </head>
-<!--<th:block th:replace="~{layout/basic :: setContent(~{this :: content})}">-->
-<!--    <th:block th:fragment="content">-->
     <div class="container content" layout:fragment="content">
         <div class="search-box" >
             <form th:action="@{/board/list}" method="get">
@@ -222,7 +220,5 @@
         </div>
     </div>
 
-<!--    </th:block>-->
-<!--</th:block>-->
 
 </html>
