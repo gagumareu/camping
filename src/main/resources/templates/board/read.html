@@ -25,11 +25,9 @@
         .read-title{
             font-size: 26px;
             color: #000;
+            margin: 10px 0px;
         }
 
-        .read-title{
-            margin-top: 10px;
-        }
 
         .writer-info{
             display: flex;
@@ -92,10 +90,17 @@
             display: flex;
             flex-direction: row;
             margin-bottom: 10px;
+            height: 40px;
+        }
+        .reply-writer-info img{
+            height: 100%;
+            overflow: hidden;
+            border-radius: 50%;
         }
 
         .reply-writer{
             margin-right: 18px;
+            font-weight: 600;
         }
         .reply-regDate{
             color: #aaa;
@@ -296,9 +301,16 @@
 
                   $.each(arr, function (idx, dto){
 
+                      console.info(arr);
+
                       str += ' <div class="reply-box" data-rno="'+dto.rno+'">';
 
                       str += '<div class="reply-writer-info">';
+                      if (dto.profileImg != null){
+                          str += '<img src="'+dto.profileImg+'">'
+                      }else {
+                          str += '<img src="/icon/person2.svg">'
+                      }
                       str += ' <span class="reply-writer">'+dto.memberName+'</span>';
                       str += ' <span class="reply-regDate">'+formatTime(dto.regDate)+'</span>';
                       str += '</div>';

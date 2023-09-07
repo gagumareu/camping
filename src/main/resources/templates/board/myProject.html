@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+
+    .index-wrapper{
+      display: flex;
+      flex-direction: column;
+      margin-top: 31px;
+    }
+
+    .home-backLog{
+      width: 50%;
+      align-self: center;
+    }
+
+  </style>
+
+</head>
+
+<div class="container content" layout:fragment="content">
+
+  <div class="index-wrapper">
+
+        <div class="home-backLog">
+          <h3 style="margin-left: 40px">개선 및 업데이트 방향</h3>
+          <ul>
+            <li><b>중고거래 등록된 캠핑 장비 수정 불가 처리</b></li>
+            <li><b>회원 프로파일 이미지 수정</b></li>
+            <li>회원 이름 클릭시 회원 정보 보이기</li>
+            <li><b>유저가 등록한 캠핑 장비 검색 기능</b></li>
+            <li>댓글 작성자 프로파일 이미지 보이기</li>
+            <li><b>map API 이용하여 캠핑 장소 모집 및 유저들과 캠핑 장비 리스트 통합</b></li>
+            <li><b>게시물 및 장비 리스트 오름차순 내림차순 정렬</b></li>
+            <li><b>JWT 적용</b></li>
+            <li><b>SSL 인증</b></li>
+            <li>첨부파일 업로드 로딩 표현</li>
+            <li><b>모바일 버전 반응형</b></li>
+            <li>css link 처리</li>
+            <li><b>마이 기어 클릭시 상제 정보 모달창 띄우기</b></li>
+            <li>중고거래 리스트 썸네일 이미지 띄우기</li>
+            <li><b style="text-decoration: line-through">valid 검증</b></li>
+            <li>CI / CD</li>
+            <li>bootstrap5 업그레이드</li>
+          </ul>
+
+        </div><!--/ home-backLog  /-->
+
+  </div> <!--/ index-wrapper  /-->
+
+</div> <!--/ container content  /-->
+
+
+
+</html>

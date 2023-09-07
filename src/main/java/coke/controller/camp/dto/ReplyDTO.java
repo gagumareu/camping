@@ -36,4 +36,6 @@ public class ReplyDTO {
 
     private String memberName;
 
+    private String profileImg;
+
 }

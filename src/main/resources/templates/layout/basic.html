@@ -20,7 +20,6 @@
 
     <!--/  google icon CDM   /-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
     <!--/ google font  /-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +43,7 @@
 
         .header a {
             text-decoration: none;
+            height: 100%;
         }
 
         .header{
@@ -53,6 +53,7 @@
             margin-top: 20px;
             align-items: center;
             margin-bottom: 20px;
+            height: 44px;
         }
 
 
@@ -83,13 +84,13 @@
         .header-memberPage{
             display: flex;
             flex-direction: row;
-            font-size: 12px;
+            font-size: 0.9em;
         }
 
         .header-category{
             display: flex;
             flex-direction: row;
-            font-size: 1.2em;
+            font-size: 1.3em;
         }
 
         .header-category a{
@@ -115,7 +116,10 @@
 
             <div class="header">
 
-                <a th:href="@{/}" style="font-size: 2.2em">HOME</a>
+                <a th:href="@{/}" style="">
+                    <span class="material-symbols-outlined" style="font-size: 50px">camping</span>
+                    <span>HOME</span>
+                </a>
 
                 <div class="header-category">
                     <a th:href="@{/board/list}">전체글</a>
@@ -124,6 +128,7 @@
                     <a th:href="@{/board/list(category='place')}">캠핑장</a>
                     <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
                     <a th:href="@{/member/myGear}">마이기어</a>
+                    <a th:href="@{/board/myProject}">about</a>
                 </div>
 
                 <div class="header-memberPage">
@@ -147,6 +152,7 @@
                             마이페이지
                         </a>
                     </div>
+
 
                 </div>
             </div>

@@ -205,6 +205,10 @@ public class BoardController {
         return "redirect:/board/read";
     }
 
+    @GetMapping("/myProject")
+    public void myProject(){
+
+    }
 
 
 

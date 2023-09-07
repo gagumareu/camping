@@ -8,49 +8,25 @@
 
   <style>
 
-    .home-git-url{
-      font-size: 1.3em;
-      display: flex;
-      justify-content: center;
-      margin: 30px 0px;
-    }
-    .home-skill{
-      display: flex;
-      flex-direction: column;
-      row-gap: 4px;
-      font-size: 1.2em;
-    }
+  .index-wrapper{
+    display: flex;
+    flex-direction: column;
+    margin-top: 31px;
+  }
 
-    .home-develop-goal{
-      display: flex;
-      flex-direction: column;
-      row-gap: 4px;
-      font-size: 1.2em;
-      align-items: center;
-    }
+  .resume-box{
+    width: 50%;
+    align-self: center;
+    margin-bottom: 14px;
+  }
 
-    .home-backLog{
-      display: flex;
-      flex-direction: column;
-      row-gap: 4px;
-      font-size: 1.2em;
-      align-items: center;
-    }
+  .index-about-this p {
+    margin-bottom: 5px;
+  }
 
-    .home-content{
-      display: flex;
-    }
-
-    .home-left-side{
-      flex: 30%;
-      border-right: 1px solid;
-
-    }
-
-    .home-right-side{
-      flex: 70%;
-    }
-
+  .index-name{
+    margin-bottom: 20px;
+  }
 
   </style>
 
@@ -60,77 +36,77 @@
 
   <div class="index-wrapper">
 
-    <div class="home-git-url">
-      <a href="https://github.com/gagumareu/springboot_campboard" target="_blank">
-        Github: https://github.com/gagumareu/springboot_campboard
-      </a>
+    <div class="index-personal-info resume-box">
+      <div class="index-name">
+        <h4><b>박정환 | 캠핑다이렉트</b></h4></p><span><p>개발 기여도 <b>100%</b> [개인 프로젝트] | 기간 2023.07.03 - 현재</p></span>
+      </div>
+
+      <div class="index-about-this">
+        <p>
+          <a href="/board/register?category=''">
+            회원의 캠핑 장비를 등록하여 리스트 관리를 및 중고 거래 장터에 등록가능 하게 했습니다.[link]
+          </a>
+        </p>
+        <p>
+          <a href="/member/myGear">
+            중고 거래 게시글 작성시 회원이 가진 캠핑 장비를 클릭 한번으로 summernote editor에 장비 정보와 이미지가 업로드 되게 구현했습니다.[link]
+          </a>
+        </p>
+        <p>
+          <a href="/board/list">
+            게시물 작성시 카테고리를 선택하여 원하는 카테고리 별로 게시물 리스트를 출력할 수 있습니다.[link]
+          </a>
+        </p>
+        <p>spring security를 적용하여 회원이 등록한 데이터만 권한으로 CRUD를 실행할 수 있습니다.</p>
+        <p>AWS EC2 인스턴트, RDS, S3를 구현하여 무중단 배포를 실행 중입니다.</p>
+      </div>
     </div>
 
-    <div class="home-content">
-      <div class="home-left-side">
-        <div class="home-skill">
-          <h3>사용 기술 </h3>
-          <li>무중단 배포 버전: Spring boot 2.3.x jar</li>
-          <li>개발 버전: Spring boot 2.7.x war</li>
-          <li>JPA</li>
-          <li>Querydsl</li>
-          <li>Spring security</li>
-          <li>thymeleaf</li>
-          <li>Ajax</li>
-          <li>summernote editor</li>
-          <li>Google OAuth2</li>
-          <li>AWS EC2</li>
-          <li>AWS RDS</li>
-          <li>AWS S3 Bucket</li>
-        </div> <!--/ home-skill  /-->
-      </div><!--/ home-left-side /-->
+    <div class="index-personal-info resume-box">
 
-      <div class="home-right-side">
-        <div class="home-develop-goal">
-          <h3>개발 목표</h3>
-          <ul>
-            <li>유저가 등록한 캠핑 장비를 리스트업</li>
-            <li>리스트업한 장비들에서 선택하여 중고 거래 작성</li>
-            <li>list.html 한 페이지에서 카테고리 별로 리스트 출력 함으로써 최소한의 코드로 원하는 리스트 출력</li>
-            <li>검색기능 '카테고리 내에서 원하는 키워드 검색가능'</li>
-            <li>Spring Security를 이용하여 권한이 주어진 회원만 게시물 등록, 수정 및 삭제</li>
-            <li>text edition 'summernote edition' 적용</li>
-          </ul>
+      <p><b>Github</b>: <a href="https://github.com/gagumareu/springboot_campboard.git">https://github.com/gagumareu/springboot_campboard.git</a></p>
+      <p><b>Email</b>: udeknag2@naver.com</p>
+    </div>
 
-        </div><!--/ home-develop-goal  /-->
+    <div class="index-skill resume-box">
+      <h4><b>사용기술</b></h4>
+      <p>Spring boot</p>
+      <p>JPA</p>
+      <p>Spring Security</p>
+      <p>Querydsl</p>
+      <p>Ajax</p>
+      <p>Summernote Editor</p>
+      <p>Google OAuth2</p>
+      <p>AWS EC2</p>
+      <p>AWS RDS</p>
+      <p>AWS S3 Bucket</p>
+    </div>
 
-        <div class="home-backLog">
-          <h3>개선 및 업데이트</h3>
-          <ul>
-            <li><b>중고거래 등록된 캠핑 장비 수정 불가 처리</b></li>
-            <li><b>회원 프로파일 이미지 수정</b></li>
-            <li>회원 이름 클릭시 회원 정보 보이기</li>
-            <li><b>유저가 등록한 캠핑 장비 검색 기능</b></li>
-            <li>댓글 작성자 프로파일 이미지 보이기</li>
-            <li>오픈 소스 map API 이용하여 캠핑 장소 모집</li>
-            <li>게시물 및 장비 리스트 오름차순 내림차순 정렬</li>
-            <li><b>JWT 적용</b></li>
-            <li><b>SSL 인증</b></li>
-            <li>첨부파일 업로드 로딩 표현</li>
-            <li>모바일 버전 반응형</li>
-            <li>css link 처리</li>
-            <li><b>마이 기어 클릭시 상제 정보 모달창 띄우기</b></li>
-            <li>중고거래 리스트 썸네일 이미지 띄우기</li>
-            <li><b>valid 검증</b></li>
-          </ul>
+    <div class="index-language resume-box">
+      <h4><b>사용 언어</b></h4>
+      <p>java / jquery / HTML / CSS</p>
+    </div>
 
-        </div><!--/ home-backLog  /-->
-      </div><!--/ home-right-side /-->
+    <div class="index-version resume-box">
+      <h4><b>버전 관리</b></h4>
+      <p>GitHub</p>
+    </div>
 
+    <div class="index-reference resume-box">
+      <p>참고 자료: 코드로 배우는 스프링 부트 웹 프로젝트 / 자바 웹 개발 워크북 </p>
+      <p>참고 링크: https://poler.com </p>
+    </div>
+
+    <div class="index-version resume-box">
+      <h4><b>개발 과정 및 경험</b></h4>
+      <p>AWS 배포 과정에서 네트워크의 구조에 대해서 더 많이 공부해야 겠다고 느꼈습니다. 서버와 클라이언 관계에서 데이터가 이동하는 과정에서 보안의 중요성을 보았습니다. </p>
     </div>
 
 
 
+  </div> <!--/ index-wrapper  /-->
 
-
-  </div>
-
-</div> <!--/ index-wrapper  /-->
+</div> <!--/ container content  /-->
 
 
 

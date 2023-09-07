@@ -36,9 +36,14 @@ public class ReplyServiceImpl implements ReplyService{
 
         Board board = Board.builder().bno(bno).build();
 
-        List<Reply> result = replyRepository.getRepliesByBoardOrderByRnoDesc(board);
+        List<Object[]> result = replyRepository.getRepliesByBno(board.getBno());
 
-        return result.stream().map(reply -> entityToDTO(reply)).collect(Collectors.toList());
+        List<ReplyDTO> dtoList = result.stream().map(arr -> entitiesToDTO(
+                (Reply) arr[0],
+                (Member) arr[1]
+        )).collect(Collectors.toList());
+
+        return dtoList;
     }
 
     @Override
