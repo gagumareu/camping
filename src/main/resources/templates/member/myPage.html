@@ -159,8 +159,8 @@
             align-items: center;
         }
 
-        .inputEmail{
-            width: 35%;
+        .inputName{
+            width: 270px;
         }
     </style>
 </head>
@@ -295,9 +295,9 @@
             var str = "";
 
             str += '<form class="modify-info" action="/member/modify" method="post">';
-            str += '<input type="text" class="form-control inputEmail" name="name" placeholder="NAME">';
+            str += '<input type="text" class="form-control inputName" name="name" placeholder="닉네임 변경">';
             str += '<input type="hidden" name="email" value="'+email+'">';
-            str += '<div class="profileImage"><img src="/icon/person-circle.svg" class="personIcon"></div>';
+            str += '<div class="profileImage"><img src="/icon/person-circle.svg" class="personIcon"><input id="inputFile" type="file" name="uploadFiles"></div>';
             str += '<div class="modifyBtn">';
             str += '<button class="btn btn-outline-success modifyBtn" type="submit">수정</button>';
             str += '<div>';
@@ -329,6 +329,35 @@
             e.preventDefault();
             console.log("clicking");
         })
+
+        var inputImage = $("input[name='uploadFiles']");
+
+        $(".load-content personIcon").click(function (){
+
+            console.info("clicking");
+
+            inputImage.click();
+
+
+        });
+
+
+
+        inputImage.change(function (){
+
+            var formData = new FormData();
+
+            console.info("changing");
+
+            var file = $(this);
+
+            console.info(file);
+
+            formData.append(file);
+
+        });
+
+
 
     }) // the end
 

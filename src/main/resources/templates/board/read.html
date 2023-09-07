@@ -12,6 +12,9 @@
             /*margin-bottom: 20px;*/
             padding: 18px 25px 24px;
             border-bottom: 1px solid #ccc;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
         }
 
         .box{
@@ -111,6 +114,11 @@
             color: #3d3d3d;
             font-weight: normal;
             line-height: 1.714;
+            padding: 0px 16px;
+        }
+
+        .reply-text p{
+            word-break: break-all;
         }
 
         .container replyContainer{
@@ -138,14 +146,43 @@
         .read-ragDate{
             margin-left: 20px;
         }
+
+        .reply-box-content{
+            width: 100%;
+
+        }
+
+        .reply-modify-div{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reply-modify-div button{
+            width: 60px;
+            margin: 5px;
+        }
+
+        .modify-textarea{
+            display: none;
+            width: 100%;
+            height: 100px;
+        }
+
+        .firstBtn{
+            border-radius: 10px;
+            background-color: #c5e8ef;
+            border: saddlebrown;
+        }
+        .secondBtn{
+            display: none;
+            border-radius: 10px;
+            background-color: #c5e8ef;
+            border: saddlebrown;
+        }
     </style>
 
 </head>
 
-
-
-<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">-->
-<!--  <th:block th:fragment="content">-->
     <div class="container content" layout:fragment="content">
         <div class="read-title">
           <strong th:text="${dto.title}" class="read-title"></strong>
@@ -305,6 +342,7 @@
 
                       str += ' <div class="reply-box" data-rno="'+dto.rno+'">';
 
+                      str += '<div class="reply-box-content">';
                       str += '<div class="reply-writer-info">';
                       if (dto.profileImg != null){
                           str += '<img src="'+dto.profileImg+'">'
@@ -314,19 +352,15 @@
                       str += ' <span class="reply-writer">'+dto.memberName+'</span>';
                       str += ' <span class="reply-regDate">'+formatTime(dto.regDate)+'</span>';
                       str += '</div>';
-
-                      str += ' <div class="reply-text"><span>'+dto.text+'</span></div>';
-
+                      str += ' <div class="reply-text"><p>'+dto.text+'</p><textarea name="text" class="modify-textarea">'+dto.text+'</textarea></div>';
+                      str += '</div>';
                       str += '<div class="reply-modify-div">';
-                      str += '<button type="button" class="reply-modify-btn" data-email="'+dto.email+'">수정</button>';
-                      str += '<button type="button" class="replyDeleteBtn" data-rno="'+dto.rno+'" data-email="'+dto.email+'">삭제</button>';
+                      str += '<button type="button" class="reply-modify-btn firstBtn" data-email="'+dto.email+'">수정</button>';
+                      str += '<button type="button" class="replyDeleteBtn firstBtn" data-rno="'+dto.rno+'" data-email="'+dto.email+'">삭제</button>';
+                      str += '<button type="button" class="doReplyModifying secondBtn" data-rno="'+dto.rno+'" data-email="'+dto.email+'">완료</button>';
+                      str += '<button type="button" class="cancelReplyModifying secondBtn">취소</button></div></div>'
                       str += '</div>';
 
-                      str += '<div class="replyModifyingForm">';
-                      str += '<input type="text" name="text" value="'+dto.text+'" class="replyModifyTextInput">';
-                      str += '<div>';
-                      str += '<button type="button" class="doReplyModifying" data-rno="'+dto.rno+'" data-email="'+dto.email+'">수정</button>';
-                      str += '<button type="button" class="cancelReplyModifying">취소</button></div></div>'
                       str += ' </div>';
 
 
@@ -381,18 +415,19 @@
 
               console.info("equals");
 
-              $(this).closest('.reply-box').find('.replyModifyingForm').css("display", "block");
-              $(this).closest('.reply-box').find('.reply-modify-div').css("display", "none");
+              // $(this).closest('.reply-box').find('.replyModifyingForm').css("display", "block");
+              // $(this).closest('.reply-box').find('.reply-modify-div').css("display", "none");
+              $(this).closest('.reply-box').find('.reply-text p, .firstBtn').css("display", "none");
+              $(this).closest('.reply-box').find('.modify-textarea, .secondBtn').css("display", "block");
 
               $(".doReplyModifying").on('click', function (){
 
                   var rno = $(this).data("rno");
                   // var email = $(this).data("email");
-                  var replyModifyInput = $(this).closest('.reply-box').find('.replyModifyTextInput').val();
+                  var replyModifyInput = $(this).closest('.reply-box').find('.modify-textarea').val();
                   console.info("replyModifyInput: " + replyModifyInput);
 
                   console.info("rno: " + rno);
-                  // console.info("email: " + email);
 
                   var reply = {
                       rno: rno,
@@ -423,8 +458,8 @@
           // 댓글 수정 창 닫기 이벤트
           $(".replyContainer").on("click", ".cancelReplyModifying", function (){
 
-              $(".replyModifyingForm").css("display", "none");
-              $(".reply-modify-div").css("display", "block");
+              $(".modify-textarea, .secondBtn").css("display", "none");
+              $(".reply-text p, .firstBtn").css("display", "block");
 
 
           });  // reply canceling modify event
@@ -434,7 +469,5 @@
 
   </script>
 
-<!--  </th:block>-->
-<!--</th:block>-->
 
 </html>
