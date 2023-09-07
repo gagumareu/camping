@@ -38,9 +38,11 @@ public class CustomSecurityConfig {
         log.info("---------------configuration-------------------");
 
 
-        http.formLogin().loginPage("/member/login").successHandler(authenticationSuccessHandler());
+        http.formLogin(formLogin -> formLogin.loginPage("/member/login").successHandler(authenticationSuccessHandler()));
+
+//        http.formLogin().loginPage("/member/login").successHandler(authenticationSuccessHandler());
         http.csrf().disable();
-//        http.logout().logoutSuccessHandler(logoutSuccessHandler());
+        http.logout().logoutSuccessHandler(logoutSuccessHandler());
 
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 

@@ -128,18 +128,29 @@
             justify-content: center;
         }
 
+        .telling-box{
+            position: fixed;
+            right: 80px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 25px;
+            width: 356px;
+            z-index: 999;
+            top: 178px;
+        }
+
+        .telling-box div{
+            display: flex;
+            flex-direction: row;
+
+        }
 
     </style>
 
-    <link rel="stylesheet" th:href="@{https://unpkg.com/aos@2.3.1/dist/aos.css}">
-    <script th:src="@{https://unpkg.com/aos@2.3.1/dist/aos.js}"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 
-
-
-
-<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content} )}">-->
-<!--    <th:block th:fragment="content">-->
 
     <div class="container content" layout:fragment="content">
         <div class="myGear-list-header">
@@ -167,6 +178,18 @@
             </ul>
         </div>
 
+        <div class="telling-box">
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>비동기 ajax를 활용하여 장비 등록이 가능합니다.</h5>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>등록된 장비를 수정 및 삭제가 가능합니다.</h5>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>중고 버튼을 누르면 해당 장비의 정보가 summernoteEditor로 정보를 넘겨 editor에 정보 및이미지가 업로드 됩니다.</h5>
+
+            </div>
+        </div>
 
         <div class="modal gear-register-modal" tabindex="-1">
             <div class="modal-dialog">
@@ -182,13 +205,6 @@
                             <input type="text" name="material" placeholder="MATERIAL" class="form-control">
                             <input type="text" name="script" placeholder="SCRIPT" class="form-control">
                             <input type="text" name="sort" class="form-control" placeholder="SORT">
-<!--                            <select name="sort" class="form-control">-->
-<!--                                <option value="tents">tents</option>-->
-<!--                                <option value="accessories">accessories</option>-->
-<!--                                <option value="fabric">fabric</option>-->
-<!--                                <option value="furniture">furniture</option>-->
-<!--                                <option value="cokeware">cokeware</option>-->
-<!--                            </select>-->
                             <input type="hidden" name="email" placeholder="EMAIL" class="form-control" th:value="${#authentication.principal.username}">
                             <input type="file" name="uploadFiles" multiple class="form-control">
                             <div class="hidden-box">

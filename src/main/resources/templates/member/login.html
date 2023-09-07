@@ -47,13 +47,22 @@
             font-size: 1.2em;
         }
 
+        .telling-box{
+            position: fixed;
+            right: 80px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 25px;
+            width: 356px;
+            z-index: 999;
+            top: 178px;
+        }
+
     </style>
 
 </head>
 
 
-
-<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content} )}">-->
   <div class="container content" layout:fragment="content">
 
       <div class="login-form-wrapper">
@@ -78,10 +87,6 @@
           </form>
 
           <div class="social-login-box">
-<!--              <div class="social-login">-->
-<!--                  <a href="/oauth2/authorization/kakao">KAKAO</a>-->
-<!--              </div>-->
-
               <div class="social-login">
                   <a href="/oauth2/authorization/google">
                       <img src="/icon/google.svg">
@@ -94,8 +99,16 @@
                     <div class="btn-secondary">회원 가입</div>
                 </a>
               </div>
+          </div> <!--/ social-login-box /-->
+
+          <div class="telling-box">
+            <h5>샘플 아이디</h5>
+            <h5>ID : user1@email.com </h5>
+            <h5>PWD : 1234 </h5>
+              <h5>캠핑 장비를 미리 등록 했습니다.</h5>
           </div>
-      </div>
+
+      </div> <!--/ login-form-wrapper /-->
 
 
 

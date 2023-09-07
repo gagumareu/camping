@@ -8,6 +8,49 @@
 
   <style>
 
+    .home-git-url{
+      font-size: 1.3em;
+      display: flex;
+      justify-content: center;
+      margin: 30px 0px;
+    }
+    .home-skill{
+      display: flex;
+      flex-direction: column;
+      row-gap: 4px;
+      font-size: 1.2em;
+    }
+
+    .home-develop-goal{
+      display: flex;
+      flex-direction: column;
+      row-gap: 4px;
+      font-size: 1.2em;
+      align-items: center;
+    }
+
+    .home-backLog{
+      display: flex;
+      flex-direction: column;
+      row-gap: 4px;
+      font-size: 1.2em;
+      align-items: center;
+    }
+
+    .home-content{
+      display: flex;
+    }
+
+    .home-left-side{
+      flex: 30%;
+      border-right: 1px solid;
+
+    }
+
+    .home-right-side{
+      flex: 70%;
+    }
+
 
   </style>
 
@@ -16,14 +59,77 @@
 <div class="container content" layout:fragment="content">
 
   <div class="index-wrapper">
-    <h2>Hello World</h2>
-    <h2>[[${test}]]</h2>
+
+    <div class="home-git-url">
+      <a href="https://github.com/gagumareu/springboot_campboard" target="_blank">
+        Github: https://github.com/gagumareu/springboot_campboard
+      </a>
+    </div>
+
+    <div class="home-content">
+      <div class="home-left-side">
+        <div class="home-skill">
+          <h3>사용 기술 </h3>
+          <spa>무중단 배포 버전: Spring boot 2.3.x jar</spa>
+          <spa>개발 버전: Spring boot 2.7.x war</spa>
+          <spa>JPA</spa>
+          <spa>Querydsl</spa>
+          <spa>Spring security</spa>
+          <spa>thymeleaf</spa>
+          <spa>Ajax</spa>
+          <spa>summernote editor</spa>
+          <spa>Google OAuth2</spa>
+          <spa>AWS EC2</spa>
+          <spa>AWS RDS</spa>
+          <spa>AWS S3 Bucket</spa>
+        </div> <!--/ home-skill  /-->
+      </div><!--/ home-left-side /-->
+
+      <div class="home-right-side">
+        <div class="home-develop-goal">
+          <h3>개발 목표</h3>
+          <ul>
+            <li>유저가 등록한 캠핑 장비를 리스트업</li>
+            <li>리스트업한 장비들에서 선택하여 중고 거래 작성</li>
+            <li>list.html 한 페이지에서 카테고리 별로 리스트 출력 함으로써 최소한의 코드로 원하는 리스트 출력</li>
+            <li>검색기능 '카테고리 내에서 원하는 키워드 검색가능'</li>
+            <li>Spring Security를 이용하여 권한이 주어진 회원만 게시물 등록, 수정 및 삭제</li>
+            <li>text edition 'summernote edition' 적용</li>
+          </ul>
+
+        </div><!--/ home-develop-goal  /-->
+
+        <div class="home-backLog">
+          <h3>개선 및 업데이트</h3>
+          <ul>
+            <li>중고거래 등록된 캠핑 장비 수정 불가 처리</li>
+            <li>회원 프로파일 이미지 수정</li>
+            <li>회원 이름 클릭시 회원 정보 보이기</li>
+            <li>유저가 등록한 캠핑 장비 검색 기능</li>
+            <li>댓글 작성자 프로파일 이미지 보이기</li>
+            <li>오픈 소스 map API 이용하여 캠핑 장소 모집</li>
+            <li>게시물 및 장비 리스트 오름차순 내림차순 정렬</li>
+            <li>JWT 적용</li>
+            <li>SSL 인증</li>
+            <li>첨부파일 업로드 로딩 표현</li>
+            <li>모바일 버전 반응형</li>
+            <li>css link 처리</li>
+            <li>마이 기어 클릭시 상제 정보 모달창 띄우기</li>
+            <li>중고거래 리스트 썸네일 이미지 띄우기</li>
+          </ul>
+
+        </div><!--/ home-backLog  /-->
+      </div><!--/ home-right-side /-->
+
+    </div>
+
+
+
+
 
   </div>
 
-
-
-</div>
+</div> <!--/ index-wrapper  /-->
 
 
 

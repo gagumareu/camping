@@ -34,7 +34,7 @@
         .img-box{
             flex: 230px;
             max-width: 230px;
-
+            height: 92%;
         }
 
         .img-thumbnail{
@@ -42,7 +42,6 @@
         }
 
         .img-thumbnail-div{
-            height: 92%;
         }
 
         .board_thumbnail_img{
@@ -70,10 +69,14 @@
 
         .board-title-div{
             flex: 60%;
+            display: flex;
+            flex-direction: column;
+            /*justify-content: space-between;*/
         }
 
         #board-title{
             color: #000;
+            font-size: 1.1em;
         }
 
         .list-pagination{
@@ -134,6 +137,19 @@
             margin-left: 4px;
         }
 
+        .board-list-category{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .board-list-category-link{
+            margin-left: 20px;
+            font-size: 0.8em;
+            align-self: flex-end;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+
     </style>
 
 </head>
@@ -161,12 +177,12 @@
         <div class="wrapper-list">
         <div class="boardListBoxes" th:each="dto :${boardList.dtoList}">
             <div class="img-box">
-                <div class="img-thumbnail-div">
+                <a class="img-thumbnail-div" th:href="@{/board/read(bno=${dto.bno}, page=${boardList.page}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO.category} )}">
                     <img class="board_thumbnail_img availImg" th:if="${dto.boardImageDTOList[0]?.folderPath != null && dto.boardImageDTOList[0]?.uuid != null && dto.boardImageDTOList[0]?.fileName != null  }"
                          th:src="${dto.boardImageDTOList[0].thumbnailS3URL}">
                     <img class="board_thumbnail_img" th:unless="${dto.boardImageDTOList[0]?.folderPath != null && dto.boardImageDTOList[0]?.uuid != null &&
                 dto.boardImageDTOList[0]?.fileName != null  }" th:src="@{/icon/img3.svg}">
-                </div>
+                </a>
             </div>
 
             <div class="container boardList-content">
@@ -174,13 +190,21 @@
                 <div class="col-md-3 board-title-div">
                     <a th:href="@{/board/read(bno=${dto.bno}, page=${boardList.page}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO.category} )}" class="board-title-a">
                         <div id="board-title">[[${dto.title}]]</div>
+                    </a>
+                    <div class="board-list-category">
                         <div th:if="${dto.regDate == dto.modDate}">
                             [[${#temporals.format(dto.regDate, 'yyyy/MM/dd') }]]
                         </div>
                         <div th:unless="${dto.regDate == dto.modDate}">
                             [[${#temporals.format(dto.modDate, 'yyyy/MM/dd') }]]
                         </div>
-                    </a>
+                        <th:block th:switch="${dto.category}">
+                            <a th:case="talk" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">커뮤니티</a>
+                            <a th:case="party" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">캠핑모임</a>
+                            <a th:case="place" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">캠핑장</a>
+                            <a th:case="secondHands" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">중고거래</a>
+                        </th:block>
+                    </div>
                 </div>
 
                 <div class="col-md-3 board-memberName">
@@ -220,5 +244,8 @@
         </div>
     </div>
 
+<script th:inline="javascript" layout:fragment="script">
+
+</script>
 
 </html>
