@@ -164,7 +164,9 @@ public class BoardServiceImpl implements BoardService{
         log.info("-------getBoarListByEmail---------------------");
         log.info(email);
 
-        List<Board> result = boardRepository.getBoardByEmail(email);
+        Member member = Member.builder().email(email).build();
+
+        List<Board> result = boardRepository.getBoardsByMemberOrderByBnoDesc(member);
 
         return result.stream().map(board -> basicEntityToDTO(board)).collect(Collectors.toList());
     }

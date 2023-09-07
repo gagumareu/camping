@@ -41,12 +41,12 @@ public class CustomSecurityConfig {
         http.formLogin(formLogin -> formLogin.loginPage("/member/login").successHandler(authenticationSuccessHandler()));
 
 //        http.formLogin().loginPage("/member/login").successHandler(authenticationSuccessHandler());
-        http.csrf().disable();
-        http.logout().logoutSuccessHandler(logoutSuccessHandler());
+        http.csrf(csrf -> csrf.disable());
+        http.logout(logout -> logout.logoutSuccessHandler(logoutSuccessHandler()));
 
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+        http.exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler()));
 
-        http.oauth2Login().loginPage("/member/login").successHandler(authenticationSuccessHandler());
+        http.oauth2Login(oauth2Login -> oauth2Login.loginPage("/member/login").successHandler(authenticationSuccessHandler()));
 
         return http.build();
     }

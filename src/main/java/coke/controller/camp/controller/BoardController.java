@@ -6,6 +6,7 @@ import coke.controller.camp.service.BoardService;
 import coke.controller.camp.service.GearService;
 import coke.controller.camp.util.S3Uploader;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,6 +63,7 @@ public class BoardController {
     public void register(String category, Model model, Long gno){
 
         log.info("----------register method getMapping..........");
+        log.info("category:  " + category);
 
         if(category.equals("secondHands") && gno != null){
 
@@ -68,7 +71,6 @@ public class BoardController {
 
             GearDTO gearDTO = gearService.getByGno(gno);
             model.addAttribute("gearDTO", gearDTO);
-            model.addAttribute("tellCategory", category);
 
         }
 
@@ -78,13 +80,30 @@ public class BoardController {
 
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/register")
-    public String register(BoardDTO boardDTO, RedirectAttributes redirectAttributes, GearDTO gearDTO){
+    public String register(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, GearDTO gearDTO, Model model){
 
-        log.info("---------register-------");
+        log.info("-----------------register--------------------");
         log.info(boardDTO);
         log.info(gearDTO);
 
+        // BindingResult error 가 있을 경우
+        if (bindingResult.hasErrors()){
+
+            log.info("has error to register a board............................");
+
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+
+            if (boardDTO.getCategory().equals("secondHands") && gearDTO.getGno() != null){
+                log.info("----- getting gearDTO");
+                redirectAttributes.addAttribute("gno", gearDTO.getGno());
+            }
+            redirectAttributes.addAttribute("category", boardDTO.getCategory());
+
+            return "redirect:/board/register";
+        }
+
         Long bno = boardService.register(boardDTO);
+
         if (gearDTO.getGno() != null && gearDTO.getState() == 1){
             log.info("----update gear to register second deal------ ");
             gearService.updateState(gearDTO);
@@ -160,11 +179,22 @@ public class BoardController {
 
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/modify")
-    public String modify(BoardDTO boardDTO, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
+    public String modify(@Valid BoardDTO boardDTO, BindingResult bindingResult, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
                          RedirectAttributes redirectAttributes){
 
         log.info("----------modify---------");
         log.info(boardDTO);
+
+        if (bindingResult.hasErrors()){
+            log.info("has errors.....");
+            log.info(boardDTO.getBno());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+
+            redirectAttributes.addAttribute("bno", boardDTO.getBno());
+//            redirectAttributes.addAttribute("pageRequestDTO", pageRequestDTO);
+
+            return "redirect:/board/modify";
+        }
 
         boardService.modify(boardDTO);
 

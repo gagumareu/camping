@@ -28,14 +28,12 @@ public interface BoardService {
         Map<String, Object> map = new HashMap<>();
 
         Member member = Member.builder().email(boardDTO.getEmail()).build();
-//        Gear gear = Gear.builder().gno(boardDTO.getGno()).build();
 
         Board board = Board.builder()
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
                 .category(boardDTO.getCategory())
                 .member(member)
-//                .gear(gear)
                 .build();
         map.put("board", board);
 

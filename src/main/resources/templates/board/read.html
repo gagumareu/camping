@@ -275,7 +275,7 @@
                   contentType: 'application/json; charset=utf-8',
                   dataType: 'json',
                   success: function (result){
-                      console.info(result+ "번 댓글 작성 성공");
+                      console.info(result.rno+ "번 댓글 작성 성공");
                       loadReplyList();
                       // self.location.reload();
                       $("textarea[name='text']").val("");

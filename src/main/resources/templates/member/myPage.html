@@ -165,11 +165,7 @@
     </style>
 </head>
 
-<!--<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hmecoefot7"></script>-->
 
-
-<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content} )}">-->
-<!--    <th:block th:fragment="content">-->
 
     <div class="container content" layout:fragment="content">
         <div class="myPage-wrapper">
@@ -189,7 +185,7 @@
                     <div class="my-writings-btn">작성한 게시글</div>
                     <div class="my-replies-btn">작성한 댓글</div>
                 </div>
-            </div>
+            </div> <!--/ myPage-left-side /-->
 
             <div class="myPage-content">
                 <h1 class="myPage-title">마이 페이지</h1>
@@ -206,11 +202,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> <!--/ myPage-content /-->
 
-        </div>
+        </div> <!--/ myPage-wrapper /-->
 
-    </div>
+    </div> <!--/ container content /-->
 
  <script layout:fragment="script" th:inline="javascript">
 
@@ -252,21 +248,16 @@
 
                 $(arr).each(function (i, dto){
 
-                    console.info(dto)
-                    console.info(dto.title)
-
-                    var regDate =
-
-                        str += '<div class="data-box">';
+                    str += '<div class="data-box">';
                     str += '<div class="data-title" data-bno="'+dto.bno+'"><a href="/board/read?bno='+dto.bno+'" target="_blank">'+dto.title+'</a></div>';
-                    str += '<div class="data-date">'+formatTime(dto.regDate)+'</div>';
+                    str += '<div class="data-date">'+dto.regDate+'</div>';
                     str += '</div>';
                 })
 
                 loadContent.html(str);
 
             })
-        }
+        } // function getBoardList
 
         // 작성한 댓글 클릭시 리스트 불러오는 이벤트
         $(".my-replies-btn").on("click", function (e){
@@ -285,21 +276,16 @@
 
                 $(arr).each(function (i, dto){
 
-                    console.info(dto)
-                    console.info(dto.title)
-
-                    var regDate =
-
-                        str += '<div class="data-box">';
+                    str += '<div class="data-box">';
                     str += '<div class="data-title" data-rno="'+dto.rno+'"><a href="/board/read?bno='+dto.bno+'" target="_blank">'+dto.text+'</a></div>';
-                    str += '<div class="data-date">'+formatTime(dto.regDate)+'</div>';
+                    str += '<div class="data-date">'+dto.regDate+'</div>';
                     str += '</div>';
                 })
 
                 loadContent.html(str);
 
             })
-        }
+        } // function getRepliesList
 
         // 내 정보 변경 클릭 이벤트
         $(".modify-myInfo-btn").click(function (){
@@ -318,7 +304,7 @@
             str += '</form>';
 
             loadContent.html(str);
-        })
+        }) // cliking modify-myInfo-btn
 
         // 왼쪽 사이드 이름 클릭시 이름 변경 이벤트
         $(".userInfo").click(function (e){
@@ -336,7 +322,7 @@
             str += '</form>';
 
             loadContent.html(str);
-        })
+        }) // clicking for updating userNicname
 
 
         $(".modifyBtn").on("click", function (e){
@@ -348,7 +334,4 @@
 
  </script>
 
-<!--    </th:block>-->
-<!--</th:block>-->
-<!--</body>-->
 </html>

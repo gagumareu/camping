@@ -283,7 +283,7 @@
             </ul>
         </div>
 
-        <div class="telling-box">
+        <div class="telling-box" th:if="${tellCategory} == 'secondHands'">
             <div>
                 <span class="material-symbols-outlined">arrow_right</span><h5>유저가 등록한 장비를 비동기 방식으로 불러 옵니다.</h5>
             </div>
@@ -296,17 +296,21 @@
     </div>
 
 <script th:inline="javascript"  layout:fragment="script">
-    // const auth = [[${#authentication.principal}]]
-    // console.info(auth);
-    //
-    // const errors = [[${errors}]]
-    // console.info(errors)
+
+    const errors = [[${errors}]]
+    console.info(errors)
+
+    let errorMsg = ''
+
+    if (errors){
+        errorMsg = '제목이 너무 짧거나 또는 내용을 입력해주세요'
+        // for(let i =0; i < errors.length; i++){
+            // errorMas += `${errors[i].field}은(는) ${errors[i].code}\n`
+        // }
+        alert(errorMsg);
+    }
 
     $(document).ready(function (){
-
-
-        // var memberEmail = [[${pricipalName}]];
-        // console.info(memberEmail);
 
         var email = [[${#authentication.principal.username}]];
 

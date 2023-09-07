@@ -1,6 +1,7 @@
 package coke.controller.camp.repository;
 
 import coke.controller.camp.entity.Board;
+import coke.controller.camp.entity.Member;
 import coke.controller.camp.repository.Search.BoardSearchRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
 
     @Query("SELECT b FROM Board b WHERE b.member.email = :email ORDER BY b.bno DESC ")
     List<Board> getBoardByEmail(String email);
+
+    List<Board> getBoardsByMemberOrderByBnoDesc(Member member);
 
 
 }
