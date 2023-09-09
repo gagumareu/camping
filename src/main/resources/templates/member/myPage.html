@@ -175,6 +175,7 @@
                     <div class="myPage-left-imgDiv">
                         <img th:if="${dto.profileImg != null}" th:src="${dto.profileImg}">
                         <img th:unless="${dto.profileImg != null}" src="/icon/person-circle.svg">
+                        <input type="file" name="uploadFiles" style="display: none">
                     </div>
                     <span class="userInfo">
                         <h3 class="userName">[[${dto.memberName}]]</h3>
@@ -288,23 +289,23 @@
         } // function getRepliesList
 
         // 내 정보 변경 클릭 이벤트
-        $(".modify-myInfo-btn").click(function (){
-
-            $(".myPage-title").html("계정 정보 변경");
-
-            var str = "";
-
-            str += '<form class="modify-info" action="/member/modify" method="post">';
-            str += '<input type="text" class="form-control inputName" name="name" placeholder="닉네임 변경">';
-            str += '<input type="hidden" name="email" value="'+email+'">';
-            str += '<div class="profileImage"><img src="/icon/person-circle.svg" class="personIcon"><input id="inputFile" type="file" name="uploadFiles"></div>';
-            str += '<div class="modifyBtn">';
-            str += '<button class="btn btn-outline-success modifyBtn" type="submit">수정</button>';
-            str += '<div>';
-            str += '</form>';
-
-            loadContent.html(str);
-        }) // cliking modify-myInfo-btn
+        // $(".modify-myInfo-btn").click(function (){
+        //
+        //     $(".myPage-title").html("계정 정보 변경");
+        //
+        //     var str = "";
+        //
+        //     str += '<form class="modify-info" action="/member/modify" method="post">';
+        //     str += '<input type="text" class="form-control inputName" name="name" placeholder="닉네임 변경">';
+        //     str += '<input type="hidden" name="email" value="'+email+'">';
+        //     str += '<div class="profileImage"><img src="/icon/person-circle.svg" class="personIcon"><input id="inputFile" type="file" name="uploadFiles"></div>';
+        //     str += '<div class="modifyBtn">';
+        //     str += '<button class="btn btn-outline-success modifyBtn" type="submit">수정</button>';
+        //     str += '<div>';
+        //     str += '</form>';
+        //
+        //     loadContent.html(str);
+        // }) // cliking modify-myInfo-btn
 
         // 왼쪽 사이드 이름 클릭시 이름 변경 이벤트
         $(".userInfo").click(function (e){
@@ -332,15 +333,14 @@
 
         var inputImage = $("input[name='uploadFiles']");
 
-        $(".load-content personIcon").click(function (){
+        $(".myPage-left-imgDiv").click(function (){
 
             console.info("clicking");
 
-            inputImage.click();
+            // inputImage.click();
 
 
         });
-
 
 
         inputImage.change(function (){
