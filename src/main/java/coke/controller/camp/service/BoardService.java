@@ -1,12 +1,11 @@
 package coke.controller.camp.service;
 
-import coke.controller.camp.dto.BoardDTO;
-import coke.controller.camp.dto.BoardImageDTO;
-import coke.controller.camp.dto.PageRequestDTO;
-import coke.controller.camp.dto.PageResultDTO;
+import coke.controller.camp.dto.*;
 import coke.controller.camp.entity.Board;
 import coke.controller.camp.entity.BoardImage;
+import coke.controller.camp.entity.GearImage;
 import coke.controller.camp.entity.Member;
+import org.springframework.security.core.parameters.P;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +55,7 @@ public interface BoardService {
 
     } // dtoToEntity
 
-    default BoardDTO entityToDTO(Board board, List<BoardImage> boardImageList, Member member, Long replyCount){
+    default BoardDTO entityToDTO(Board board, List<BoardImage> boardImageList, Member member, Long replyCount, List<GearImage> gearImages){
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .bno(board.getBno())
@@ -86,6 +85,23 @@ public interface BoardService {
             }).collect(Collectors.toList());
             boardDTO.setBoardImageDTOList(boardImageDTOList);
         }
+
+        if (gearImages != null && gearImages.size() > 0){
+            List<GearImageDTO> gearImageDTOList = gearImages.stream().map(gearImage -> {
+                if (gearImage != null){
+                    return GearImageDTO.builder()
+                            .folderPath(gearImage.getFolderPath())
+                            .uuid(gearImage.getUuid())
+                            .fileName(gearImage.getFileName())
+                            .s3Url(gearImage.getS3Url())
+                            .build();
+                }else {
+                    return null;
+                }
+            }).collect(Collectors.toList());
+            boardDTO.setGearImageDTOList(gearImageDTOList);
+        }
+
         return boardDTO;
 
     } // entityToDTO

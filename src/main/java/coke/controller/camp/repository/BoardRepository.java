@@ -22,12 +22,13 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
             countQuery = "SELECT count (b) FROM Board b")
     Page<Object[]> getListWithMemberAndReplyCount(Pageable pageable);
 
-    @Query("SELECT b, bi, m, count (distinct r) " +
+    @Query("SELECT b, bi, m, count (distinct r), gi " +
             "FROM Board b " +
             "LEFT OUTER JOIN b.member m " +
             "LEFT OUTER JOIN Reply r ON r.board = b " +
             "LEFT OUTER JOIN BoardImage bi ON bi.board = b " +
             "LEFT OUTER JOIN Gear g ON g.member = m " +
+            "LEFT OUTER JOIN GearImage gi ON gi.gear = g " +
             "WHERE b.bno = :bno " +
             "GROUP BY bi")
     List<Object[]> getBoardWithAll(@Param("bno") Long bno);

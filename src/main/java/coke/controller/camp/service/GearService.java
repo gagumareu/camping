@@ -68,8 +68,6 @@ public interface GearService {
 
     default GearDTO entityToDto(Gear gear, Member member, List<GearImage> gearImageList, Board board){
 
-        System.out.println(gear);
-
         GearDTO gearDTO = GearDTO.builder()
                 .gno(gear.getGno())
                 .gname(gear.getGname())
