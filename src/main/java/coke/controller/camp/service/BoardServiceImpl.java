@@ -6,9 +6,11 @@ import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.entity.Board;
 import coke.controller.camp.entity.BoardImage;
+import coke.controller.camp.entity.Gear;
 import coke.controller.camp.entity.Member;
 import coke.controller.camp.repository.BoardImageRepository;
 import coke.controller.camp.repository.BoardRepository;
+import coke.controller.camp.repository.GearRepository;
 import coke.controller.camp.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final BoardImageRepository boardImageRepository;
     private final ReplyRepository replyRepository;
+    private final GearRepository gearRepository;
 
     @Transactional
     @Override
@@ -46,7 +49,9 @@ public class BoardServiceImpl implements BoardService{
         log.info(board);
         log.info(boardImageList);
 
-        boardRepository.save(board);
+        Board result = boardRepository.save(board);
+
+        log.info(result.getBno());
 
         if (boardImageList != null && boardImageList.size() > 0){
             boardImageList.forEach(boardImage -> {
@@ -54,7 +59,7 @@ public class BoardServiceImpl implements BoardService{
             });
         }
 
-        return board.getBno();
+        return result.getBno();
     }
 
     @Override
@@ -119,6 +124,8 @@ public class BoardServiceImpl implements BoardService{
         replyRepository.deleteByBno(bno);
         boardImageRepository.deleteByBno(bno);
         boardRepository.deleteById(bno);
+
+
     }
 
     @Transactional

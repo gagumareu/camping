@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @ToString(exclude = {"member", "board"})
 public class Gear extends BaseEntity{
 
@@ -34,9 +35,16 @@ public class Gear extends BaseEntity{
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = true)
     private Board board;
 
     public void changeState(int state){
         this.state = state;
     }
+
+    public void changeBno(Board board){
+        this.board = board;
+    }
+
+
 }

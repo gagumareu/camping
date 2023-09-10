@@ -4,6 +4,7 @@ import coke.controller.camp.dto.GearDTO;
 import coke.controller.camp.dto.GearImageDTO;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
+import coke.controller.camp.entity.Board;
 import coke.controller.camp.entity.Gear;
 import coke.controller.camp.entity.GearImage;
 import coke.controller.camp.entity.Member;
@@ -67,7 +68,8 @@ public class GearServiceImpl implements GearService{
         List<GearDTO> gearDTOList = result.stream().map(arr -> entityToDto(
                 (Gear) arr[0],
                 (Member) arr[1],
-                (List<GearImage>) (Arrays.asList((GearImage) arr[2]))
+                (List<GearImage>) (Arrays.asList((GearImage) arr[2])),
+                (Board) arr[3]
                 )
 
         ).collect(Collectors.toList());
@@ -139,7 +141,9 @@ public class GearServiceImpl implements GearService{
             gearImageList.add(gearImage);
         });
 
-        GearDTO gearDTO = entityToDto(gear, member, gearImageList);
+        Board board = (Board) result.get(0)[3];
+
+        GearDTO gearDTO = entityToDto(gear, member, gearImageList, board);
 
         return gearDTO;
     }
@@ -150,6 +154,7 @@ public class GearServiceImpl implements GearService{
         log.info("------gear update state-----");
         log.info(gearDTO.getGno());
         log.info(gearDTO.getState());
+        log.info(gearDTO.getBno());
 
         Optional<Gear> result = gearRepository.findById(gearDTO.getGno());
 
@@ -157,7 +162,36 @@ public class GearServiceImpl implements GearService{
 
         gear.changeState(gearDTO.getState());
 
+        Board board = Board.builder().bno(gearDTO.getBno()).build();
+
+        gear.changeBno(board);
+
+        log.info("gear: " + gear);
+
         gearRepository.save(gear);
+
+    }
+
+    @Override
+    public void backStateZero(Long bno) {
+
+        log.info("-----------backStateToZero----------");
+
+        Board board = Board.builder().bno(bno).build();
+
+        Optional<Gear> result = gearRepository.getGearByBoard(board);
+
+        if (result.isPresent()){
+            Gear gear = result.orElseThrow();
+            
+            gear.setBoard(null);
+
+            gear.changeState(0);
+
+            log.info(gear);
+
+            gearRepository.save(gear);
+        }
 
     }
 
@@ -177,7 +211,8 @@ public class GearServiceImpl implements GearService{
         Function<Object[], GearDTO> fn = (en -> entityToDto(
                 (Gear) en[0],
                 (Member) en[1],
-                (List<GearImage>) (Arrays.asList((GearImage)en[2]))
+                (List<GearImage>) (Arrays.asList((GearImage)en[2])),
+                (Board) en[3]
         ));
 
         Page<Object[]> result = gearRepository.getGearListWithSearching(
