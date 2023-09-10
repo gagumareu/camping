@@ -27,13 +27,6 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
         super(Board.class);
     }
 
-    @Override
-    public Board search() {
-
-        log.info("search.....!");
-
-        return null;
-    }
 
     @Override
     public Page<Object[]> getSearchList(String type, String keyword, Pageable pageable, String category) {
@@ -44,14 +37,16 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
         QMember member = QMember.member;
         QBoardImage boardImage = QBoardImage.boardImage;
         QGear gear = QGear.gear;
+        QGearImage gearImage = QGearImage.gearImage;
 
         JPQLQuery<Board> jpqlQuery = from(board);
         jpqlQuery.leftJoin(member).on(board.member.eq(member));
         jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
         jpqlQuery.leftJoin(boardImage).on(boardImage.board.eq(board));
         jpqlQuery.leftJoin(gear).on(gear.board.eq(board));
+        jpqlQuery.leftJoin(gearImage).on(gearImage.gear.eq(gear));
 
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(board, boardImage, member, reply.countDistinct());
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(board, boardImage, member, reply.countDistinct(), gearImage);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = board.bno.gt(0L);
@@ -98,7 +93,7 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<Tuple> result = tuple.fetch();
 
-//        log.info("result: " + result);
+        log.info("result: " + result);
 
         Long count = tuple.fetchCount();
 

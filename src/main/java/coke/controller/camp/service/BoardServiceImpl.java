@@ -4,10 +4,7 @@ import coke.controller.camp.dto.BoardDTO;
 import coke.controller.camp.dto.BoardImageDTO;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
-import coke.controller.camp.entity.Board;
-import coke.controller.camp.entity.BoardImage;
-import coke.controller.camp.entity.Gear;
-import coke.controller.camp.entity.Member;
+import coke.controller.camp.entity.*;
 import coke.controller.camp.repository.BoardImageRepository;
 import coke.controller.camp.repository.BoardRepository;
 import coke.controller.camp.repository.GearRepository;
@@ -71,7 +68,9 @@ public class BoardServiceImpl implements BoardService{
                 (Board) en[0],
                 (List<BoardImage>) (Arrays.asList((BoardImage)en[1])),
                 (Member) en[2],
-                (Long) en[3]));
+                (Long) en[3],
+                (List<GearImage>) (Arrays.asList((GearImage)en[4]))
+        ));
 
 //        Page<Object[]> result = boardRepository.getListWithMemberAndReplyCount(
 //                pageRequestDTO.getPageable(Sort.by("bno").descending()));
@@ -106,12 +105,19 @@ public class BoardServiceImpl implements BoardService{
 
         Long replyCount = (Long) result.get(0)[3];
 
+        List<GearImage> gearImageList = new ArrayList<>();
+
+        result.forEach(arr -> {
+            GearImage gearImage = (GearImage) arr[4];
+            gearImageList.add(gearImage);
+        });
+
         log.info("board: " + board);
         log.info("image size: " + boardImageDTOList.size());
         log.info("member: " + member);
         log.info("reply counting : " + replyCount);
 
-        return entityToDTO(board, boardImageDTOList, member, replyCount);
+        return entityToDTO(board, boardImageDTOList, member, replyCount, gearImageList);
     }
 
     @Transactional

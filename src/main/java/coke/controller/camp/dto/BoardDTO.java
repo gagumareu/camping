@@ -41,4 +41,7 @@ public class BoardDTO {
     @Builder.Default
     private List<BoardImageDTO> boardImageDTOList = new ArrayList<>();
 
+    @Builder.Default
+    private List<GearImageDTO> gearImageDTOList = new ArrayList<>();
+
 }
