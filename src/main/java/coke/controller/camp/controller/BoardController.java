@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -80,7 +81,7 @@ public class BoardController {
 
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/register")
-    public String register(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, GearDTO gearDTO, Model model){
+    public String register(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, GearDTO gearDTO ){
 
         log.info("-----------------register--------------------");
         log.info(boardDTO);
@@ -104,8 +105,10 @@ public class BoardController {
 
         Long bno = boardService.register(boardDTO);
 
+        // 중고글 작성시 기어 상태 변화
         if (gearDTO.getGno() != null && gearDTO.getState() == 1){
             log.info("----update gear to register second deal------ ");
+            gearDTO.setBno(bno);
             gearService.updateState(gearDTO);
         }
 
@@ -149,6 +152,8 @@ public class BoardController {
                 s3Uploader.removeS3File(fileName);
             });
         }
+
+        gearService.backStateZero(boardDTO.getBno());
 
         boardService.remove(boardDTO.getBno());
 

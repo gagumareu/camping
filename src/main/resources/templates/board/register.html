@@ -44,13 +44,6 @@
             justify-content: center;
         }
 
-        /*.gear-div ul li {*/
-        /*    display: flex;*/
-        /*    flex-direction: row;*/
-        /*    align-items: center;*/
-        /*    margin-bottom: 5px;*/
-        /*}*/
-
         .gear-div-info{
             height: 100px;
             display: flex;
@@ -142,10 +135,14 @@
                     </li>
                 </ul>
             </div>
+            <div style="display: none" class="register-hidden-for-state">
+
+            </div>
 
 
             <div class="titleAndSearchBox">
-                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE">
+                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:if="${tellCategory == 'secondHands'}" value="[중고거래] ">
+                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
                 <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category">
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
@@ -322,8 +319,6 @@
 
             e.preventDefault();
 
-            console.log("clicking");
-
             var str = "";
 
             $(".uploadResultUL li").each(function (i, dto){
@@ -392,7 +387,6 @@
                 str += '</div>';
 
                 str += '</div>';
-
 
             }) // dtoList each
 
@@ -487,14 +481,6 @@
                 var script = dto.script;
                 var sort = dto.sort;
                 var state = dto.state;
-
-                console.info(name);
-                console.info(brand);
-                console.info(size);
-                console.info(material);
-                console.info(script);
-                console.info(sort);
-                console.info(state);
 
                 // var HTMLString = '<div><p>이름: '+name+'</p><p>브랜드: '+brand+'</p><p>사이즈: '+size+'</p>' +
                 //     '<p>소재: '+material+'</p><p>설명: '+script+'</p><p><br></p></div>'

@@ -1,9 +1,6 @@
 package coke.controller.camp.repository.Search;
 
-import coke.controller.camp.entity.Gear;
-import coke.controller.camp.entity.QGear;
-import coke.controller.camp.entity.QGearImage;
-import coke.controller.camp.entity.QMember;
+import coke.controller.camp.entity.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
@@ -35,12 +32,14 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         QGear gear = QGear.gear;
         QGearImage gearImage = QGearImage.gearImage;
         QMember member = QMember.member;
+        QBoard board = QBoard.board;
 
         JPQLQuery<Gear> query = from(gear);
         query.leftJoin(member).on(gear.member.eq(member));
         query.leftJoin(gearImage).on(gearImage.gear.eq(gear));
+        query.leftJoin(board).on(gear.board.eq(board));
 
-        JPQLQuery<Tuple> tuple = query.select(gear, member, gearImage);
+        JPQLQuery<Tuple> tuple = query.select(gear, member, gearImage, board);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = gear.gno.gt(0L);

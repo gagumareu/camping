@@ -4,7 +4,7 @@
       layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CampingDirect</title>
 
     <style>
         .reply-box{
@@ -181,6 +181,23 @@
             background-color: #c5e8ef;
             border: saddlebrown;
         }
+
+        .telling-box{
+            position: fixed;
+            right: 80px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 25px;
+            width: 356px;
+            z-index: 999;
+            top: 178px;
+        }
+
+        .telling-box div{
+            display: flex;
+            flex-direction: row;
+
+        }
     </style>
 
 </head>
@@ -234,6 +251,7 @@
                       <button class="btn btn-outline-light modifyBtn">수정</button>
                   </a>
                   <button class="btn btn-outline-info removeBtn">삭제</button>
+                  <button class="btn btn-outline-info marketDealDone">거래 완료</button>
               </div>
           </th:block>
         </div>
@@ -252,7 +270,21 @@
         <div class="container replyContainer">
 
         </div>
-    </div>
+
+        <div class="telling-box">
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>로그인 유저의 authentication.pricipal.username 값과 글 작성한 유저의 ID(email) 값이 같으면 수정 삭제 권한을 얻습니다.</h5>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>중고거래일 경우 게시글을 삭제하면 등록된 장비는 중고 거래 등록 및 삭제 기능이 복원됩니다.</h5>
+            </div>
+
+        </div>
+
+    </div> <!--/ the end /-->
+
+
+
 
   <script layout:fragment="script" th:inline="javascript">
 
@@ -270,6 +302,9 @@
 
           var userEmail = [[${dto.email}]];
           console.log("userEmail: " + userEmail);
+
+          var tellingCategory = [[${dto.category}]];
+          console.log(tellingCategory);
 
           function formatTime(str){
 
@@ -465,6 +500,13 @@
 
 
           });  // reply canceling modify event
+
+
+          $(".marketDealDone").click(function (e){
+
+              console.log("clicking");
+
+          });
 
 
       }); // the end

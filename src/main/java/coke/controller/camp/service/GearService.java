@@ -4,6 +4,7 @@ import coke.controller.camp.dto.GearDTO;
 import coke.controller.camp.dto.GearImageDTO;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
+import coke.controller.camp.entity.Board;
 import coke.controller.camp.entity.Gear;
 import coke.controller.camp.entity.GearImage;
 import coke.controller.camp.entity.Member;
@@ -23,6 +24,7 @@ public interface GearService {
     List<GearImageDTO> getImagesList(Long gno);
     GearDTO getByGno(Long gno);
     void updateState(GearDTO gearDTO);
+    void backStateZero(Long bno);
     PageResultDTO<GearDTO, Object[]> getListWithPagination(String email, PageRequestDTO pageRequestDTO);
 
 
@@ -64,7 +66,9 @@ public interface GearService {
 
     }
 
-    default GearDTO entityToDto(Gear gear, Member member, List<GearImage> gearImageList){
+    default GearDTO entityToDto(Gear gear, Member member, List<GearImage> gearImageList, Board board){
+
+        System.out.println(gear);
 
         GearDTO gearDTO = GearDTO.builder()
                 .gno(gear.getGno())
@@ -80,6 +84,10 @@ public interface GearService {
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .build();
+
+        if (board != null){
+            gearDTO.setBno(board.getBno());
+        }
 
         if (gearImageList != null && gearImageList.size() > 0){
             List<GearImageDTO> gearDTOList = gearImageList.stream().map(gearImage -> {

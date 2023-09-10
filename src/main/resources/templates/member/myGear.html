@@ -145,6 +145,10 @@
 
         }
 
+        .on-the-market{
+            background-color: #6591e545;
+        }
+
     </style>
 
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -154,7 +158,7 @@
 
     <div class="container content" layout:fragment="content">
         <div class="myGear-list-header">
-            <h3>나의 캠핑 기어 리스트</h3>
+            <h3>나의 캠핑 장비 리스트</h3>
 
             <div class="readyForRegisterBtn">
                 <button type="button" class="btn btn-outline-secondary">등록하기</button>
@@ -186,8 +190,10 @@
                 <span class="material-symbols-outlined">arrow_right</span><h5>등록된 장비를 수정 및 삭제가 가능합니다.</h5>
             </div>
             <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>중고 버튼을 누르면 해당 장비의 정보가 summernoteEditor로 정보를 넘겨 editor에 정보 및이미지가 업로드 됩니다.</h5>
-
+                <span class="material-symbols-outlined">arrow_right</span><h5>중고 버튼을 누르면 해당 장비의 정보가 summernote editor로 정보를 넘겨 editor에 정보 및이미지가 업로드 됩니다.</h5>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">arrow_right</span><h5>중고 거래로 등록된 장비는 배경색이 노란색으로 변경되고, 삭제 및 중고거래 사이트 이동이 안됩니다.</h5>
             </div>
         </div>
 
@@ -449,7 +455,11 @@
 
                 $.each(dtoList, function (i, dto){
 
-                    str += '<div class="col-md-2 my-gear-li">';
+                    if (dto.state == '0'){
+                        str += '<div class="col-md-2 my-gear-li">';
+                    }else if (dto.state == '1'){
+                        str += '<div class="col-md-2 my-gear-li on-the-market">';
+                    }
                     str += '<div class="loadGear-img-box">';
                     if (dto.gearImageDTOList[0] !== null){
                         str += "<img src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"'>";
@@ -460,8 +470,15 @@
                     str += '<img id="justifyBtn" src="/icon/justify.svg">';
                     str += '<div class="gear-btn-box">';
                     str += '<button type="button" class="btn-outline-primary gear-modify-btn" data-gno="'+dto.gno+'">수정</button>';
-                    str += '<button type="button" class="btn-outline-danger gear-remove-btn" data-gno="'+dto.gno+'" >삭제</button>';
-                    str += '<button type="button" class="btn-outline-info gear-market-btn" data-gno="'+dto.gno+'" data-email="'+dto.email+'" >중고</button>';
+                    if (dto.state == '0'){
+                        str += '<button type="button" class="btn-outline-danger gear-remove-btn" data-gno="'+dto.gno+'" >삭제</button>';
+                    }else if(dto.state == '1'){
+                    }
+                    if (dto.state == '0'){
+                        str += '<button type="button" class="btn-outline-info gear-market-btn" data-gno="'+dto.gno+'" data-email="'+dto.email+'" >중고</button>';
+                    }else if(dto.state == '1'){
+                        str += '<button type="button" class="btn-outline-info gear-secondhands-lik" data-bno="'+dto.bno+'">중고</button>';
+                    }
                     str += '</div>';
                     str += '</div>';
                     str += '</div>';
@@ -759,6 +776,14 @@
                 }else {
                     $(this).closest(".my-gear-li").find(".gear-btn-box").css("display", "none");
                 }
+            })
+
+            // 중고거래 등록된 장비 중고 버튼 클릭시 작성된 거래페이지로 이동
+            $(".gear-data-boxes").on("click", ".gear-secondhands-lik", function (e){
+                console.log($(this).data("bno"));
+                var bno = $(this).data("bno");
+                window.location.href = '/board/read?bno=' + bno;
+
             })
 
 
