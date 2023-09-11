@@ -43,35 +43,6 @@
             /*flex: 50%;*/
         }
 
-        .my-gear-li{
-            /*display: flex;*/
-            /*flex-direction: row;*/
-            /*margin-bottom: 10px;*/
-            /*border: 1px solid black;*/
-            height: 300px;
-
-        }
-        .my-gear-li:hover{
-            background: #fafafa;
-        }
-
-        .loadGear-img-box{
-            /*flex: 20%;*/
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            height: 100px;
-            margin-top: 5px;
-        }
-
-        .gear-info{
-            /*flex: 60%;*/
-            display: flex;
-            flex-direction: column;
-            overflow: auto;
-            height: 190px;
-            word-wrap: break-word;
-        }
 
         .gear-info span{
             margin-bottom: 2px;
@@ -108,37 +79,17 @@
             margin-bottom: 35px;
         }
 
-        #justifyBtn{
-            width: 20px;
-
-        }
-
-        .loadGear-rightSide-box{
-            display: flex;
-            flex-direction: column;
-            align-items: end;
-            width: 40%;
-        }
 
         .gear-script{
-            /*overflow: auto;*/
+            overflow: auto;
         }
 
         .list-pagination{
             display: flex;
             justify-content: center;
+            margin-top: 18px;
         }
 
-        .telling-box{
-            position: fixed;
-            right: 80px;
-            background: #fafafa;
-            padding: 20px;
-            border-radius: 25px;
-            width: 356px;
-            z-index: 999;
-            top: 178px;
-        }
 
         .telling-box div{
             display: flex;
@@ -150,6 +101,74 @@
             background-color: #6591e545;
         }
 
+        .gear-boxes{
+            height: 370px;
+
+        }
+
+        .gear-boxes card{
+            height: 100%;
+        }
+
+        .list-group{
+            overflow: auto;
+        }
+
+
+        .gear-btn-box{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 3em;
+        }
+
+        .gear-btn-box a{
+            font-size: 0.9em;
+        }
+
+        .gear-btn-box a:hover{
+            cursor: grab;
+        }
+
+        .gear-btn-box button{
+            height: 2.2em;
+            font-size: 0.8em;
+            width: 79px;
+            padding-left: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-top: 0px;
+        }
+
+        .reading-gear-img{
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        .reading-gear-info{
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .card img:hover{
+            cursor: zoom-in;
+        }
+
+        .content{
+            margin-top: 25px;
+
+        }
+
+        .page-info{
+            margin-right: 11px;
+        }
+
+        .readyForRegisterBtn{
+            display: flex;
+            flex-direction: row;
+        }
     </style>
 
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -157,21 +176,23 @@
 </head>
 
 
-    <div class="container content" layout:fragment="content">
+    <div class="container-lg content" layout:fragment="content">
         <div class="myGear-list-header">
             <h3>나의 캠핑 장비 리스트</h3>
 
             <div class="readyForRegisterBtn">
-                <button type="button" class="btn btn-outline-secondary">등록하기</button>
+                <button class="btn btn-info page-info">페이지 설명</button>
+                <button type="button" class="btn btn-outline-secondary register-gear">등록하기</button>
             </div>
         </div>
 
-        <div data-aos="fade-up"
-             data-aos-duration="3000" class="gear-data-boxes" >
-        </div>
-        <script>
-            AOS.init(); // 자바스크립트로 init()을 해야 동작한다.
-        </script>
+        <div class="row g-3 gear-data-boxes"></div>
+<!--        <div data-aos="fade-up"-->
+<!--             data-aos-duration="3000" class="row g-3 gear-data-boxes" >-->
+<!--        </div>-->
+<!--        <script>-->
+<!--            AOS.init(); // 자바스크립트로 init()을 해야 동작한다.-->
+<!--        </script>-->
 
 
 
@@ -183,21 +204,36 @@
             </ul>
         </div>
 
-        <div class="telling-box">
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>비동기 ajax를 활용하여 장비 등록이 가능합니다.</h5>
-            </div>
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>등록된 장비를 수정 및 삭제가 가능합니다.</h5>
-            </div>
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>중고 버튼을 누르면 해당 장비의 정보가 summernote editor로 정보를 넘겨 editor에 정보 및이미지가 업로드 됩니다.</h5>
-            </div>
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>중고 거래로 등록된 장비는 배경색이 변경되고, 삭제 기능은 불가능하고 중고 클릭시 작성 게시글로 이동합니다.</h5>
+
+        <!--/ introduce my project modal /-->
+        <div class="modal intro-myProject" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body intro-myProject-list">
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>비동기 ajax를 활용하여 장비 등록이 가능합니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>등록된 장비를 수정 및 삭제가 가능합니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>중고 버튼을 누르면 해당 장비의 정보가 summernote editor로 정보를 넘겨 editor에 정보 및 이미지가 업로드 됩니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>중고 거래로 등록된 장비는 삭제 기능은 불가능하고 중고 클릭시 작성 게시글로 이동합니다.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary reading-gear-close" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!--/ modal for register /-->
         <div class="modal gear-register-modal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -234,7 +270,7 @@
             </div>
         </div>
 
-
+        <!--/ gear modal for modify /-->
         <div class="modal gear-modal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -277,7 +313,36 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <!--/ modal for reading a gear /-->
+        <div class="modal read-gear" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">마이 기어 상세 정보</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="reading-gear-img">
+
+                        </div>
+
+                        <div class="reading-gear-info">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div> <!--/ the end /-->
 
     <script th:inline="javascript"  layout:fragment="script">
 
@@ -287,7 +352,7 @@
             console.info(email);
 
             // 기어 등록 모달 오픈 버튼 이벤트
-            $(".readyForRegisterBtn").click(function (){
+            $(".register-gear").click(function (){
                 $(".gear-register-modal").modal('show');
             })
 
@@ -456,40 +521,53 @@
 
                 $.each(dtoList, function (i, dto){
 
+                    str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes">';
+
                     if (dto.state == '0'){
-                        str += '<div class="col-md-2 my-gear-li">';
+                        str += '<div class="card" style="height: 100%">';
                     }else if (dto.state == '1'){
-                        str += '<div class="col-md-2 my-gear-li on-the-market">';
+                        str += '<div class="card on-the-market" style="height: 100%">';
                     }
-                    str += '<div class="loadGear-img-box">';
+
                     if (dto.gearImageDTOList[0] !== null){
-                        str += "<img src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"'>";
+                        str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
                     }else {
-                        str += "<img src='/icon/img3.svg' style='height: 100%'>";
+                        str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
                     }
-                    str += '<div class="loadGear-rightSide-box">'
-                    str += '<img id="justifyBtn" src="/icon/justify.svg">';
+
+                    str += '<div class="card-body gear-script">'
+                    if(dto.state == '1'){
+                        str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
+                    }else if(dto.state == '0'){
+                        str += '    <p class="card-title">'+dto.gname+'</p>';
+                    }
+
+
                     str += '<div class="gear-btn-box">';
-                    str += '<button type="button" class="btn-outline-primary gear-modify-btn" data-gno="'+dto.gno+'">수정</button>';
+                    str += '    <button class="btn btn-outline-secondary gear-modify-btn" data-gno="'+dto.gno+'">수정</button>';
                     if (dto.state == '0'){
-                        str += '<button type="button" class="btn-outline-danger gear-remove-btn" data-gno="'+dto.gno+'" >삭제</button>';
+                        str += '<button class="btn btn-outline-secondary gear-remove-btn" data-gno="'+dto.gno+'">삭제</button>';
                     }else if(dto.state == '1'){
                     }
                     if (dto.state == '0'){
-                        str += '<button type="button" class="btn-outline-info gear-market-btn" data-gno="'+dto.gno+'" data-email="'+dto.email+'" >중고</button>';
+                        str += '<button class="btn btn-outline-secondary gear-market-btn" data-gno="'+dto.gno+'" data-email="'+dto.email+'">중고</button>';
                     }else if(dto.state == '1'){
-                        str += '<button type="button" class="btn-outline-info gear-secondhands-lik" data-bno="'+dto.bno+'">중고</button>';
+                        str += '<button class="btn btn-outline-secondary gear-secondhands-lik" data-bno="'+dto.bno+'">중고</button>';
                     }
+                    str += '</div>';
+
+                    str += '<ul class="list-group list-group-flush">';
+                    if(dto.brand){
+                        str += '    <li class="list-group-item" >'+dto.brand+'</li>';
+                    }
+                    if(dto.sort){
+                        str += '    <li class="list-group-item">'+dto.sort+'</li>';
+                    }
+                    str += '</ul>';
                     str += '</div>';
                     str += '</div>';
                     str += '</div>';
 
-                    str += '<div class="gear-info">';
-                    str += '<span><b>이름:</b> '+dto.gname+'</span><span><b>브랜드:</b> '+dto.brand+'</span><span><b>사이즈:</b> '+dto.size+'</span><span><b>소재:</b> '+dto.material+'</span>';
-                    str += '<span class="gear-script"><b>설명:</b> '+dto.script+'</span><span><b>카테고리:</b> '+dto.sort+'</span>';
-                    str += '</div>';
-                    str += '</div>';
-                    str += '</div>';
 
                 }) // dtoList each
 
@@ -748,15 +826,11 @@
             }); // modal image clicking for remove event
 
 
-
             $(".gear-modal-close").click(function (){
                 $(".modal").modal('hide');
                 $(".modal-gear-img-ul").html("");
             })
 
-            // $(".gear-image-close-btn").click(function (){
-            //     $(".gear-modal").modal('hide');
-            // });
 
             // 중고거래 이동 이벤트
             $(".gear-data-boxes").on("click", ".gear-market-btn", function (){
@@ -768,17 +842,6 @@
 
             });
 
-
-            $(".gear-data-boxes").on("click", "#justifyBtn", function (e){
-
-                if ($(this).closest(".my-gear-li").find(".gear-btn-box").css("display") == "none"){
-
-                    $(this).closest(".my-gear-li").find(".gear-btn-box").css("display", "flex");
-                }else {
-                    $(this).closest(".my-gear-li").find(".gear-btn-box").css("display", "none");
-                }
-            })
-
             // 중고거래 등록된 장비 중고 버튼 클릭시 작성된 거래페이지로 이동
             $(".gear-data-boxes").on("click", ".gear-secondhands-lik", function (e){
                 console.log($(this).data("bno"));
@@ -786,6 +849,73 @@
                 window.location.href = '/board/read?bno=' + bno;
 
             })
+
+            $(".gear-data-boxes").on("click", "img", function (e){
+
+                var gno = $(this).data("gno");
+
+                $.getJSON('/gear/myGear/' + gno, function (dto){
+
+                    var name = dto.gname;
+                    var brand = dto.brand;
+                    var size = dto.size;
+                    var material = dto.material;
+                    var script = dto.script;
+                    var sort = dto.sort;
+
+                    var str = "";
+                    var str2 = "";
+
+                    str += '<span>이름: '+name+'</span>';
+                    str += '<span>브랜드: '+brand+'</span>';
+                    str += '<span>사이즈: '+size+'</span>';
+                    str += '<span>소재: '+material+'</span>';
+                    str += '<span>설명: '+script+'</span>';
+                    str += '<span>카테고리: '+sort+'</span>';
+
+                    $(".reading-gear-info").html(str);
+
+                    $.each(dto.gearImageDTOList, function (i, imgs){
+
+                        if (imgs !== null ){
+
+                            var s3URL = imgs.s3Url;
+                            console.log(s3URL);
+
+                            var fileName = imgs.fileName;
+                            console.log(fileName);
+
+                            str2 += '<img src="'+imgs.thumbnailS3URL+'" data-name="'+imgs.uuid+'_'+imgs.fileName+'" data-tell="old">';
+
+                        }else {
+                            console.info("there are no pictures");
+                        }
+
+                        $(".reading-gear-img").html(str2);
+                    }); // each for dto.gearImageDTOList
+
+                })
+
+                $(".read-gear").modal('show');
+
+            })  // 장비 상세 정보 보기
+
+
+            $(".reading-gear-close").click(function (e){
+                e.preventDefault();
+
+                $(".reading-gear-img").html("");
+                $(".reading-gear-info").html("");
+
+                $(".read-gear").modal('hide');
+            })
+
+
+            $(".page-info").click(function (){
+                $(".intro-myProject").modal('show');
+            })
+
+
 
 
         });  // the end

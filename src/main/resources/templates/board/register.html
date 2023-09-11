@@ -25,109 +25,81 @@
             padding: 0px;
         }
 
-        .inputTitle{
-            margin-right: 10px;
-            flex: 70%;
-        }
 
-        .categorySelector{
-            flex: 20%;
-        }
 
-        .inputEmail{
-            padding: 0px;
-        }
-
-        .btnBox{
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .gear-div-info{
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            overflow: auto;
-        }
-
-        .gear-div-img{
-            height: 80px;
-        }
 
         .gear-div-img img{
             height: 93%;
         }
 
-        .gear-list-box{
-            height: 180px;
-        }
 
-        .my-gear-li{
-            /*display: flex;*/
-            /*flex-direction: row;*/
-            /*margin-bottom: 10px;*/
-            /*border: 1px solid black;*/
-            height: 290px;
 
-        }
-        .my-gear-li:hover{
-            background: #fafafa;
-        }
-
-        .loadGear-img-box{
-            /*flex: 20%;*/
-            display: flex;
-            width: 100%;
-            height: 100px;
-            justify-content: center;
-        }
 
         .loadGear-img-box a{
             width: 100%;
         }
 
-        .gear-info{
-            /*flex: 60%;*/
-            display: flex;
-            flex-direction: column;
-            overflow: auto;
-            height: 190px;
-            word-wrap: break-word;
-            align-items: center;
-        }
+
         .gear-info span{
             margin-bottom: 2px;
         }
 
-        .list-pagination{
-            display: flex;
-            justify-content: center;
-        }
-        .telling-box{
-            position: fixed;
-            right: 80px;
-            background: #fafafa;
-            padding: 20px;
-            border-radius: 25px;
-            width: 356px;
-            z-index: 999;
-            top: 178px;
-        }
+
         .telling-box div{
             display: flex;
             flex-direction: row;
 
         }
+
+        .gear-boxes{
+            height: 320px;
+        }
+
+        .content{
+            margin-top: 25px;
+        }
+
+        .pagination{
+            margin-top: 18px;
+        }
+
+        .btnBox{
+            display: flex;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .inputTitle{
+            margin-right: 30px;
+        }
+
+        .categorySelector{
+            width: 20em;
+        }
+
+        .page-info-div{
+            display: flex;
+            justify-content: end;
+            margin-bottom: 20px;
+
+        }
     </style>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css"
+          integrity="sha256-IKhQVXDfwbVELwiR0ke6dX+pJt0RSmWky3WB2pNx9Hg=" crossorigin="anonymous">
 
 </head>
 
-    <div class="container content" layout:fragment="content">
+    <div class="container-lg content" layout:fragment="content">
+        <div class="page-info-div" th:if="${tellCategory == 'secondHands'}">
+        <button class="btn btn-info page-info">페이지 설명</button>
+        </div>
+
         <form th:action="@{/board/register}" method="post">
 
-            <div class="gear-data-boxes">
-            </div>
+
+            <div class="row g-3 gear-data-boxes"></div>
             <div class="col-md-12 list-pagination">
                 <ul class="pagination justify-content-center align-items-center">
                     <li class="page-item">
@@ -141,10 +113,11 @@
 
 
             <div class="titleAndSearchBox">
-                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:if="${tellCategory == 'secondHands'}" value="[중고거래] ">
-                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >
+                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE">
+<!--                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >-->
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
-                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category">
+                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;">
+                    <option value="">-------카테고리 선택-------</option>
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
                     <option th:selected="${tellCategory == 'party'}" value="party">모임</option>
                     <option th:selected="${tellCategory == 'place'}" value="place">캠핑장</option>
@@ -152,6 +125,12 @@
             </div>
 
             <textarea id="summernote" placeholder="CONTENT" name="content"></textarea>
+            <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
+                    integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
+            <!-- language pack -->
+            <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js"
+                    integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script>
+
             <script>
                 $(document).ready(function() {
 
@@ -271,7 +250,7 @@
 
             </div>
             <div class="col-md-12 col-sm-12 btnBox">
-                <button class="btn btn-outline-light registerBtn">글작성</button>
+                <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>
         </form>
         <div class="uploadResultUL" style="display: none">
@@ -280,14 +259,29 @@
             </ul>
         </div>
 
-        <div class="telling-box" th:if="${tellCategory} == 'secondHands'">
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>유저가 등록한 장비를 비동기 방식으로 불러 옵니다.</h5>
+        <!--/ introduce my project modal /-->
+        <div class="modal intro-myProject" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body intro-myProject-list">
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>유저가 등록한 장비를 비동기 방식으로 불러 옵니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>장비를 선택하면 에디터에 정보 및 이미지가 업데이트 됩니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>중고거래 게시물을 등록하면 등록된 장비는 거래 중 상태로 변경 됩니다. (마이기어 페이지에서 확인가능)</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary reading-gear-close" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>장비를 선택하면 에디터에 정보 및 이미지가 업데이트 됩니다.</h5>
-            </div>
-
         </div>
 
     </div>
@@ -300,7 +294,7 @@
     let errorMsg = ''
 
     if (errors){
-        errorMsg = '제목이 너무 짧거나 또는 내용을 입력해주세요'
+        errorMsg = '제목이 너무 짧거나 또는 내용 및 카테고리를 입력해주세요'
         // for(let i =0; i < errors.length; i++){
             // errorMas += `${errors[i].field}은(는) ${errors[i].code}\n`
         // }
@@ -371,21 +365,36 @@
 
             $.each(dtoList, function (i, dto){
 
-                str += '<div class="col-md-2 my-gear-li" data-gno="'+dto.gno+'">';
-
-                str += '<div class="loadGear-img-box">';
-                if (dto.gearImageDTOList[0] !== null){
-                    str += "<img src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"'>";
-                }else {
-                    str += "<img src='/icon/img3.svg' style='height: 100%'>";
+                str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes">';
+                if (dto.state == '0'){
+                    str += '<div class="card selecting-gear" style="height: 100%" data-gno="'+dto.gno+'">';
+                }else if (dto.state == '1'){
+                    str += '<div class="card on-the-market unable-gear" style="height: 100%">';
                 }
-                str += '</div>';
 
-                str += '<div class="gear-info">';
-                str += '<span>이름: '+dto.gname+'</span><span>브랜드: '+dto.brand+'</span><span>사이즈: '+dto.size+'</span><span>소재: '+dto.material+'</span>';
-                str += '<span class="gear-script">설명: '+dto.script+'</span><span>카테고리: '+dto.sort+'</span>';
-                str += '</div>';
+                if (dto.gearImageDTOList[0] !== null){
+                    str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
+                }else {
+                    str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
+                }
 
+                str += '<div class="card-body gear-script">'
+                if(dto.state == '1'){
+                    str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
+                }else if(dto.state == '0'){
+                    str += '    <p class="card-title">'+dto.gname+'</p>';
+                }
+
+                // str += '<ul class="list-group list-group-flush">';
+                // if(dto.brand){
+                //     str += '    <li class="list-group-item" >'+dto.brand+'</li>';
+                // }
+                // if(dto.sort){
+                //     str += '    <li class="list-group-item">'+dto.sort+'</li>';
+                // }
+                // str += '</ul>';
+                str += '</div>';
+                str += '</div>';
                 str += '</div>';
 
             }) // dtoList each
@@ -437,7 +446,7 @@
 
 
         // 기어선택 클릭 이벤트
-        $(".gear-data-boxes").on("click", ".my-gear-li", function (){
+        $(".gear-data-boxes").on("click", ".selecting-gear", function (){
 
             $('#summernote').summernote('reset');
 
@@ -495,6 +504,11 @@
         }); // 기어선택 클릭 이벤트 종료
 
 
+
+        $(".gear-data-boxes").on("click", ".unable-gear", function (){
+            alert("이미 중고 거래 등록된 상태입니다.");
+        })
+
         var gearDTO = [[${gearDTO}]];
         var secondHandsDeal = [[${tellCategory}]];
         console.log(gearDTO)
@@ -549,6 +563,13 @@
             hiddenGearBox.html(str);
 
         } // load gearDTO from myGear
+
+
+        $(".page-info").click(function (){
+            $(".intro-myProject").modal('show');
+        })
+
+
 
 
     }); // the end

@@ -56,6 +56,8 @@
             flex-direction: row;
             justify-content: space-between;
             margin-bottom: 34px;
+            text-align: center;
+
         }
 
         .read-reply-box{
@@ -198,6 +200,60 @@
             flex-direction: row;
 
         }
+
+        .read-title{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+
+        .page-info{
+            height: 100%;
+            align-self: center;
+        }
+
+        .read-btn-box{
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+
+        }
+
+        .read-btn-box button{
+            margin-left: 10px;
+            height: 100%;
+        }
+
+        .modifyBtn {
+            width: 4em;
+        }
+
+        .read-reply-btn a{
+            height: 100%;
+            text-align: center;
+
+        }
+        .read-reply-btn button{
+            height: 100%;
+            margin-left: 12px;
+        }
+
+        .back-to-list{
+            height: 100%;
+            width: 73px;
+
+        }
+
+        .removeBtn{
+            width: 4em;
+
+        }
+
+        .marketDealDone{
+            width: 6em;
+        }
+
     </style>
 
 </head>
@@ -205,6 +261,7 @@
     <div class="container content" layout:fragment="content">
         <div class="read-title">
           <strong th:text="${dto.title}" class="read-title"></strong>
+            <button class="btn btn-info page-info">페이지 설명</button>
         </div>
 
         <div class="writer-info">
@@ -243,15 +300,15 @@
           <button class="btn btn-outline-info">리스트</button>
           </a>
           <a th:if="${pageRequestDTO.category == ''}" th:href="@{/board/list(page=${pageRequestDTO.page} , type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword} )}">
-              <button class="btn btn-outline-info">리스트</button>
+              <button class="btn btn-outline-info back-to-list">리스트</button>
           </a>
           <th:block th:with="user=${#authentication.principal}">
-              <div th:if="${user.username != null && user.username == dto.email}">
-                  <a th:href="@{/board/modify(bno=${dto.bno}, page=${pageRequestDTO.page}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO.category} )}">
-                      <button class="btn btn-outline-light modifyBtn">수정</button>
+              <div class="read-btn-box" th:if="${user.username != null && user.username == dto.email}">
+                  <a class="read-modify-btn" th:href="@{/board/modify(bno=${dto.bno}, page=${pageRequestDTO.page}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO.category} )}">
+                      <button class="btn btn-outline-info modifyBtn">수정</button>
                   </a>
                   <button class="btn btn-outline-info removeBtn">삭제</button>
-                  <button class="btn btn-outline-info marketDealDone">거래 완료</button>
+                  <button class="btn btn-outline-info marketDealDone" th:if="${dto.category == 'secondHands'}">거래 완료</button>
               </div>
           </th:block>
         </div>
@@ -271,15 +328,31 @@
 
         </div>
 
-        <div class="telling-box">
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>로그인 유저의 authentication.pricipal.username 값과 글 작성한 유저의 ID(email) 값이 같으면 수정 삭제 권한을 얻습니다.</h5>
-            </div>
-            <div>
-                <span class="material-symbols-outlined">arrow_right</span><h5>중고거래일 경우 게시글을 삭제하면 등록된 장비는 중고 거래 등록 및 삭제 기능이 복원됩니다.</h5>
-            </div>
 
+        <!--/ introduce my project modal /-->
+        <div class="modal intro-myProject" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body intro-myProject-list">
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>로그인 유저의 authentication.pricipal.username 값과 글 작성한 유저의 ID(email) 값이 같으면 수정 삭제 권한을 얻습니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>중고거래일 경우 게시글을 삭제하면 등록된 장비는 중고 거래 등록 및 삭제 기능이 복원됩니다.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary reading-gear-close" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+
 
     </div> <!--/ the end /-->
 
@@ -507,6 +580,13 @@
               console.log("clicking");
 
           });
+
+          $(".page-info").click(function (){
+              $(".intro-myProject").modal('show');
+          })
+
+
+
 
 
       }); // the end
