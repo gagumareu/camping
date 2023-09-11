@@ -1,5 +1,7 @@
 package coke.controller.camp.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -27,7 +29,11 @@ public class BoardDTO {
     @NotEmpty
     private String category;
 
-    private LocalDateTime regDate, modDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime regDate;
+
+    @JsonIgnore
+    private LocalDateTime modDate;
 
     @NotEmpty
     private String email;

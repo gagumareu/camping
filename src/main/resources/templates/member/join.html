@@ -14,6 +14,10 @@
 
         .signIn-Btn{
             margin-top: 21px;
+            display: flex;
+            flex-direction: row;
+            column-gap: 10px;
+            justify-content: center;
 
         }
 
@@ -24,17 +28,18 @@
             align-items: center;
         }
 
-
-        .float-end{
-            display: flex;
-            flex-direction: column;
-            row-gap: 11px;
+        .content{
+            margin-top: 25px;
         }
 
+        .signIn-body{
+            margin-top: 15px;
+
+        }
     </style>
 </head>
 
-    <div class="container content" layout:fragment="content">
+    <div class="container-lg content" layout:fragment="content">
         <div class="signIn-page-wrapper">
             <div class="signIn-header">
                 <h2>회원 가입</h2>
@@ -53,11 +58,9 @@
                         <span class="input-group-text">NAME</span>
                         <input type="text" name="name" class="form-control">
                     </div>
-                    <div class="my-4 signIn-Btn">
-                        <div class="float-end">
-                            <button type="submit" class="btn btn-primary">JOIN</button>
-                            <button type="reset" class="btn btn-secondary">RESET</button>
-                        </div>
+                    <div class="signIn-Btn">
+                        <button type="submit" class="btn btn-primary">JOIN</button>
+                        <button type="reset" class="btn btn-secondary">RESET</button>
                     </div>
                 </form>
             </div>

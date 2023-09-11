@@ -6,15 +6,22 @@ import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.service.GearService;
 import coke.controller.camp.util.S3Uploader;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Log4j2
@@ -30,14 +37,24 @@ public class GearController {
     private String uploadPath;
 
     @PostMapping("")
-    public ResponseEntity<Long> registerGear(@RequestBody GearDTO gearDTO){
+    public Map<String, Long> registerGear(@Valid @RequestBody GearDTO gearDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws BindException{
 
         log.info("----------gear register------------");
         log.info(gearDTO);
 
+        if (bindingResult.hasErrors()){
+            log.info("-------hasErrors----------");
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            throw new BindException(bindingResult);
+        }
+
+        Map<String, Long> result = new HashMap<>();
+
         Long gno = gearService.register(gearDTO);
 
-        return new ResponseEntity<>(gno, HttpStatus.OK);
+        result.put("gno", gno);
+
+        return result;
     }
 
     @GetMapping("/{email}")
@@ -88,10 +105,15 @@ public class GearController {
     }
 
     @PutMapping("/{gno}")
-    public ResponseEntity<String> modify(@RequestBody GearDTO gearDTO){
+    public ResponseEntity<String> modify(@Valid @RequestBody GearDTO gearDTO, BindingResult bindingResult)throws BindException{
 
         log.info("----------gear modify------------");
         log.info(gearDTO);
+
+        if(bindingResult.hasErrors()){
+            log.info("------has Errors---------------");
+            throw new BindException(bindingResult);
+        }
 
         gearService.modify(gearDTO);
 

@@ -143,6 +143,7 @@
         .reading-gear-img{
             display: flex;
             flex-direction: row;
+            justify-content: center;
 
         }
 
@@ -345,6 +346,16 @@
     </div> <!--/ the end /-->
 
     <script th:inline="javascript"  layout:fragment="script">
+
+        const errors = [[${errors}]]
+        console.info(errors)
+
+        let errorMap = ''
+
+        if (errors){
+            errorMap = '장비의 이름을 입력해 주세요'
+            alert(errorMap)
+        }
 
         $(document).ready(function (){
 
