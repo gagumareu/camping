@@ -110,10 +110,10 @@
 
 
             <div class="titleAndSearchBox">
-                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE">
+                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" required>
 <!--                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >-->
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
-                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;">
+                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
                     <option value="">-------카테고리 선택-------</option>
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
                     <option th:selected="${tellCategory == 'party'}" value="party">모임</option>
@@ -121,7 +121,7 @@
                 </select>
             </div>
 
-            <textarea id="summernote" placeholder="CONTENT" name="content"></textarea>
+            <textarea id="summernote" placeholder="CONTENT" name="content" required></textarea>
             <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
                     integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
             <!-- language pack -->
