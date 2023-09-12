@@ -239,16 +239,27 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">MY GEAR MODIFYING</h5>
+                        <h5 class="modal-title">나의 캠핑 장비 등록하기</h5>
                     </div>
                     <div class="modal-body">
                         <form class="form-group" th:action="@{/gear/}" method="post">
-                            <input type="text" name="gname" placeholder="NAME" class="form-control">
+                            <input type="text" name="gname" placeholder="NAME" class="form-control" required>
                             <input type="text" name="brand" PLACEHOLDER="BRAND" class="form-control">
                             <input type="text" name="size" placeholder="SIZE" class="form-control">
                             <input type="text" name="material" placeholder="MATERIAL" class="form-control">
                             <input type="text" name="script" placeholder="SCRIPT" class="form-control">
-                            <input type="text" name="sort" class="form-control" placeholder="SORT">
+                            <select name="sort" class="form-control" required>
+                                <option value="">카테고리 선택</option>
+                                <option value="tents">텐트</option>
+                                <option value="table">테이블</option>
+                                <option value="chair">체어</option>
+                                <option value="accessories">악세사리</option>
+                                <option value="cookware">조리용품</option>
+                                <option value="fire">화로</option>
+                                <option value="light">조명</option>
+                                <option value="fabric">침구</option>
+                                <option value="etc">기타</option>
+                            </select>
                             <input type="hidden" name="email" placeholder="EMAIL" class="form-control" th:value="${#authentication.principal.username}">
                             <input type="file" name="uploadFiles" multiple class="form-control">
                             <div class="hidden-box">
@@ -276,7 +287,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">MY GEAR MODIFYING</h5>
+                        <h5 class="modal-title">나의 캠핑 장비 수정하기</h5>
                     </div>
                     <div class="modal-body">
                         <input id="gear-modal-name" type="text" name="gname" class="form-control" placeholder="NAME">
@@ -320,7 +331,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">마이 기어 상세 정보</h5>
+                        <h5 class="modal-title">캠핑 장비 상세 정보</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -362,6 +373,26 @@
             var email = [[${#authentication.principal.username}]];
             console.info(email);
 
+            var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff|txt)$");
+
+            var maxSize = 10485760;
+
+            function checkExtension(fileName, fileSize){
+
+                if (fileSize >= maxSize){
+                    alert('파일 사이즈 초과했습니다.');
+                    return false;
+                }
+
+                if (regex.test(fileName)){
+                    alert('이미지 파일만 업로드해주세요.');
+                    return false;
+                }
+                return true;
+            }
+
+
+
             // 기어 등록 모달 오픈 버튼 이벤트
             $(".register-gear").click(function (){
                 $(".gear-register-modal").modal('show');
@@ -375,26 +406,33 @@
                 var files = inputFile[0].files;
 
                 for (var i = 0; i < files.length; i++){
-                    formData.append("uploadFiles", files[i]);
-                }
+                    console.info(files[i].name);
+                    console.info(files[i].size);
 
-                for (var value of formData.values()){
-                    console.info(value);
-                }
-
-                $.ajax({
-                    url: '/uploadAjax',
-                    data: formData,
-                    type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    dataType: 'JSON',
-                    success: function (result){
-                        console.info(result);
-                        showUploadImage(result);
-
+                    if (!checkExtension(files[i].name, files[i].size)){
+                        return false;
                     }
-                }); // ajax
+
+                    formData.append("uploadFiles", files[i]);
+
+                    for (var value of formData.values()){
+                        console.info(value);
+                    }
+
+                    $.ajax({
+                        url: '/uploadAjax',
+                        data: formData,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        dataType: 'JSON',
+                        success: function (result){
+                            console.info(result);
+                            showUploadImage(result);
+
+                        }
+                    }); // ajax
+                }
 
             }); // register
 
@@ -468,7 +506,7 @@
                     size : $("input[name='size']").val(),
                     material: $("input[name='material']").val(),
                     script: $("input[name='script']").val(),
-                    sort: $("input[name='sort']").val(),
+                    sort: $("select[name='sort']").val(),
                     email: $("input[name='email']").val(),
                     gearImageDTOList : imageList
                 }
@@ -482,8 +520,10 @@
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function (result){
-                        var replyNo = parseInt(result);
-                        alert(replyNo + "번 기어가 저장됐습니다.");
+                        // var replyNo = parseInt(result);
+                        // console.info(result.gno)
+                        alert("장비가 등록 됐습니다.");
+
                         loadGearBoxes(1);
                         // self.location.reload();
                         $(".gear-register-modal").modal('hide');
@@ -492,7 +532,7 @@
                         size : $("input[name='size']").val("");
                         material: $("input[name='material']").val("");
                         script: $("input[name='script']").val("");
-                        sort: $("input[name='sort']").val("");
+                        sort: $("select[name='sort']").val("");
                         email: $("input[name='uploadFiles']").val("");
                         $(".uploadUL").html("");
                     }
@@ -539,21 +579,17 @@
                     }else if (dto.state == '1'){
                         str += '<div class="card on-the-market" style="height: 100%">';
                     }
-
                     if (dto.gearImageDTOList[0] !== null){
                         str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
                     }else {
                         str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
                     }
-
                     str += '<div class="card-body gear-script">'
                     if(dto.state == '1'){
                         str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
                     }else if(dto.state == '0'){
                         str += '    <p class="card-title">'+dto.gname+'</p>';
                     }
-
-
                     str += '<div class="gear-btn-box">';
                     str += '    <button class="btn btn-outline-secondary gear-modify-btn" data-gno="'+dto.gno+'">수정</button>';
                     if (dto.state == '0'){
@@ -839,7 +875,14 @@
 
             $(".gear-modal-close").click(function (){
                 $(".modal").modal('hide');
-                $(".modal-gear-img-ul").html("");
+                $(".uploadUL").html("");
+                $("input[name='gname']").val("");
+                $("input[name='brand']").val("");
+                $("input[name='size']").val("");
+                $("input[name='material']").val("");
+                $("input[name='script']").val("");
+                $("select[name='sort']").val("");
+                $("input[name='uploadFiles']").val("");
             })
 
 
@@ -925,6 +968,7 @@
             $(".page-info").click(function (){
                 $(".intro-myProject").modal('show');
             })
+
 
 
 

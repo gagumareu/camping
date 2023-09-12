@@ -29,6 +29,7 @@ public class GearDTO {
 
     private String script;
 
+    @NotEmpty
     private String sort;
 
     private int state;
