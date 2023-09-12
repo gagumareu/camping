@@ -295,8 +295,17 @@
                         <input id="gear-modal-size" type="text" name="size" class="form-control" placeholder="SIZE">
                         <input id="gear-modal-material" type="text" name="material" class="form-control" placeholder="MATERIAL">
                         <input id="gear-modal-script" type="text" name="script" class="form-control" placeholder="SCRIPT">
-                        <input id="gear-modal-sort" type="text" name="sort" class="form-control" placeholder="SORT">
-                            <!--                <option th:selected="${tellCategory == 'secondHands'}" value="secondHands">중고거래</option>-->
+                        <select id="gear-modal-sort" name="sort" class="form-control" required>
+                            <option value="">카테고리 선택</option>
+                            <option value="tents">텐트</option>
+                            <option value="table">테이블</option>
+                            <option value="chair">체어</option>
+                            <option value="accessories">악세사리</option>
+                            <option value="cookware">조리용품</option>
+                            <option value="fire">화로</option>
+                            <option value="light">조명</option>
+                            <option value="fabric">침구</option>
+                            <option value="etc">기타</option>
                         </select>
                         <input id="gear-modal-gno" type="hidden" name="gno" >
                         <input type="file" name="modalFiles" multiple class="form-control">
@@ -415,24 +424,24 @@
 
                     formData.append("uploadFiles", files[i]);
 
-                    for (var value of formData.values()){
-                        console.info(value);
                     }
-
-                    $.ajax({
-                        url: '/uploadAjax',
-                        data: formData,
-                        type: 'POST',
-                        contentType: false,
-                        processData: false,
-                        dataType: 'JSON',
-                        success: function (result){
-                            console.info(result);
-                            showUploadImage(result);
-
-                        }
-                    }); // ajax
+                for (var value of formData.values()){
+                    console.info(value);
                 }
+
+                $.ajax({
+                    url: '/uploadAjax',
+                    data: formData,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    dataType: 'JSON',
+                    success: function (result){
+                        console.info(result);
+                        showUploadImage(result);
+
+                    }
+                }); // ajax
 
             }); // register
 
@@ -755,6 +764,11 @@
 
                 for (var i = 0; i < files.length; i++){
                     console.log(files[i]);
+
+                    if(!checkExtension(files[i].name, files[i].size)){
+                        return false
+                    }
+
                     formData.append("uploadFiles", files[i]);
                 }
 
