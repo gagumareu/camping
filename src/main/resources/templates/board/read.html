@@ -293,6 +293,7 @@
         <form id="remove-form" th:action="@{/board/remove}" method="post">
           <input type="hidden" name="bno" th:value="${dto.bno}">
           <input type="hidden" name="email" th:value="${dto.email}">
+            <input type="hidden" name="category" th:value="${pageRequestDTO.category}">
         </form>
 
         <div class="readBoard-btn-box">

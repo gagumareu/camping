@@ -138,10 +138,11 @@ public class BoardController {
 
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/remove")
-    public String remove(BoardDTO boardDTO){
+    public String remove(BoardDTO boardDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes){
 
         log.info("---------remove-------");
         log.info("boardDTO: " + boardDTO);
+        log.info(pageRequestDTO);
 
         List<BoardImageDTO> boardImageList = boardImageService.getImageList(boardDTO.getBno());
         log.info("boardImageList: " + boardImageList);
@@ -156,6 +157,8 @@ public class BoardController {
         gearService.backStateZero(boardDTO.getBno());
 
         boardService.remove(boardDTO.getBno());
+
+        redirectAttributes.addAttribute("category", pageRequestDTO.getCategory());
 
         return "redirect:/board/list";
 
