@@ -311,6 +311,10 @@
 
             e.preventDefault();
 
+            if (checkCategory == 'secondHands'){
+
+            }
+
             var str = "";
 
             $(".uploadResultUL li").each(function (i, dto){
@@ -446,6 +450,10 @@
         // 기어선택 클릭 이벤트
         $(".gear-data-boxes").on("click", ".selecting-gear", function (){
 
+            if (!confirm("해당 장비로 변경하시겠습니까?")){
+                return;
+            }
+
             $('#summernote').summernote('reset');
 
             var gno = $(this).data("gno");
@@ -460,24 +468,6 @@
             str += '<input type="hidden" name="state" value="1">';
 
             hiddenGearBox.html(str);
-
-
-            $.getJSON('/gear/images/' + gno, function (arr){
-
-                console.info("---------/gear/images/'----------");
-
-                console.info(arr);
-
-                $.each(arr, function (i, dto){
-
-                    if (dto !== null){
-                        $('#summernote').summernote('insertImage', dto.s3Url);
-                    }else {
-                        console.info("there are no avalable images");
-                    }
-                });
-
-            }); // getJSON for images
 
             $.getJSON('/gear/myGear/' + gno, function (dto){
 
@@ -499,12 +489,33 @@
 
             }); // getJSON for gear info
 
+
+            $.getJSON('/gear/images/' + gno, function (arr){
+
+                console.info("---------/gear/images/'----------");
+
+                console.info(arr);
+
+                $.each(arr, function (i, dto){
+
+                    if (dto !== null){
+                        $('#summernote').summernote('insertImage', dto.s3Url);
+                    }else {
+                        console.info("there are no avalable images");
+                    }
+                });
+
+            }); // getJSON for images
+
+
+
         }); // 기어선택 클릭 이벤트 종료
 
 
 
         $(".gear-data-boxes").on("click", ".unable-gear", function (){
             alert("이미 중고 거래 등록된 상태입니다.");
+            return false;
         })
 
         var gearDTO = [[${gearDTO}]];

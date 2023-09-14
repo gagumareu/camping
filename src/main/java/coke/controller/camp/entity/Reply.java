@@ -18,6 +18,10 @@ public class Reply extends BaseEntity{
 
     private String text;
 
+    private Long group;
+
+    private Long step;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
