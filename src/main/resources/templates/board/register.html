@@ -238,7 +238,7 @@
                 }); // the end
             </script>
 
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12" style="display: none">
                 <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
             </div>
             <div class="hiddenBox">
@@ -311,25 +311,37 @@
 
             e.preventDefault();
 
-            if (checkCategory == 'secondHands'){
+            var hiddenGearBox = $("input[name='state']").val();
+
+            if (checkCategory == 'secondHands' ){
+
+                if(!hiddenGearBox == '1'){
+                    console.log("hiddenGearBox != 1")
+                    alert('중고 장비를 선택해주세요.');
+                    return false;
+                }
+                if(hiddenGearBox == '1'){
+                    console.log("hiddenGearBox == 1")
+                }
+
+                var str = "";
+
+                $(".uploadResultUL li").each(function (i, dto){
+
+                    var target = $(dto);
+
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+
+                });
+
+                $(".hiddenBox").html(str);
+                $("form").submit();
 
             }
 
-            var str = "";
-
-            $(".uploadResultUL li").each(function (i, dto){
-
-                var target = $(dto);
-
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
-
-            });
-
-            $(".hiddenBox").html(str);
-            $("form").submit();
 
         }); // register btn clicking event
 
