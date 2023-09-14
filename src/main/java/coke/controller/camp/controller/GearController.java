@@ -62,6 +62,7 @@ public class GearController {
 
         log.info("----------gear getList------------");
         log.info(email);
+        log.info(pageRequestDTO);
 
         return new ResponseEntity<>(gearService.getList(email), HttpStatus.OK);
     }
@@ -75,8 +76,29 @@ public class GearController {
         log.info("------------gear getList With pagination---------------");
         log.info(email);
         log.info(page);
+        log.info(pageRequestDTO);
 
         pageRequestDTO.setPage(page);
+
+        PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/pagination/{email}/{page}/{keyword}")
+    public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithKeywordAndPagination(
+            @PathVariable("email") String email,
+            @PathVariable("page") int page,
+            @PathVariable("keyword") String keyword,
+            PageRequestDTO pageRequestDTO){
+
+        log.info("------------gear getList With keyword and pagination---------------");
+        log.info(email);
+        log.info(page);
+        log.info(pageRequestDTO);
+
+        pageRequestDTO.setPage(page);
+        pageRequestDTO.setKeyword(keyword);
 
         PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
 
