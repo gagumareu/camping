@@ -83,18 +83,36 @@
             margin-bottom: 20px;
 
         }
+
+        .myGear-search{
+            margin-bottom: 25px;
+        }
     </style>
 
 
 </head>
 
     <div class="container-lg content" layout:fragment="content">
+
+        <th:block th:if="${tellCategory == 'secondHands'}">
+            <div class="secondHans-deal-title">
+                <h2>중고 거래 게시글 작성</h2>
+            </div>
+        </th:block>
+
         <div class="page-info-div" th:if="${tellCategory == 'secondHands'}">
         <button class="btn btn-info page-info">페이지 설명</button>
         </div>
 
-        <form th:action="@{/board/register}" method="post">
+        <div class="myGear-search" th:if="${tellCategory == 'secondHands'}">
+            <input class="form-control gear-search-input" name="keyword" placeholder="SEARCH">
+        </div>
 
+        <div class="alert-box">
+
+        </div>
+
+        <form th:action="@{/board/register}" method="post">
 
             <div class="row g-3 gear-data-boxes"></div>
             <div class="col-md-12 list-pagination">
@@ -363,12 +381,19 @@
 
                 console.log("page: " + page)
 
-                var testing = "junghwan";
+                var alertBox = $(".alert-box");
+                var str = "";
 
                 $.getJSON('/gear/pagination/' + email +"/"+ page, function (data){
 
                     console.log(data.dtoList);
                     console.log(data);
+
+                    if (data.dtoList.length == 0){
+                        alert('등록된 장비가 없습니다. 등록 페이지로 이동합니다.');
+                        window.self.location = '/member/myGear';
+                    }
+
                     // 기어리스트 DTO 업로드
                     showGearBoxes(data.dtoList);
                     // pagination 업로드
@@ -376,6 +401,33 @@
                 })
             }
         }
+
+        // 장비 검색 액션
+        $(".gear-search-input").change(function (e){
+
+            var keyword = $(this).val();
+            console.log(keyword);
+
+            var alertBox = $(".alert-box");
+            var str = "";
+
+            $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
+
+                console.log(data.dtoList);
+                console.log(data);
+
+                if (data.dtoList.length == 0){
+                    console.log("there are no result");
+                    str = '<h3>검색된 장비가 없습니다.</h3>';
+                    alertBox.html(str);
+                }
+
+                // 기어리스트 DTO 업로드
+                showGearBoxes(data.dtoList);
+                // pagination 업로드
+                makingPagination(data);
+            })
+        })
 
         // 기어리스트 DTO 업로드
         function showGearBoxes(dtoList){
@@ -422,7 +474,7 @@
             }) // dtoList each
 
             gearList.html(str);
-        }
+        } // showGearBoxes
 
         // pagination 업로드
         function makingPagination(data){
