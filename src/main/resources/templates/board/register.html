@@ -151,37 +151,13 @@
 
                     var targetImageList = [];
 
-                    var maxSize = 10485760;
-
-                    var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
-
-                    function checkExtension(fileName, fileSize){
-
-                        if(fileSize >= maxSize){
-                            alert("파일 사이즈 초과");
-                            return false;
-                        }
-
-                        if(regex.test(fileName)){
-                            alert("해당 종류의 파일은 업로드할 수 없습니다.");
-                            return false;
-                        }
-                        return true;
-                    } // checkExtension
-
                     $('#summernote').summernote({
                         height: 600,
                         lang: "ko-KR",
-                        // maximumImageFileSize: 10485760,
+                        maximumImageFileSize: 10485760,
                         callbacks:{
                             onImageUpload: function (files, editor, welEditable){
                                 for (var i = files.length -1; i >= 0; i--){
-
-                                    if(!checkExtension(files[i].name, files[i].size)){
-                                        return false;
-                                    }
-
-
                                     console.info(files[i]);
                                     uploadImageFiles(files[i], this);
                                 } //for
@@ -280,7 +256,7 @@
                 }); // the end
             </script>
 
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12" style="display: none">
                 <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
             </div>
             <div class="hiddenBox">
@@ -353,21 +329,37 @@
 
             e.preventDefault();
 
-            var str = "";
+            var hiddenGearBox = $("input[name='state']").val();
 
-            $(".uploadResultUL li").each(function (i, dto){
+            if (checkCategory == 'secondHands' ){
 
-                var target = $(dto);
+                if(!hiddenGearBox == '1'){
+                    console.log("hiddenGearBox != 1")
+                    alert('중고 장비를 선택해주세요.');
+                    return false;
+                }
+                if(hiddenGearBox == '1'){
+                    console.log("hiddenGearBox == 1")
+                }
 
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
-                str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+                var str = "";
 
-            });
+                $(".uploadResultUL li").each(function (i, dto){
 
-            $(".hiddenBox").html(str);
-            $("form").submit();
+                    var target = $(dto);
+
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
+                    str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+
+                });
+
+                $(".hiddenBox").html(str);
+                $("form").submit();
+
+            }
+
 
         }); // register btn clicking event
 
@@ -522,6 +514,10 @@
         // 기어선택 클릭 이벤트
         $(".gear-data-boxes").on("click", ".selecting-gear", function (){
 
+            if (!confirm("해당 장비로 변경하시겠습니까?")){
+                return;
+            }
+
             $('#summernote').summernote('reset');
 
             var gno = $(this).data("gno");
@@ -536,24 +532,6 @@
             str += '<input type="hidden" name="state" value="1">';
 
             hiddenGearBox.html(str);
-
-
-            $.getJSON('/gear/images/' + gno, function (arr){
-
-                console.info("---------/gear/images/'----------");
-
-                console.info(arr);
-
-                $.each(arr, function (i, dto){
-
-                    if (dto !== null){
-                        $('#summernote').summernote('insertImage', dto.s3Url);
-                    }else {
-                        console.info("there are no avalable images");
-                    }
-                });
-
-            }); // getJSON for images
 
             $.getJSON('/gear/myGear/' + gno, function (dto){
 
@@ -575,12 +553,33 @@
 
             }); // getJSON for gear info
 
+
+            $.getJSON('/gear/images/' + gno, function (arr){
+
+                console.info("---------/gear/images/'----------");
+
+                console.info(arr);
+
+                $.each(arr, function (i, dto){
+
+                    if (dto !== null){
+                        $('#summernote').summernote('insertImage', dto.s3Url);
+                    }else {
+                        console.info("there are no avalable images");
+                    }
+                });
+
+            }); // getJSON for images
+
+
+
         }); // 기어선택 클릭 이벤트 종료
 
 
 
         $(".gear-data-boxes").on("click", ".unable-gear", function (){
             alert("이미 중고 거래 등록된 상태입니다.");
+            return false;
         })
 
         var gearDTO = [[${gearDTO}]];
