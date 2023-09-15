@@ -105,6 +105,29 @@ public class GearController {
         return new ResponseEntity<>(resultDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/sort/{email}/{sort}/{direction}")
+    public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithSortAndPagination(
+            @PathVariable("email") String email,
+            @PathVariable("sort") String sort,
+            @PathVariable("direction") String direction,
+            PageRequestDTO pageRequestDTO){
+
+        log.info("------------gear getList With sort and pagination---------------");
+        log.info(email);
+        log.info(sort);
+        log.info(direction);
+
+        pageRequestDTO.setPage(1);
+        pageRequestDTO.setSort(sort);
+        pageRequestDTO.setDirection(direction);
+
+        log.info(pageRequestDTO);
+
+        PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{gno}")
     public ResponseEntity<String> remove(@PathVariable("gno") Long gno){
 

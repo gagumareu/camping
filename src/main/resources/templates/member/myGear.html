@@ -191,6 +191,23 @@
             <input class="form-control gear-search-input" name="keyword" placeholder="SEARCH">
         </div>
 
+        <div class="myGear-sort">
+            <div>
+            <span class="sortMyGear sortAsc" data-sort="gno" data-dir="desc">최신순 desc</span>
+            <span class="sortMyGear sortAsc" data-sort="gno" data-dir="asc">등록순 asc</span>
+            </div>
+
+            <div>
+            <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>
+            <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>
+            </div>
+
+            <div>
+            <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>
+            <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>
+            </div>
+        </div>
+
         <div class="row g-3 gear-data-boxes"></div>
 <!--        <div data-aos="fade-up"-->
 <!--             data-aos-duration="3000" class="row g-3 gear-data-boxes" >-->
@@ -609,6 +626,34 @@
                     makingPagination(data);
                 })
             })
+
+            // 카테고리순으로 정렬
+            $(".sortMyGear").click(function (){
+
+                var sort = $(this).data("sort");
+                console.log(sort);
+
+                var direction = $(this).data("dir");
+                console.log(direction);
+
+                var alertBox = $(".alert-box");
+                var str = "";
+
+                $.getJSON('/gear/sort/' + email +"/" + sort + "/" + direction, function (data){
+
+                    console.log(data.dtoList);
+                    console.log(data);
+
+                    // 기어리스트 DTO 업로드
+                    showGearBoxes(data.dtoList);
+                    // pagination 업로드
+                    makingPagination(data);
+
+                })
+
+
+
+            });
 
 
             // 기어리스트 DTO 업로드

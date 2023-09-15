@@ -79,7 +79,7 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
 
             BooleanBuilder conditionBuilder = new BooleanBuilder();
             conditionBuilder.or(gear.gname.contains(keyword));
-            conditionBuilder.or(gear.brand.contains(keyword));
+//            conditionBuilder.or(gear.brand.contains(keyword));
 
             booleanBuilder.and(conditionBuilder);
 

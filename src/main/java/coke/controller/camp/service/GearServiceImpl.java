@@ -200,13 +200,7 @@ public class GearServiceImpl implements GearService{
 
         log.info("-----getListWithPagination-------");
         log.info(email);
-        log.info(pageRequestDTO.getPage());
-
-        Pageable pageable = PageRequest.of(
-                pageRequestDTO.getPage() -1, 12, Sort.by("gno").descending()
-        );
-
-        log.info(pageable);
+        log.info(pageRequestDTO);
 
         Function<Object[], GearDTO> fn = (en -> entityToDto(
                 (Gear) en[0],
@@ -214,6 +208,14 @@ public class GearServiceImpl implements GearService{
                 (List<GearImage>) (Arrays.asList((GearImage)en[2])),
                 (Board) en[3]
         ));
+
+        String dir = pageRequestDTO.getDirection() == null ? "desc" : pageRequestDTO.getDirection();
+        String str = pageRequestDTO.getSort() == null ? "gno" : pageRequestDTO.getSort();
+
+        Sort sort = dir.equalsIgnoreCase("asc") ?
+                Sort.by(Sort.Direction.ASC, str) : Sort.by(Sort.Direction.DESC, str);
+
+        Pageable pageable = PageRequest.of(0, 12, sort);
 
         Page<Object[]> result = gearRepository.getGearListWithSearching(
                 email,
