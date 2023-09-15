@@ -164,10 +164,37 @@
             object-fit: cover;
 
         }
+
+        .category-header{
+
+        }
+
+        .active{
+            background-color: plum;
+        }
     </style>
 
 </head>
 <div class="container-lg content" layout:fragment="content">
+
+    <div class="category-header">
+        <span th:class="'category-header' + ${pageRequestDTO.category == null ? ' active' : ''}">
+            <a th:href="@{/board/list}">전체글</a>
+        </span>
+        <span th:class="'category-header' + ${pageRequestDTO.category == 'talk' ? ' active' : ''}">
+            <a th:href="@{/board/list(category='talk')}">커뮤니티</a>
+        </span>
+        <span th:class="'category-header' + ${pageRequestDTO.category == 'party' ? ' active' : ''}">
+            <a th:href="@{/board/list(category='party')}">캠핑모임</a>
+        </span>
+        <span th:class="'category-header' + ${pageRequestDTO.category == 'place' ? ' active' : ''}">
+            <a th:href="@{/board/list(category='place')}">캠핑장</a>
+        </span>
+        <span th:class="'category-header' + ${pageRequestDTO.category == 'secondHands' ? ' active' : ''}">
+            <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
+        </span>
+
+    </div>
 
     <div class="search-box" >
         <form th:action="@{/board/list}" method="get">

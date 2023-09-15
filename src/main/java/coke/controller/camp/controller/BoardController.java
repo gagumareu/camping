@@ -46,6 +46,7 @@ public class BoardController {
     public void getList(PageRequestDTO pageRequestDTO, Model model){
 
         log.info("---------list-------");
+        log.info(pageRequestDTO);
 
         PageResultDTO<BoardDTO, Object[]> result =  boardService.getListWithImageMemberAndReplyCnt(pageRequestDTO);
 
@@ -158,10 +159,6 @@ public class BoardController {
 
         boardService.remove(boardDTO.getBno());
 
-//        if(pageRequestDTO.getCategory() == ""){
-//            pageRequestDTO.setCategory(null);
-//        }
-
         redirectAttributes.addAttribute("category", pageRequestDTO.getCategory());
 
         return "redirect:/board/list";
@@ -217,10 +214,6 @@ public class BoardController {
         return "redirect:/board/read";
     }
 
-    @GetMapping("/myProject")
-    public void myProject(){
-
-    }
 
 
 
