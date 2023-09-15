@@ -52,6 +52,10 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
         BooleanExpression expression = board.bno.gt(0L);
         booleanBuilder.and(expression);
 
+        if(category == ""){
+            category = null;
+        }
+
         if (category != null){
             BooleanExpression expression1 = board.category.eq(category);
             booleanBuilder.and(expression1);

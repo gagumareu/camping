@@ -158,6 +158,10 @@ public class BoardController {
 
         boardService.remove(boardDTO.getBno());
 
+//        if(pageRequestDTO.getCategory() == ""){
+//            pageRequestDTO.setCategory(null);
+//        }
+
         redirectAttributes.addAttribute("category", pageRequestDTO.getCategory());
 
         return "redirect:/board/list";
