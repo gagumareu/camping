@@ -342,23 +342,23 @@
                     console.log("hiddenGearBox == 1")
                 }
 
-                var str = "";
-
-                $(".uploadResultUL li").each(function (i, dto){
-
-                    var target = $(dto);
-
-                    str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
-                    str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
-                    str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
-                    str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
-
-                });
-
-                $(".hiddenBox").html(str);
-                $("form").submit();
-
             }
+
+            var str = "";
+
+            $(".uploadResultUL li").each(function (i, dto){
+
+                var target = $(dto);
+
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+
+            });
+
+            $(".hiddenBox").html(str);
+            $("form").submit();
 
 
         }); // register btn clicking event
