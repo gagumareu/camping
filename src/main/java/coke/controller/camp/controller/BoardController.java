@@ -4,6 +4,7 @@ import coke.controller.camp.dto.*;
 import coke.controller.camp.service.BoardImageService;
 import coke.controller.camp.service.BoardService;
 import coke.controller.camp.service.GearService;
+import coke.controller.camp.service.PartyService;
 import coke.controller.camp.util.S3Uploader;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -37,6 +38,8 @@ public class BoardController {
     private final GearService gearService;
 
     private final S3Uploader s3Uploader;
+
+    private final PartyService partyService;
 
     @Value("${coke.controller.upload.path}")
     private String uploadPath;
@@ -82,11 +85,12 @@ public class BoardController {
 
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/register")
-    public String register(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, GearDTO gearDTO ){
+    public String register(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, GearDTO gearDTO, PartyDTO partyDTO ){
 
         log.info("-----------------register--------------------");
         log.info(boardDTO);
         log.info(gearDTO);
+        log.info(partyDTO);
 
         // BindingResult error 가 있을 경우
         if (bindingResult.hasErrors()){
@@ -105,6 +109,7 @@ public class BoardController {
         }
 
         Long bno = boardService.register(boardDTO);
+        log.info(bno);
 
         // 중고글 작성시 기어 상태 변화
         if (gearDTO.getGno() != null && gearDTO.getState() == 1){
@@ -112,6 +117,14 @@ public class BoardController {
             gearDTO.setBno(bno);
             gearService.updateState(gearDTO);
         }
+
+        if (partyDTO.getLocation() != null){
+            log.info("-------- register for a party article------");
+            partyDTO.setBno(bno);
+            partyService.save(partyDTO);
+        }
+
+        // 캠핑 모임 게시글 작성시
 
         redirectAttributes.addFlashAttribute("msg", bno);
         redirectAttributes.addAttribute("bno", bno);
@@ -126,13 +139,19 @@ public class BoardController {
     public void readOrModify(Model model, @RequestParam("bno") Long bno, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO){
 
         log.info("---------read or modify-------");
-
+        log.info(pageRequestDTO);
         log.info(bno);
 
         BoardDTO boardDTO = boardService.getBoardWithImagesMemberAndReplies(bno);
 
         log.info(boardDTO);
         log.info("category: " + pageRequestDTO.getCategory());
+
+//        if (pageRequestDTO.getCategory().equals("party")){
+//            log.info("-----------get party member list------------");
+//            List<PartyDTO> dtoList = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
+//            model.addAttribute("partyList", dtoList);
+//        }
 
         model.addAttribute("dto", boardDTO);
     }

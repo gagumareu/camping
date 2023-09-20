@@ -159,7 +159,7 @@
             height: 100%;
         }
 
-        .list-img-object-fit-box img{
+        .availImg{
             width: 100%;
             object-fit: cover;
 
@@ -173,10 +173,17 @@
         }
 
         .category-header span{
-            margin-right: 12px;
+            margin-right: 9px;
+            padding: 5px;
+            border-radius: 7px;
         }
         .active{
-            background-color: #0dcaf0;
+            background-color: #d6dcdf;
+        }
+
+        .unableImg{
+            width: 100%;
+
         }
     </style>
 
@@ -229,7 +236,7 @@
                     <img class="board_thumbnail_img availImg" th:if="${dto.boardImageDTOList[0] != null && dto.category != 'secondHands' }"
                          th:src="${dto.boardImageDTOList[0].thumbnailS3URL}">
                     <img class="board_thumbnail_img availImg" th:if="${dto.category == 'secondHands' && dto.gearImageDTOList[0] != null}"  th:src="${dto.gearImageDTOList[0].thumbnailS3URL}">
-                    <img class="board_thumbnail_img" th:unless="${dto.boardImageDTOList[0] != null || dto.gearImageDTOList[0] != null }" th:src="@{/icon/img3.svg}">
+                    <img class="board_thumbnail_img unableImg" th:unless="${dto.boardImageDTOList[0] != null || dto.gearImageDTOList[0] != null }" th:src="@{/icon/img3.svg}">
 
                 </a>
                 </div>

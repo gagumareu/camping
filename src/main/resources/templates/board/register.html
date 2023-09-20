@@ -100,6 +100,12 @@
             </div>
         </th:block>
 
+        <th:block th:if="${tellCategory == 'party'}">
+            <div class="secondHans-deal-title">
+                <h2>캠핑 모임 게시글 작성</h2>
+            </div>
+        </th:block>
+
         <div class="page-info-div" th:if="${tellCategory == 'secondHands'}">
         <button class="btn btn-info page-info">페이지 설명</button>
         </div>
@@ -131,10 +137,11 @@
                 <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" required>
 <!--                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >-->
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
-                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
+                <input th:if="${tellCategory == 'party'}" class="form-control categorySelector" type="text" name="category" value="party" readonly>
+                <select th:unless="${tellCategory == 'secondHands' || tellCategory == 'party'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
                     <option value="">-------카테고리 선택-------</option>
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
-                    <option th:selected="${tellCategory == 'party'}" value="party">모임</option>
+<!--                    <option th:selected="${tellCategory == 'party'}" value="party">모임</option>-->
                     <option th:selected="${tellCategory == 'place'}" value="place">캠핑장</option>
                 </select>
             </div>
@@ -259,12 +266,19 @@
             <div class="col-md-12 col-sm-12" style="display: none">
                 <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
             </div>
-            <div class="hiddenBox">
+
+            <div class="hiddenBox" style="display: none">
 
             </div>
-            <div class="hidden-gear-box">
+
+            <div class="hidden-gear-box" style="display: none">
 
             </div>
+
+            <div class="hidden-party-box" style="display: none">
+                <input th:if="${tellCategory == 'party'}" type="hidden" name="location" value="temp-location1">
+            </div>
+
             <div class="col-md-12 col-sm-12 btnBox">
                 <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>

@@ -671,7 +671,7 @@
 
                 $.each(dtoList, function (i, dto){
 
-                    str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes">';
+                    str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes" data-state="'+dto.state+'">';
 
                     if (dto.state == '0'){
                         str += '<div class="card" style="height: 100%">';
@@ -1009,6 +1009,7 @@
 
             })
 
+            // 장비 상세 정보 보기
             $(".gear-data-boxes").on("click", "img", function (e){
 
                 var gno = $(this).data("gno");

@@ -3,6 +3,9 @@ package coke.controller.camp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Builder
@@ -26,7 +29,7 @@ public class Board extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
+    
     public void changeTitle(String title){
         this.title = title;
     }
