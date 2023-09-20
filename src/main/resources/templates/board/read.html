@@ -344,12 +344,24 @@
             <div class="join-party">
                 <button class="btn btn-success join-party-btn">참가 신청</button>
             </div>
+
+            <div class="party-gear-sort">
+                <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc">유저순 asc</span>
+                <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc">유저순 desc</span>
+                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>
+                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>
+                <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>
+                <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>
+            </div>
+
             <div class="NoAvailable">
 
             </div>
+
             <div class="party-member-list">
 
             </div>
+
             <div class="col-md-12 list-pagination">
                 <ul class="pagination justify-content-center align-items-center">
                     <li class="page-item">
@@ -667,27 +679,60 @@
       console.log(partyList);
 
       if(tellingCategory == "party"){
-          console.log("party...");
 
-          var bno = [[${dto.bno}]];
+          loadMemberGears();
+          function loadMemberGears(page, sort, dir){
 
-          console.log(bno);
-          console.log(sortType);
+              var bno = [[${dto.bno}]];
+              var sortType = "";
+              var direction = "";
+
+              if(page == null){
+                  var pageValue = 1;
+              }else {
+                  var pageValue = page;
+              }
+
+              if(sort != null && dir != null){
+                  sortType = sort;
+                  direction = dir;
+              }else if (sort == null && dir == null) {
+                  sortType = null;
+                  direction = null;
+              }
+
+              console.log(bno);
+              console.log(sortType);
+              console.log(direction);
+              console.log(pageValue);
+
+              $.getJSON('/party/' + bno + "/" + sortType + "/" + direction + "/" + pageValue, function (arr){
+
+                  console.log("---loadMemberGears---");
+                  console.log(arr);
+
+                  getMemberGearList(arr.dtoList);
+
+                  makingPagination(arr.pageList);
+              })
+
+          }
+      }
+
+      // 참가자 리스트 정렬 버튼
+      $(".party-gear-sort").on(".sortMyGear", function (){
+          console.log("clicking");
+      })
+
+      $(".sortMyGear").click(function (){
+          console.log("clicking");
+          var sort = $(this).data("sort");
+          var direction = $(this).data("dir");
+          console.log(sort);
           console.log(direction);
 
-          var sortType = null;
-          var direction = null;
-
-          $.getJSON('/party/' + bno + "/" + sortType + "/" + direction, function (arr){
-
-              console.log(arr);
-
-              getMemberGearList(arr.dtoList);
-
-              makingPagination(arr.pageList);
-          })
-
-      }
+          loadMemberGears(1, sort, direction);
+      })
 
       // 모임 참가자 캠핑 장비 리스트 업
       function getMemberGearList(arr){
@@ -704,6 +749,9 @@
                   str += '<div class="party-member-box" >';
 
                   str += '<div class="party-member-gear">';
+
+                  str += '<div><b>'+i+'  '+dto.gno+'</b></div>';
+
                   str += '    <div class="party-member-gear-img-box">';
                   if (dto.s3Url != null){
                       str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
@@ -752,21 +800,35 @@
 
           var str = "";
 
-          $(data).each(function (i, dto){
+          console.log(data);
 
-              console.log(dto);
-
-              $.each(dto.pageList, function (i, page){
-                  str += '<li class="page-link">';
-                  str += '<a href="'+page+'">'+page+'</a>';
-                  str += '</li>';
-              })
-
+          $(data).each(function (i, page){
+              str += '<li class="page-link">';
+              str += '<a href="'+page+'">'+page+'</a>';
+              str += '</li>';
           }) // pageList each
 
           gearPageUl.html(str);
 
       } //makingPagination
+
+      $(".list-pagination ul").on("click", "a", function (e){
+
+          e.preventDefault();
+
+          var page = 1;
+
+          var targetPage = $(this).attr("href");
+
+          page = targetPage;
+
+          console.log(page);
+
+          loadMemberGears(page);
+
+      })
+
+
 
       // 캠핑 모임 신청 버튼 클릭
       $(".join-party-btn").click(function (){
@@ -796,7 +858,7 @@
                       dataType: "text",
                       success: function (result){
                           console.log(result);
-                          getMemberGearList();
+                          loadMemberGears();
                       }
                   }) // ajax
               }else if(count == '1'){
@@ -808,7 +870,7 @@
                           type: "DELETE",
                           success: function (result ){
                               console.log(result);
-                              getMemberGearList();
+                              loadMemberGears();
                               NoAvailable.html("");
                           }
                       })

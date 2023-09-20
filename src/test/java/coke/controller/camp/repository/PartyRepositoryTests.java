@@ -49,9 +49,13 @@ public class PartyRepositoryTests {
     public void getPartyWithList(){
 
         String direction = "desc";
-        String sort = "sort";
+        String sort = "email";
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("email").ascending());
+
+//        Sort sort1 = pageable.getSort();
+//
+//        log.info(sort1);
 
         Page<Object[]> result = partyRepository.getPartyMemberWithGears(144L, direction, sort, pageable);
 

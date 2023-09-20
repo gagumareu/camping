@@ -21,19 +21,21 @@ public class PartyController {
 
     private final PartyService partyService;
 
-    @GetMapping(value = "/{bno}/{sortType}/{direction}")
+    @GetMapping(value = "/{bno}/{sortType}/{direction}/{page}")
     public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
                                                                 @PathVariable("sortType") String sortType,
                                                                 @PathVariable("direction") String direction,
+                                                                @PathVariable("page") int page,
                                                                 PageRequestDTO pageRequestDTO){
 
         log.info(bno);
-        log.info(sortType);
-        log.info(direction);
+        log.info("sortType: " + sortType);
+        log.info("direction: " + direction);
+        log.info("page: " + page);
         log.info(pageRequestDTO);
 
-        pageRequestDTO.setPage(1);
-        pageRequestDTO.setSort("email");
+        pageRequestDTO.setPage(page);
+        pageRequestDTO.setSort(sortType);
         pageRequestDTO.setDirection(direction);
 
         PageResultDTO<PartyDTO, Object[]> resultDTO = partyService.getPartyByBnoWithList(bno, pageRequestDTO);

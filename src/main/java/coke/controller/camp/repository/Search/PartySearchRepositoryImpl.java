@@ -33,8 +33,8 @@ public class PartySearchRepositoryImpl extends QuerydslRepositorySupport impleme
 
         log.info("-------------getPartyMemberWithGears-------------");
         log.info(bno);
-        log.info(sortType);
-        log.info(direction);
+        log.info("sortType: " + sortType);
+        log.info("direction: " + direction);
         log.info(pageable);
 
         QParty party = QParty.party;
@@ -51,56 +51,72 @@ public class PartySearchRepositoryImpl extends QuerydslRepositorySupport impleme
 
         JPQLQuery<Tuple> tuple = query.select(party, member, board, gear, gearImage);
 
-
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        BooleanExpression bnoExpression = party.pno.gt(0L);
+
+//        BooleanExpression pnoExpression = party.pno.gt(0L);
+//        booleanBuilder.and(pnoExpression);
+
+        BooleanExpression bnoExpression = party.board.bno.eq(bno);
         booleanBuilder.and(bnoExpression);
 
         // type : 회원순 , 정렬순(sort), 이름순(gname)
         // sort : asc , desc
-        if (sortType != null){
-
-            log.info("with sort");
-
-            BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-            switch (sortType){
-                case "email":
-                    conditionBuilder.and(party.member.email.contains(member.email));
-                    tuple.orderBy(sortType.equals("asc") ? member.email.asc() : member.email.desc());
-                    break;
-                case "sort":
-                    conditionBuilder.and(gear.sort.contains(gear.sort));
-                    tuple.orderBy(sortType.equals("asc") ? gear.sort.asc() : gear.sort.desc());
-                    break;
-                case "gname":
-                    conditionBuilder.and(gear.gname.contains(gear.gname));
-                    tuple.orderBy(sortType.equals("asc") ? gear.gname.asc() : gear.gname.desc());
-                    break;
-            }
-            booleanBuilder.and(conditionBuilder);
-
-        }else if (direction == null && sortType == null){
-            log.info("withOut sort");
-            tuple.orderBy(member.email.asc());
-        }
+//        if (sortType != null){
+//
+//            log.info("with sort");
+//
+//            BooleanBuilder conditionBuilder = new BooleanBuilder();
+//
+//            switch (sortType){
+//                case "email":
+//                    conditionBuilder.and(party.member.email.contains(member.email));
+//                    tuple.orderBy(sortType.equals("asc") ? member.email.asc() : member.email.desc());
+//                    break;
+//                case "sort":
+//                    conditionBuilder.and(gear.sort.contains(gear.sort));
+//                    tuple.orderBy(sortType.equals("asc") ? gear.sort.asc() : gear.sort.desc());
+//                    break;
+//                case "gname":
+//                    conditionBuilder.and(gear.gname.contains(gear.gname));
+//                    tuple.orderBy(sortType.equals("asc") ? gear.gname.asc() : gear.gname.desc());
+//                    break;
+//            }
+//            booleanBuilder.and(conditionBuilder);
+//
+//        }else if (direction == null && sortType == null){
+//            log.info("withOut sort");
+//            tuple.orderBy(member.email.asc());
+//        }
 
         tuple.where(booleanBuilder);
 
         Sort sort = pageable.getSort();
 
-//        sort.stream().forEach(order -> {
-//            Order orderDirection = order.isAscending() ? Order.ASC : Order.DESC;
-//            String property = order.getProperty();
-//
-//            PathBuilder orderByExpression = new PathBuilder(Party.class, "party");
-//            tuple.orderBy(new OrderSpecifier(orderDirection, orderByExpression.get(property)));
-//        });
+        sort.stream().forEach(order -> {
+            Order orderDirection = order.isAscending() ? Order.ASC : Order.DESC;
+            String property = order.getProperty();
+            log.info("property: " + property);
+            log.info("sort: " + sort);
+
+            switch (property){
+                case "email":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, member.email));
+                    break;
+                case "sort":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.sort));
+                    break;
+                case "gname":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.gname));
+                    break;
+            }
+        });
+
+        log.info(sort);
 
         tuple.groupBy(gear);
 
-//        tuple.offset(pageable.getOffset());
-//        tuple.limit(pageable.getPageSize());
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
 
         List<Tuple> result = tuple.fetch();
 
