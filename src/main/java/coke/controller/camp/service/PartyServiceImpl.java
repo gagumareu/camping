@@ -117,5 +117,11 @@ public class PartyServiceImpl implements PartyService{
         return location;
     }
 
+    @Override
+    public void removePartiesByBno(Long bno) {
+        log.info(bno);
+        partyRepository.deletePartiesByBno(bno);
+    }
+
 
 }

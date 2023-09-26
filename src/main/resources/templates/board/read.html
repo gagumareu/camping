@@ -303,6 +303,16 @@
             /*height: 100%;*/
         }
 
+        .join-party{
+            margin: 35px 0px;
+
+        }
+
+        .underConst{
+            background: lightblue;
+            margin-top: 30px;
+        }
+
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -351,7 +361,7 @@
 
                 var mapOptions = {
                     center: new naver.maps.LatLng(37.3595704, 127.105399),
-                    zoom: 15,
+                    zoom: 13,
                     mapTypeControl: true
                 };
 
@@ -419,6 +429,9 @@
 
         <!-- 캠핑 모임       -->
         <th:block th:if="${dto.category eq 'party'}">
+            <div class="underConst">
+            <h3>공사 중..........................................................</h3>
+            </div>
             <div class="join-party">
                 <button class="btn btn-success join-party-btn">참가 신청</button>
             </div>
@@ -451,8 +464,8 @@
 
 
         <form id="remove-form" th:action="@{/board/remove}" method="post">
-          <input type="hidden" name="bno" th:value="${dto.bno}">
-          <input type="hidden" name="email" th:value="${dto.email}">
+            <input type="hidden" name="bno" th:value="${dto.bno}">
+            <input type="hidden" name="email" th:value="${dto.email}">
             <input type="hidden" name="category" th:value="${pageRequestDTO.category}">
         </form>
 
@@ -870,6 +883,7 @@
 
       }  // getMemberGearList  캠핑 모임 참가자 리스트 업
 
+      // 참가자들 캠핑 장비 페이징
       function makingPagination(data){
 
           var gearPageUl = $(".pagination");
@@ -888,6 +902,7 @@
 
       } //makingPagination
 
+      // 캠핑 장비 페이지 클릭 이벤트
       $(".list-pagination ul").on("click", "a", function (e){
 
           e.preventDefault();
@@ -904,23 +919,24 @@
 
       })
 
-
-
       // 캠핑 모임 신청 버튼 클릭
       $(".join-party-btn").click(function (){
-          console.log("clicking");
 
           var bno = [[${dto.bno}]];
-          var location = "temp-location1";
+          var address = [[${campingLocation}]];
 
           $.getJSON('/party/' + bno + "/" + currentUser, function (count){
               console.log(count);
 
               if (count == '0'){
 
+                  if (!confirm("캠핑 모임에 참가하겠습니까?")){
+                      return;
+                  }
+
                   var data = {
                       bno: bno,
-                      location: location,
+                      location: address,
                       email: currentUser
                   }
 
@@ -938,19 +954,24 @@
                       }
                   }) // ajax
               }else if(count == '1'){
-                  // alert("이미 참가했습니다.");
-                  if(confirm("이미 참가했습니다. 취소하겠습니까?")){
-                      console.log("참가 취소");
-                      $.ajax({
-                          url:'/party/' + bno + "/" + currentUser,
-                          type: "DELETE",
-                          success: function (result ){
-                              console.log(result);
-                              loadMemberGears();
-                              NoAvailable.html("");
-                          }
-                      })
 
+                  if(currentUser == userEmail){
+                      alert('작성자는 수정 불가능합니다.');
+
+                  }else{
+                      if(confirm("이미 참가했습니다. 취소하겠습니까?")){
+                          console.log("참가 취소");
+                          $.ajax({
+                              url:'/party/' + bno + "/" + currentUser,
+                              type: "DELETE",
+                              success: function (result ){
+                                  console.log(result);
+                                  loadMemberGears();
+                                  NoAvailable.html("");
+                              }
+                          })
+
+                      }
                   }
                   return false;
               } // end if
