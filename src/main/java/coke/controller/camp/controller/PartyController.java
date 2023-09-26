@@ -81,12 +81,16 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{bno}")
-    public ResponseEntity<PartyDTO> getMemberDTO(@PathVariable("bno") Long bno){
+    public ResponseEntity<String> getLocation(@PathVariable("bno") Long bno){
 
-        log.info("--------get MemberDTO--------");
+        log.info("--------get location--------");
         log.info(bno);
 
-        return new ResponseEntity<>(partyService.getPartyDTO(bno), HttpStatus.OK);
+        String address = partyService.getLocationByBno(bno);
+
+        log.info(address);
+
+        return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
 

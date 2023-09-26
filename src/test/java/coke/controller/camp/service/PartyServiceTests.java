@@ -35,25 +35,11 @@ public class PartyServiceTests {
         log.info(result);
     }
 
-    @Test
-    public void getPartList(){
 
-        PageRequestDTO pageRequestDTO = new PageRequestDTO();
-
-        pageRequestDTO.setPage(1);
-        pageRequestDTO.setSort("asc");
-        pageRequestDTO.setDirection("email");
-
-        PageResultDTO<PartyDTO, Object[]> result = partyService.getPartyByBnoWithList(153L, pageRequestDTO);
-
-        result.getDtoList().forEach(partyDTO -> {
-            System.out.println(partyDTO);
-        });
-    }
 
     @Test
     public void getPartyDTO(){
-        PartyDTO partyDTO = partyService.getPartyDTO(153L);
+        String partyDTO = partyService.getLocationByBno(154L);
 
         System.out.println(partyDTO);
     }

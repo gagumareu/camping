@@ -145,14 +145,16 @@ public class BoardController {
 
         log.info(boardDTO);
         log.info("category: " + pageRequestDTO.getCategory());
+        log.info("boardDTO.getCategory: " + boardDTO.getCategory());
 
-//        if (pageRequestDTO.getCategory().equals("party")){
-//            log.info("-----------get party member list------------");
-//            List<PartyDTO> dtoList = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
-//            model.addAttribute("partyList", dtoList);
-//        }
+        if (pageRequestDTO.getCategory().equals("party") || boardDTO.getCategory().equals("party")){
+            log.info("-----------get party location------------");
+            String location = partyService.getLocationByBno(bno);
+            model.addAttribute("campingLocation", location);
+        }
 
         model.addAttribute("dto", boardDTO);
+        model.addAttribute("tellingCategory", boardDTO.getCategory());
     }
 
     @PreAuthorize("principal.username == #boardDTO.email")

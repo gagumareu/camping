@@ -1,5 +1,6 @@
 package coke.controller.camp.repository;
 
+import coke.controller.camp.dto.PartyDTO;
 import coke.controller.camp.entity.Board;
 import coke.controller.camp.entity.Member;
 import coke.controller.camp.entity.Party;
@@ -63,4 +64,13 @@ public class PartyRepositoryTests {
             System.out.println(Arrays.toString(objects));
         });
     }
+
+    @Test
+    public void getLocation(){
+        String partyDTO = partyRepository.getLocationByBno(154L);
+        System.out.println(partyDTO);
+    }
+
+
+
 }

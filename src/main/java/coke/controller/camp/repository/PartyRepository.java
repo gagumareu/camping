@@ -27,7 +27,7 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Query("DELETE FROM Party p WHERE p.board.bno = :bno AND p.member.email = :email")
     int dropOutFromParty(Long bno, String email);
 
-    @Query("SELECT min (p.pno) FROM Party p WHERE p.board.bno = :bno")
-    PartyDTO getPartyByEmail(Long bno);
+    @Query("SELECT distinct (p.location) FROM Party p WHERE p.board.bno = :bno")
+    String getLocationByBno(Long bno);
 
 }

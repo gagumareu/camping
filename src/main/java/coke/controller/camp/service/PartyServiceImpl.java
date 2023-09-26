@@ -106,11 +106,15 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
-    public PartyDTO getPartyDTO(Long bno) {
+    public String getLocationByBno(Long bno) {
 
         log.info(bno);
 
-        return partyRepository.getPartyByEmail(bno);
+        String location = partyRepository.getLocationByBno(bno);
+
+        log.info(location);
+
+        return location;
     }
 
 

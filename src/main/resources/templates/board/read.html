@@ -343,75 +343,79 @@
           <div th:utext="${dto.content}"></div>
         </div>
 
-        <div id="map" style="width:100%;height:400px;"></div>
-        <script>
+        <th:block th:if="${dto.category eq 'party' || tellingCategory eq 'party'}">
 
-            var mapOptions = {
-                center: new naver.maps.LatLng(37.3595704, 127.105399),
-                zoom: 10,
-                mapTypeControl: true
-            };
-
-            var map = new naver.maps.Map('map', mapOptions);
+            <div id="map" style="width:100%;height:400px;"></div>
+            <script th:inline="javascript">
 
 
-            // 네이버 지도 검색 옵션
-            var infoWindow = new naver.maps.InfoWindow({
-                anchorSkew: true
-            });
+                var mapOptions = {
+                    center: new naver.maps.LatLng(37.3595704, 127.105399),
+                    zoom: 15,
+                    mapTypeControl: true
+                };
 
-            map.setCursor('pointer');
+                var map = new naver.maps.Map('map', mapOptions);
 
-            function initGeocoder() {
-
-                // 현 위치로 바꾸기
-                searchAddressToCoordinate('북악산로 813');
-            }
-
-            function searchAddressToCoordinate(address) {
-                naver.maps.Service.geocode({
-                    query: address
-                }, function(status, response) {
-                    if (status === naver.maps.Service.Status.ERROR) {
-                        return alert('Something Wrong!');
-                    }
-
-                    if (response.v2.meta.totalCount === 0) {
-                        return alert('totalCount' + response.v2.meta.totalCount);
-                    }
-
-                    var htmlAddresses = [],
-                        item = response.v2.addresses[0],
-                        point = new naver.maps.Point(item.x, item.y);
-
-                    if (item.roadAddress) {
-                        htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-                    }
-
-                    if (item.jibunAddress) {
-                        htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-                    }
-
-                    if (item.englishAddress) {
-                        htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-                    }
-
-                    infoWindow.setContent([
-                        '<div style="padding:10px;min-width:200px;line-height:150%;">',
-                        '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
-                        htmlAddresses.join('<br />'),
-                        '</div>'
-                    ].join('\n'));
-
-                    map.setCenter(point);
-                    infoWindow.open(map, point);
+                var infoWindow = new naver.maps.InfoWindow({
+                    anchorSkew: true
                 });
-            }
+
+                map.setCursor('pointer');
 
 
-            naver.maps.onJSContentLoaded = initGeocoder;
+                function searchAddressToCoordinate(address) {
+                    naver.maps.Service.geocode({
+                        query: address
+                    }, function(status, response) {
+                        if (status === naver.maps.Service.Status.ERROR) {
+                            return alert('Something Wrong!');
+                        }
 
-        </script>
+                        if (response.v2.meta.totalCount === 0) {
+                            return alert('totalCount' + response.v2.meta.totalCount);
+                        }
+
+                        var htmlAddresses = [],
+                            item = response.v2.addresses[0],
+                            point = new naver.maps.Point(item.x, item.y);
+
+                        if (item.roadAddress) {
+                            htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+                        }
+
+                        if (item.jibunAddress) {
+                            htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+                        }
+
+                        if (item.englishAddress) {
+                            htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+                        }
+
+                        infoWindow.setContent([
+                            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+                            htmlAddresses.join('<br />'),
+                            '</div>'
+                        ].join('\n'));
+
+                        map.setCenter(point);
+                        infoWindow.open(map, point);
+                    });
+                }
+
+                var address = [[${campingLocation}]];
+                console.log(address);
+                function initGeocoder() {
+                    searchAddressToCoordinate(address);
+                }
+
+                naver.maps.onJSContentLoaded = initGeocoder;
+
+            </script>
+        </th:block>
+
+
+
 
         <!-- 캠핑 모임       -->
         <th:block th:if="${dto.category eq 'party'}">
@@ -519,12 +523,13 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
-  const auth = [[${#authentication.principal}]]
+  // const auth = [[${#authentication.principal}]]
 
-  const errors = [[${errors}]]
-  console.info(errors)
+  // const errors = [[${errors}]]
+  // console.info(errors)
 
   $(document).ready(function (){
+
 
       var bno = [[${dto.bno}]];
 

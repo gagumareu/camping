@@ -354,6 +354,8 @@
                     }
 
                     var roadAddress = item.roadAddress;
+                    // var roadAddressWithTrim = roadAddress.trim();
+                    // console.info(roadAddressWithTrim);
                     var jibunAddress = item.jibunAddress;
 
                     savedAddress = roadAddress + "|" + jibunAddress;
@@ -362,7 +364,7 @@
                     console.info(jibunAddress);
                     console.info(savedAddress);
 
-                    var str = '<input type="hidden" name="location" value="'+savedAddress+'">'
+                    var str = '<input type="hidden" name="location" value="'+roadAddressWithTrim+'">'
 
                     $(".hidden-address-box").html(str);
 
