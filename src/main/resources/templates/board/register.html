@@ -89,6 +89,8 @@
         }
     </style>
 
+    <!-- naver map API   -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hmecoefot7&submodules=geocoder"></script>
 
 </head>
 
@@ -97,6 +99,12 @@
         <th:block th:if="${tellCategory == 'secondHands'}">
             <div class="secondHans-deal-title">
                 <h2>중고 거래 게시글 작성</h2>
+            </div>
+        </th:block>
+
+        <th:block th:if="${tellCategory == 'party'}">
+            <div class="secondHans-deal-title">
+                <h2>캠핑 모임 게시글 작성</h2>
             </div>
         </th:block>
 
@@ -129,12 +137,11 @@
 
             <div class="titleAndSearchBox">
                 <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" required>
-<!--                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" th:unless="${tellCategory == 'secondHands'}" >-->
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
-                <select th:unless="${tellCategory == 'secondHands'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
+                <input th:if="${tellCategory == 'party'}" class="form-control categorySelector" type="text" name="category" value="party" readonly>
+                <select th:unless="${tellCategory == 'secondHands' || tellCategory == 'party'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
                     <option value="">-------카테고리 선택-------</option>
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
-                    <option th:selected="${tellCategory == 'party'}" value="party">모임</option>
                     <option th:selected="${tellCategory == 'place'}" value="place">캠핑장</option>
                 </select>
             </div>
@@ -259,16 +266,125 @@
             <div class="col-md-12 col-sm-12" style="display: none">
                 <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
             </div>
-            <div class="hiddenBox">
 
-            </div>
-            <div class="hidden-gear-box">
+            <div class="hiddenBox" style="display: none"></div>
 
-            </div>
+            <div class="hidden-gear-box" style="display: none"></div>
+            <div class="hidden-address-box" style="display: none"></div>
+
             <div class="col-md-12 col-sm-12 btnBox">
                 <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>
         </form>
+
+        <th:block th:if="${tellCategory == 'party'}">
+            <div class="searchAddress">
+                <input id="address" type="text">
+                <input type="submit" id="submit">
+            </div>
+            <div id="map" style="width:100%;height:400px;"></div>
+        </th:block>
+        <script>
+
+            var mapOptions = {
+                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                zoom: 10,
+                mapTypeControl: true
+            };
+
+            var map = new naver.maps.Map('map', mapOptions);
+
+
+            // 네이버 지도 검색 옵션
+            var infoWindow = new naver.maps.InfoWindow({
+                anchorSkew: true
+            });
+
+            map.setCursor('pointer');
+
+            function initGeocoder() {
+
+                $('#address').on('keydown', function(e) {
+                    var keyCode = e.which;
+
+                    if (keyCode === 13) { // Enter Key
+                        searchAddressToCoordinate($('#address').val());
+                    }
+                });
+
+                $('#submit').on('click', function(e) {
+                    e.preventDefault();
+
+                    searchAddressToCoordinate($('#address').val());
+                });
+
+                // 현 위치로 바꾸기
+                // searchAddressToCoordinate('정자동 178-1');
+            }
+
+
+            var savedAddress = "";
+
+            function searchAddressToCoordinate(address) {
+                naver.maps.Service.geocode({
+                    query: address
+                }, function(status, response) {
+                    if (status === naver.maps.Service.Status.ERROR) {
+                        return alert('Something Wrong!');
+                    }
+
+                    if (response.v2.meta.totalCount === 0) {
+                        return alert('totalCount' + response.v2.meta.totalCount);
+                    }
+
+                    var htmlAddresses = [],
+                        item = response.v2.addresses[0],
+                        point = new naver.maps.Point(item.x, item.y);
+
+                    if (item.roadAddress) {
+                        htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+                    }
+
+                    if (item.jibunAddress) {
+                        htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+                    }
+
+                    if (item.englishAddress) {
+                        htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+                    }
+
+                    var roadAddress = item.roadAddress;
+                    // var roadAddressWithTrim = roadAddress.trim();
+                    // console.info(roadAddressWithTrim);
+                    var jibunAddress = item.jibunAddress;
+
+                    savedAddress = roadAddress + "|" + jibunAddress;
+
+                    console.info(roadAddress);
+                    console.info(jibunAddress);
+                    console.info(savedAddress);
+
+                    var str = '<input type="hidden" name="location" value="'+roadAddressWithTrim+'">'
+
+                    $(".hidden-address-box").html(str);
+
+                    infoWindow.setContent([
+                        '<div style="padding:10px;min-width:200px;line-height:150%;">',
+                        '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
+                        htmlAddresses.join('<br />'),
+                        '</div>'
+                    ].join('\n'));
+
+                    map.setCenter(point);
+                    infoWindow.open(map, point);
+                });
+            }
+
+
+            naver.maps.onJSContentLoaded = initGeocoder;
+
+        </script>
+
         <div class="uploadResultUL" style="display: none">
             <ul>
 
