@@ -68,7 +68,7 @@ public class PartyController {
         return new ResponseEntity<Integer>(count, HttpStatus.OK );
     }
 
-    @DeleteMapping(value = "{bno}/{currentUser}")
+    @DeleteMapping(value = "/{bno}/{currentUser}")
     public ResponseEntity<String> dropOut(@PathVariable("bno") Long bno, @PathVariable("currentUser") String email){
 
         log.info("------------dropOut-------");
@@ -78,6 +78,15 @@ public class PartyController {
         String result = partyService.dropOut(bno, email);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{bno}")
+    public ResponseEntity<PartyDTO> getMemberDTO(@PathVariable("bno") Long bno){
+
+        log.info("--------get MemberDTO--------");
+        log.info(bno);
+
+        return new ResponseEntity<>(partyService.getPartyDTO(bno), HttpStatus.OK);
     }
 
 

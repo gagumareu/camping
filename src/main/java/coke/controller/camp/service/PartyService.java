@@ -13,6 +13,7 @@ public interface PartyService {
     PageResultDTO<PartyDTO, Object[]> getPartyByBnoWithList(Long bno, PageRequestDTO pageRequestDTO);
     int checkAvailableUser(Long bno, String email);
     String dropOut(Long bno, String email);
+    PartyDTO getPartyDTO(Long bno);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 

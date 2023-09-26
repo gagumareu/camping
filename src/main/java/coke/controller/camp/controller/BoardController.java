@@ -118,13 +118,12 @@ public class BoardController {
             gearService.updateState(gearDTO);
         }
 
+        // 캠핑 모임 게시글 작성시
         if (partyDTO.getLocation() != null){
             log.info("-------- register for a party article------");
             partyDTO.setBno(bno);
             partyService.save(partyDTO);
         }
-
-        // 캠핑 모임 게시글 작성시
 
         redirectAttributes.addFlashAttribute("msg", bno);
         redirectAttributes.addAttribute("bno", bno);

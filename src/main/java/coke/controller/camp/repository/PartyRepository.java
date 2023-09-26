@@ -1,5 +1,6 @@
 package coke.controller.camp.repository;
 
+import coke.controller.camp.dto.PartyDTO;
 import coke.controller.camp.entity.Party;
 import coke.controller.camp.repository.Search.PartySearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,8 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Modifying
     @Query("DELETE FROM Party p WHERE p.board.bno = :bno AND p.member.email = :email")
     int dropOutFromParty(Long bno, String email);
+
+    @Query("SELECT min (p.pno) FROM Party p WHERE p.board.bno = :bno")
+    PartyDTO getPartyByEmail(Long bno);
 
 }

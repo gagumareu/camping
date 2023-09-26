@@ -20,4 +20,14 @@ public class ProjectController {
 
     }
 
+    @GetMapping("/map")
+    public void map(){
+
+    }
+
+    @GetMapping("/map2")
+    public void map2(){
+
+    }
+
 }

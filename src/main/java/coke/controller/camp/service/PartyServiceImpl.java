@@ -105,6 +105,13 @@ public class PartyServiceImpl implements PartyService{
        return result;
     }
 
+    @Override
+    public PartyDTO getPartyDTO(Long bno) {
+
+        log.info(bno);
+
+        return partyRepository.getPartyByEmail(bno);
+    }
 
 
 }
