@@ -14,6 +14,7 @@ public interface PartyService {
     int checkAvailableUser(Long bno, String email);
     String dropOut(Long bno, String email);
     String getLocationByBno(Long bno);
+    void removePartiesByBno(Long bno);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 

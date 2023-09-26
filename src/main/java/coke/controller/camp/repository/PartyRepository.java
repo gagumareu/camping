@@ -30,4 +30,8 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Query("SELECT distinct (p.location) FROM Party p WHERE p.board.bno = :bno")
     String getLocationByBno(Long bno);
 
+    @Modifying
+    @Query("DELETE FROM Party p WHERE p.board.bno = :bno")
+    void deletePartiesByBno(Long bno);
+
 }

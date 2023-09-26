@@ -175,6 +175,10 @@ public class BoardController {
             });
         }
 
+        if (boardDTO.getCategory().equals("party")){
+            partyService.removePartiesByBno(boardDTO.getBno());
+        }
+
         gearService.backStateZero(boardDTO.getBno());
 
         boardService.remove(boardDTO.getBno());
