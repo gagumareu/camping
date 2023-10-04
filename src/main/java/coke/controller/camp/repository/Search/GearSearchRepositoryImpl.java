@@ -29,6 +29,7 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
     @Override
     public Page<Object[]> getGearListWithSearching(String email, String type, String keyword, Pageable pageable) {
 
+        log.info("-------gear search repository impl----------");
         log.info(email);
         log.info(keyword);
         log.info(pageable);
@@ -37,6 +38,7 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         QGearImage gearImage = QGearImage.gearImage;
         QMember member = QMember.member;
         QBoard board = QBoard.board;
+
 
         JPQLQuery<Gear> query = from(gear);
         query.leftJoin(member).on(gear.member.eq(member));
@@ -79,7 +81,7 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
 
             BooleanBuilder conditionBuilder = new BooleanBuilder();
             conditionBuilder.or(gear.gname.contains(keyword));
-//            conditionBuilder.or(gear.brand.contains(keyword));
+            conditionBuilder.or(gear.brand.contains(keyword));
 
             booleanBuilder.and(conditionBuilder);
 
@@ -111,5 +113,13 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         log.info(count);
 
         return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
+    }
+
+    @Override
+    public Page<Object[]> getGearListWithSearching2(String email, String type, String keyword, Pageable pageable) {
+
+
+
+        return null;
     }
 }

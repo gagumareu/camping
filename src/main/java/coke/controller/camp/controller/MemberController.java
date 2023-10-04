@@ -67,19 +67,6 @@ public class MemberController {
 
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/myGear")
-    public void myGear(Model model, Principal principal, PageRequestDTO pageRequestDTO){
-
-        log.info("my gear....");
-
-        String email = principal.getName();
-        log.info(email);
-
-        PageResultDTO<GearDTO, Object[]> gearList = gearService.getListWithPagination(email, pageRequestDTO);
-
-        model.addAttribute("gearDTOList", gearList);
-    }
 
     @GetMapping("/join")
     public void joinGET(){
@@ -140,6 +127,21 @@ public class MemberController {
         log.info("checking email for sign in : " + email);
 
         return new ResponseEntity<>(memberService.checkIdForDuplication(email), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myGear")
+    public void myGear(Model model, Principal principal, PageRequestDTO pageRequestDTO){
+
+        log.info("-----myGear--------");
+        log.info(pageRequestDTO);
+        String email = principal.getName();
+        log.info(email);
+
+        PageResultDTO<GearDTO, Object[]> gearList = gearService.getListWithPagination(email, pageRequestDTO);
+
+        model.addAttribute("gearList", gearList);
     }
 
 }

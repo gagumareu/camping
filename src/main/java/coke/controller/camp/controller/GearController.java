@@ -12,6 +12,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.security.auth.login.CredentialNotFoundException;
 import java.io.File;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,8 @@ public class GearController {
 
     @Value("${coke.controller.upload.path}")
     private String uploadPath;
+
+
 
     @PostMapping("")
     public Map<String, Long> registerGear(@Valid @RequestBody GearDTO gearDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws BindException{
@@ -76,9 +81,8 @@ public class GearController {
         log.info("------------gear getList With pagination---------------");
         log.info(email);
         log.info(page);
-        log.info(pageRequestDTO);
-
         pageRequestDTO.setPage(page);
+        log.info(pageRequestDTO);
 
         PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
 

@@ -209,13 +209,22 @@ public class GearServiceImpl implements GearService{
                 (Board) en[3]
         ));
 
-        String dir = pageRequestDTO.getDirection() == null ? "desc" : pageRequestDTO.getDirection();
+        if (pageRequestDTO.getSort() == ""){
+            pageRequestDTO.setSort(null);
+        }
+        if (pageRequestDTO.getDirection() == ""){
+            pageRequestDTO.setDirection(null);
+        }
+
+        String dir = pageRequestDTO.getDirection() == null  ? "desc" : pageRequestDTO.getDirection();
         String str = pageRequestDTO.getSort() == null ? "gno" : pageRequestDTO.getSort();
 
         Sort sort = dir.equalsIgnoreCase("asc") ?
                 Sort.by(Sort.Direction.ASC, str) : Sort.by(Sort.Direction.DESC, str);
 
-        Pageable pageable = PageRequest.of(0, 12, sort);
+        int page = pageRequestDTO.getPage();
+
+        Pageable pageable = PageRequest.of(page -1, 12, sort);
 
         Page<Object[]> result = gearRepository.getGearListWithSearching(
                 email,

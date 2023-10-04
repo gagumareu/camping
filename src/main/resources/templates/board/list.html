@@ -206,7 +206,6 @@
         <span th:class="'category-header' + ${pageRequestDTO.category == 'secondHands' ? ' active' : ''}">
             <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
         </span>
-
     </div>
 
     <div class="search-box" >
@@ -299,6 +298,9 @@
 </div>
 
 <script th:inline="javascript" layout:fragment="script">
+
+    var pageRequest = [[${pageRequestDTO}]];
+    console.log(pageRequest);
 
 </script>
 

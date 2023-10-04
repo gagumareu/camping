@@ -31,6 +31,11 @@ public class BoardSearchRepositoryImpl extends QuerydslRepositorySupport impleme
     @Override
     public Page<Object[]> getSearchList(String type, String keyword, Pageable pageable, String category) {
 
+        log.info(type);
+        log.info(keyword);
+        log.info(pageable);
+        log.info(category);
+
 
         QBoard board = QBoard.board;
         QReply reply = QReply.reply;

@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 public interface GearSearchRepository {
 
     Page<Object[]> getGearListWithSearching(String email, String type, String keyword, Pageable pageable);
+
+    Page<Object[]> getGearListWithSearching2(String email, String type, String keyword, Pageable pageable);
 }
