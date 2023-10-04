@@ -52,7 +52,19 @@
         }
 
         .gear-boxes{
-            height: 320px;
+            width: 100%;
+            height: 85px;
+            border-bottom: 1px solid;
+        }
+        .gear-info{
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            cursor: grab;
+        }
+        .gear-info img{
+            width: 70px;
+            height: 100%;
         }
 
         .content{
@@ -87,6 +99,17 @@
         .myGear-search{
             margin-bottom: 25px;
         }
+
+        .card-body{
+            display: flex;
+            align-items: center;
+            margin-left: 13px;
+
+        }
+
+        .changingAGear{
+            margin-right: 20px;
+        }
     </style>
 
     <!-- naver map API   -->
@@ -96,15 +119,22 @@
 
     <div class="container-lg content" layout:fragment="content">
 
-        <th:block th:if="${tellCategory == 'secondHands'}">
-            <div class="secondHans-deal-title">
-                <h2>중고 거래 게시글 작성</h2>
-            </div>
-        </th:block>
+<!--        <th:block th:if="${tellCategory == 'secondHands'}">-->
+<!--            <div class="secondHans-deal-title">-->
+<!--                <h2>중고 거래 게시글 작성</h2>-->
+<!--            </div>-->
+<!--        </th:block>-->
 
-        <th:block th:if="${tellCategory == 'party'}">
+<!--        <th:block th:if="${tellCategory == 'party'}">-->
+<!--            <div class="secondHans-deal-title">-->
+<!--                <h2>캠핑 모임 게시글 작성</h2>-->
+<!--            </div>-->
+<!--        </th:block>-->
+
+        <th:block th:switch="${tellCategory}">
             <div class="secondHans-deal-title">
-                <h2>캠핑 모임 게시글 작성</h2>
+                <h2 th:case="party">캠핑 모임 게시글 작성</h2>
+                <h2 th:case="secondHands">중고 거래 게시글 작성</h2>
             </div>
         </th:block>
 
@@ -112,24 +142,8 @@
         <button class="btn btn-info page-info">페이지 설명</button>
         </div>
 
-        <div class="myGear-search" th:if="${tellCategory == 'secondHands'}">
-            <input class="form-control gear-search-input" name="keyword" placeholder="SEARCH">
-        </div>
-
-        <div class="alert-box">
-
-        </div>
-
         <form th:action="@{/board/register}" method="post">
 
-            <div class="row g-3 gear-data-boxes"></div>
-            <div class="col-md-12 list-pagination">
-                <ul class="pagination justify-content-center align-items-center">
-                    <li class="page-item">
-
-                    </li>
-                </ul>
-            </div>
             <div style="display: none" class="register-hidden-for-state">
 
             </div>
@@ -266,13 +280,44 @@
             <div class="col-md-12 col-sm-12" style="display: none">
                 <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
             </div>
-
             <div class="hiddenBox" style="display: none"></div>
-
             <div class="hidden-gear-box" style="display: none"></div>
             <div class="hidden-address-box" style="display: none"></div>
 
+            <!--  중고 거래시 등록된 캠핑 장비 리스트 불러오기         -->
+            <th:block th:if="${tellCategory == 'secondHands'}">
+                <div class="modal myGearListModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+<!--                            <div class="modal-header">-->
+<!--                                <form action="">-->
+<!--                                    <input type="text" class="form-control" name="keyword" placeholder="SEARCH">-->
+<!--                                    <button type="submit" class="btn btn-outline-secondary">검색</button>-->
+<!--                                </form>-->
+<!--                            </div>-->
+                            <div class="modal-body">
+                                <div class="modal-gear-list">
+
+                                </div>
+                                <div class="col-md-12 list-pagination">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </th:block>
+
             <div class="col-md-12 col-sm-12 btnBox">
+                <button type="button" class="btn btn-light changingAGear">장비 변경</button>
                 <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>
         </form>
@@ -480,84 +525,86 @@
         }); // register btn clicking event
 
 
-        // 기어리스트 박스 업로드 function
-        if (checkCategory == 'secondHands'){
+        function loadGearBoxes(page){
 
-            loadGearBoxes(1);
-
-            function loadGearBoxes(page){
-
-                console.log("page: " + page)
-
-                var alertBox = $(".alert-box");
-                var str = "";
-
-                $.getJSON('/gear/pagination/' + email +"/"+ page, function (data){
-
-                    console.log(data.dtoList);
-                    console.log(data);
-
-                    if (data.dtoList.length == 0){
-                        alert('등록된 장비가 없습니다. 등록 페이지로 이동합니다.');
-                        window.self.location = '/member/myGear';
-                    }
-
-                    // 기어리스트 DTO 업로드
-                    showGearBoxes(data.dtoList);
-                    // pagination 업로드
-                    makingPagination(data);
-                })
-            }
-        }
-
-        // 장비 검색 액션
-        $(".gear-search-input").change(function (e){
-
-            var keyword = $(this).val();
-            console.log(keyword);
+            console.log("page: " + page)
 
             var alertBox = $(".alert-box");
             var str = "";
 
-            $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
-
+            $.getJSON('/gear/pagination/' + email +"/"+ page, function (data){
+            // $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
                 console.log(data.dtoList);
                 console.log(data);
 
                 if (data.dtoList.length == 0){
-                    console.log("there are no result");
-                    str = '<h3>검색된 장비가 없습니다.</h3>';
-                    alertBox.html(str);
+                    alert('등록된 장비가 없습니다. 등록 페이지로 이동합니다.');
+                    window.self.location = '/member/myGear';
                 }
 
-                // 기어리스트 DTO 업로드
                 showGearBoxes(data.dtoList);
-                // pagination 업로드
                 makingPagination(data);
             })
-        })
+        }
+
+        $(".changingAGear").click(function (){
+            console.log("clicking");
+            $(".myGearListModal").modal('show');
+
+            loadGearBoxes(1);
+
+        });
+
+
+        // 장비 검색 액션
+        // $(".gear-search-input").change(function (e){
+        //
+        //     var keyword = $(this).val();
+        //     console.log(keyword);
+        //
+        //     var alertBox = $(".alert-box");
+        //     var str = "";
+        //
+        //     $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
+        //
+        //         console.log(data.dtoList);
+        //         console.log(data);
+        //
+        //         if (data.dtoList.length == 0){
+        //             console.log("there are no result");
+        //             str = '<h3>검색된 장비가 없습니다.</h3>';
+        //             alertBox.html(str);
+        //         }
+        //
+        //         // 기어리스트 DTO 업로드
+        //         showGearBoxes(data.dtoList);
+        //         // pagination 업로드
+        //         makingPagination(data);
+        //     })
+        // })
 
         // 기어리스트 DTO 업로드
         function showGearBoxes(dtoList){
 
-            var gearList = $(".gear-data-boxes");
+            var gearList = $(".modal-gear-list");
             var str = "";
 
             console.info(dtoList);
 
             $.each(dtoList, function (i, dto){
 
-                str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes">';
+                str += '<div class="gear-boxes">';
+
                 if (dto.state == '0'){
-                    str += '<div class="card selecting-gear" style="height: 100%" data-gno="'+dto.gno+'">';
+                    str += '<div class="gear-info selecting-gear" style="height: 100%" data-gno="'+dto.gno+'">';
                 }else if (dto.state == '1'){
-                    str += '<div class="card on-the-market unable-gear" style="height: 100%">';
+                    str += '<div class="gear-info on-the-market unable-gear" style="height: 100%">';
                 }
 
                 if (dto.gearImageDTOList[0] !== null){
-                    str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
+                    str += "<img class='gear-info-img' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
                 }else {
-                    str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
+                    str += "<img class='gear-info-img' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
                 }
 
                 str += '<div class="card-body gear-script">'
@@ -566,17 +613,9 @@
                 }else if(dto.state == '0'){
                     str += '    <p class="card-title">'+dto.gname+'</p>';
                 }
+                str += '</div>';
+                str += '</div>';
 
-                // str += '<ul class="list-group list-group-flush">';
-                // if(dto.brand){
-                //     str += '    <li class="list-group-item" >'+dto.brand+'</li>';
-                // }
-                // if(dto.sort){
-                //     str += '    <li class="list-group-item">'+dto.sort+'</li>';
-                // }
-                // str += '</ul>';
-                str += '</div>';
-                str += '</div>';
                 str += '</div>';
 
             }) // dtoList each
@@ -584,7 +623,6 @@
             gearList.html(str);
         } // showGearBoxes
 
-        // pagination 업로드
         function makingPagination(data){
 
             var gearPageUl = $(".pagination");
@@ -607,7 +645,7 @@
 
         } //makingPagination
 
-        var page = 1;
+        // var page = 1;
 
         // pagination 클릭시 이베트
         $(".list-pagination ul").on("click", "a", function (e){
@@ -627,8 +665,9 @@
         })
 
 
+
         // 기어선택 클릭 이벤트
-        $(".gear-data-boxes").on("click", ".selecting-gear", function (){
+        $(".modal-gear-list").on("click", ".selecting-gear", function (){
 
             if (!confirm("해당 장비로 변경하시겠습니까?")){
                 return;
@@ -687,13 +726,12 @@
 
             }); // getJSON for images
 
-
+            $(".myGearListModal").modal('hide');
 
         }); // 기어선택 클릭 이벤트 종료
 
 
-
-        $(".gear-data-boxes").on("click", ".unable-gear", function (){
+        $(".modal-gear-list").on("click", ".unable-gear", function (){
             alert("이미 중고 거래 등록된 상태입니다.");
             return false;
         })

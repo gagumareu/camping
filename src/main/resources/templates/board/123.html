@@ -9,53 +9,51 @@
 
 <script>
 
-  $.each(dtoList, function (i, dto){
+    function showGearBoxes(dtoList){
 
-    str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes" data-state="'+dto.state+'">';
+        var gearList = $(".gear-data-boxes");
+        var str = "";
 
-    if (dto.state == '0'){
-      str += '<div class="card" style="height: 100%">';
-    }else if (dto.state == '1'){
-      str += '<div class="card on-the-market" style="height: 100%">';
-    }
-    if (dto.gearImageDTOList[0] !== null){
-      str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
-    }else {
-      str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
-    }
-    str += '<div class="card-body gear-script">'
-    if(dto.state == '1'){
-      str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
-    }else if(dto.state == '0'){
-      str += '    <p class="card-title">'+dto.gname+'</p>';
-    }
-    str += '<div class="gear-btn-box">';
-    str += '    <button class="btn btn-outline-secondary gear-modify-btn" data-gno="'+dto.gno+'">수정</button>';
-    if (dto.state == '0'){
-      str += '<button class="btn btn-outline-secondary gear-remove-btn" data-gno="'+dto.gno+'">삭제</button>';
-    }else if(dto.state == '1'){
-    }
-    if (dto.state == '0'){
-      str += '<button class="btn btn-outline-secondary gear-market-btn" data-gno="'+dto.gno+'" data-email="'+dto.email+'">중고</button>';
-    }else if(dto.state == '1'){
-      str += '<button class="btn btn-outline-secondary gear-secondhands-lik" data-bno="'+dto.bno+'">중고</button>';
-    }
-    str += '</div>';
+        console.info(dtoList);
 
-    str += '<ul class="list-group list-group-flush">';
-    if(dto.brand){
-      str += '    <li class="list-group-item" >'+dto.brand+'</li>';
-    }
-    if(dto.sort){
-      str += '    <li class="list-group-item">'+dto.sort+'</li>';
-    }
-    str += '</ul>';
-    str += '</div>';
-    str += '</div>';
-    str += '</div>';
+        $.each(dtoList, function (i, dto){
 
+            str += '<div class="col-sm-6 col-md-3 col-lg-2 gear-boxes">';
+            if (dto.state == '0'){
+                str += '<div class="card selecting-gear" style="height: 100%" data-gno="'+dto.gno+'">';
+            }else if (dto.state == '1'){
+                str += '<div class="card on-the-market unable-gear" style="height: 100%">';
+            }
 
-  }) // dtoList each
+            if (dto.gearImageDTOList[0] !== null){
+                str += "<img class='card-img-top' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
+            }else {
+                str += "<img class='card-img-top' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
+            }
+
+            str += '<div class="card-body gear-script">'
+            if(dto.state == '1'){
+                str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
+            }else if(dto.state == '0'){
+                str += '    <p class="card-title">'+dto.gname+'</p>';
+            }
+
+            // str += '<ul class="list-group list-group-flush">';
+            // if(dto.brand){
+            //     str += '    <li class="list-group-item" >'+dto.brand+'</li>';
+            // }
+            // if(dto.sort){
+            //     str += '    <li class="list-group-item">'+dto.sort+'</li>';
+            // }
+            // str += '</ul>';
+            str += '</div>';
+            str += '</div>';
+            str += '</div>';
+
+        }) // dtoList each
+
+        gearList.html(str);
+    } // showGearBoxes
 
 
 </script>

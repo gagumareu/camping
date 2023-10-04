@@ -60,7 +60,9 @@ public class PartyServiceImpl implements PartyService{
         Sort sort = dir.equalsIgnoreCase("asc") ?
                 Sort.by(Sort.Direction.ASC, str) : Sort.by(Sort.Direction.DESC, str);
 
-        Pageable pageable = PageRequest.of(0, 20, sort);
+        int page = pageRequestDTO.getPage();
+
+        Pageable pageable = PageRequest.of(page -1, 20, sort);
 
         Page<Object[]> result = partyRepository.getPartyMemberWithGears(
                 bno,

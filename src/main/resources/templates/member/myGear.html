@@ -189,7 +189,7 @@
 
         <div class="myGear-search">
             <form action="/member/myGear" method="get">
-                <input class="form-control gear-search-input" name="keyword" placeholder="캠핑 장비 이름 또는 브랜드 이름으로 검색">
+                <input class="form-control gear-search-input" name="keyword" placeholder="캠핑 장비 이름 검색">
             </form>
         </div>
         <form class="sortFormBox" style="display: none" action="/member/myGear" method="get">
@@ -608,9 +608,6 @@
                     // var replyNo = parseInt(result);
                     // console.info(result.gno)
                     alert("장비가 등록 됐습니다.");
-
-                    loadGearBoxes(1);
-                    // self.location.reload();
                     $(".gear-register-modal").modal('hide');
                     gname : $("input[name='gname']").val("");
                     brand : $("input[name='brand']").val("");
@@ -620,6 +617,8 @@
                     sort: $("select[name='sort']").val("");
                     email: $("input[name='uploadFiles']").val("");
                     $(".uploadUL").html("");
+                    self.location.reload();
+
                 }
 
             }); // ajax
@@ -821,7 +820,7 @@
                     success: function (result){
                         if (result == "success"){
                             console.info("removed");
-                            loadGearBoxes(1);
+                            self.location.reload();
                         }
 
                     }
@@ -981,9 +980,9 @@
                     if (result === "success"){
                         console.info(result);
                         alert("기어 정보 수정 완료");
-                        loadGearBoxes(1);
                         $(".gear-modal").modal('hide');
                         $(".modal-gear-img-ul").html("");
+                        self.location.reload();
                     }
 
                 }
