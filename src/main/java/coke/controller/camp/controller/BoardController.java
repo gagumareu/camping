@@ -135,19 +135,26 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping({"/read", "modify"})
-    public void readOrModify(Model model, @RequestParam("bno") Long bno, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO){
+    public void readOrModify(Model model, @RequestParam("bno") Long bno, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO, Authentication authentication){
 
         log.info("---------read or modify-------");
         log.info(pageRequestDTO);
         log.info(bno);
+        log.info(authentication.getName());
+        log.info(authentication.getPrincipal());
 
         BoardDTO boardDTO = boardService.getBoardWithImagesMemberAndReplies(bno);
+
+        if (pageRequestDTO.getCategory() == null || pageRequestDTO.getCategory() == ""){
+            pageRequestDTO.setCategory(boardDTO.getCategory());
+        }
 
         log.info(boardDTO);
         log.info("category: " + pageRequestDTO.getCategory());
         log.info("boardDTO.getCategory: " + boardDTO.getCategory());
 
         if (pageRequestDTO.getCategory().equals("party") || boardDTO.getCategory().equals("party")){
+
             log.info("-----------get party location------------");
             String location = partyService.getLocationByBno(bno);
             model.addAttribute("campingLocation", location);

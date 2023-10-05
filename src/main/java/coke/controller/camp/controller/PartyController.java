@@ -3,17 +3,20 @@ package coke.controller.camp.controller;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.dto.PartyDTO;
+import coke.controller.camp.service.PartyGearService;
 import coke.controller.camp.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/party/")
 @Log4j2
 @RequiredArgsConstructor
@@ -21,22 +24,53 @@ public class PartyController {
 
     private final PartyService partyService;
 
-    @GetMapping(value = "/{bno}/{sortType}/{direction}/{page}")
+    private final PartyGearService partyGearService;
+
+    @GetMapping(value = "/{bno}/{sort}/{direction}/{page}")
     public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
-                                                                @PathVariable("sortType") String sortType,
+                                                                @PathVariable("sort") String sort,
                                                                 @PathVariable("direction") String direction,
                                                                 @PathVariable("page") int page,
                                                                 PageRequestDTO pageRequestDTO){
+        log.info("----------------getPartyMemberGearList----------------");
 
         log.info(bno);
-        log.info("sortType: " + sortType);
+        log.info("sortType: " + sort);
         log.info("direction: " + direction);
         log.info("page: " + page);
         log.info(pageRequestDTO);
 
         pageRequestDTO.setPage(page);
-        pageRequestDTO.setSort(sortType);
+        pageRequestDTO.setSort(sort);
         pageRequestDTO.setDirection(direction);
+
+        PageResultDTO<PartyDTO, Object[]> resultDTO = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList2(@PathVariable("bno") Long bno,
+                                                                                    @PathVariable("sort") String sort,
+                                                                                    @PathVariable("direction") String direction,
+                                                                                    @PathVariable("keyword") String keyword,
+                                                                                    @PathVariable("page") int page,
+                                                                                    PageRequestDTO pageRequestDTO){
+
+        log.info("-------------getPartyMemberGearList2----------");
+
+        log.info(bno);
+        log.info(sort);
+        log.info(direction);
+        log.info(keyword);
+        log.info(page);
+        log.info(pageRequestDTO);
+
+        pageRequestDTO.setPage(page);
+        pageRequestDTO.setSort(sort);
+        pageRequestDTO.setDirection(direction);
+        pageRequestDTO.setKeyword(keyword);
 
         PageResultDTO<PartyDTO, Object[]> resultDTO = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
 
@@ -93,6 +127,15 @@ public class PartyController {
         return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/{bno}/{gno}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> registerGear(@PathVariable("bno") Long bno, @PathVariable("gno") Long gno){
 
+        log.info("----------register gear------------");
+        log.info(bno + "/" + gno);
+
+        Long pgno = partyGearService.register(bno, gno);
+
+        return new ResponseEntity<>(pgno, HttpStatus.OK);
+    }
 
 }

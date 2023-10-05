@@ -43,6 +43,7 @@ public interface PartyService {
             partyDTO.setGname(gear.getGname());
             partyDTO.setState(gear.getState());
             partyDTO.setSort(gear.getSort());
+            partyDTO.setBrand(gear.getBrand());
         }
         if (gearImage != null){
             partyDTO.setIno(gearImage.getIno());

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PartySearchRepository {
 
-    Page<Object[]> getPartyMemberWithGears(Long bno, String direction, String sort, Pageable pageable);
+    Page<Object[]> getPartyMemberWithGears(Long bno, String direction, String sort, String keyword, Pageable pageable);
 }

@@ -48,43 +48,19 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         JPQLQuery<Tuple> tuple = query.select(gear, member, gearImage, board);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        BooleanExpression expression = gear.gno.gt(0L);
 
+        BooleanExpression expression = gear.gno.gt(0L);
         booleanBuilder.and(expression);
 
         BooleanExpression emailExpression = gear.member.email.eq(email);
         booleanBuilder.and(emailExpression);
 
-//        if ((type != null && type.length() > 0) && keyword != null){
-//
-//            String[] typeArr = type.split("");
-//
-//            BooleanBuilder conditionBuilder = new BooleanBuilder();
-//
-//            // n = 기어이름 b= 브랜드명 s = 카테고리(sort)
-//            for (String types: typeArr){
-//                switch (types){
-//                    case "n":
-//                        conditionBuilder.or(gear.gname.contains(keyword));
-//                        break;
-//                    case "b":
-//                        conditionBuilder.or(gear.brand.contains(keyword));
-//                        break;
-//                    case "s":
-//                        conditionBuilder.or(gear.sort.contains(keyword));
-//                }
-//            }
-//            booleanBuilder.and(conditionBuilder);
-//        }
 
         if (keyword != null){
-
             BooleanBuilder conditionBuilder = new BooleanBuilder();
             conditionBuilder.or(gear.gname.contains(keyword));
 //            conditionBuilder.or(gear.brand.contains(keyword));
-
             booleanBuilder.and(conditionBuilder);
-
         }
 
         tuple.where(booleanBuilder);

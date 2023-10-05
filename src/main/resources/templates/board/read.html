@@ -313,6 +313,57 @@
             margin-top: 30px;
         }
 
+
+        /* 파티 맴버 캠핑 장비 올 리스트    */
+        .party-member-gear-box{
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+            border-bottom: 1px solid;
+            justify-content: space-between;
+        }
+
+        .party-gear-img{
+            height: 100%;
+
+        }
+        .party-gear-img img{
+            height: 100%;
+        }
+
+        .party-member-img-div{
+            height: 45px;
+        }
+        .party-member-img-div img{
+            height: 100%;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+
+        /* 로그인 사용자의 캠핑 장비들 리스트    */
+        .myGear-list-box{
+            display: flex;
+            flex-direction: row;
+            height: 80px;
+            border-bottom: 1px solid;
+        }
+
+        .myGear-img-box{
+            height: 100%;
+        }
+
+        .myGear-img-box img{
+            height: 100%;
+        }
+
+        .myGear-info{
+            display: flex;
+            flex-direction: row;
+        }
+
+
+
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -353,6 +404,7 @@
           <div th:utext="${dto.content}"></div>
         </div>
 
+        <!-- 네이버 지도 API        -->
         <th:block th:if="${dto.category eq 'party' || tellingCategory eq 'party'}">
 
             <div id="map" style="width:100%;height:400px;"></div>
@@ -425,17 +477,18 @@
         </th:block>
 
 
-
-
-        <!-- 캠핑 모임       -->
+        <!-- category가 party, 캠핑 모임일 경우        -->
         <th:block th:if="${dto.category eq 'party'}">
             <div class="underConst">
             <h3>공사 중..........................................................</h3>
             </div>
+
+            <!--   캠핑 모임 참가 버튼      -->
             <div class="join-party">
                 <button class="btn btn-success join-party-btn">참가 신청</button>
             </div>
 
+            <!--  ajax로 모든 참가자의 캠핑 장비 불러오기           -->
             <div class="party-gear-sort">
                 <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc">유저순 asc</span>
                 <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc">유저순 desc</span>
@@ -469,6 +522,7 @@
             <input type="hidden" name="category" th:value="${pageRequestDTO.category}">
         </form>
 
+        <!-- 수정, 삭제 버튼 (중고거래시 거래 완료 버튼 표기)       -->
         <div class="readBoard-btn-box">
           <a th:if="${pageRequestDTO.category != ''}" th:href="@{/board/list(page=${pageRequestDTO.page} , type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO?.category} )}">
           <button class="btn btn-outline-info">리스트</button>
@@ -487,6 +541,7 @@
           </th:block>
         </div>
 
+        <!-- 댓글 관련        -->
         <div th:with="user=${#authentication.principal}" class="read-reply-box">
           <div th:action="@{/replies/}" class="read-reply-form">
               <input type="hidden" name="bno" th:value="${dto.bno}">
@@ -543,6 +598,8 @@
 
   $(document).ready(function (){
 
+      var partylist = [[${partyList}]];
+      console.log(partylist);
 
       var bno = [[${dto.bno}]];
 
@@ -747,6 +804,8 @@
 
       });  // reply canceling modify event
 
+
+
       // 거래 완료 버튼 클릭 (미구현)
       $(".marketDealDone").click(function (e){
 
@@ -754,12 +813,16 @@
 
       });
 
+
+
       // 프로젝트 설명 버튼 클릭
       $(".page-info").click(function (){
           $(".intro-myProject").modal('show');
       })
 
-      //*********** 캠핑 모임 관련 **********
+
+
+      //********************************** 캠핑 모임 관련 *********************************************************
 
       var NoAvailable = $(".NoAvailable");
       var addMyGearToHidden = $(".add-my-gear-hidden-box");
@@ -767,63 +830,6 @@
       var partyList = [[${partyList}]];
       console.log(partyList);
 
-      if(tellingCategory == "party"){
-
-          loadMemberGears();
-          function loadMemberGears(page, sort, dir){
-
-              var bno = [[${dto.bno}]];
-              var sortType = "";
-              var direction = "";
-
-              if(page == null){
-                  var pageValue = 1;
-              }else {
-                  var pageValue = page;
-              }
-
-              if(sort != null && dir != null){
-                  sortType = sort;
-                  direction = dir;
-              }else if (sort == null && dir == null) {
-                  sortType = null;
-                  direction = null;
-              }
-
-              console.log(bno);
-              console.log(sortType);
-              console.log(direction);
-              console.log(pageValue);
-
-              $.getJSON('/party/' + bno + "/" + sortType + "/" + direction + "/" + pageValue, function (arr){
-
-                  console.log("---loadMemberGears---");
-                  console.log(arr);
-
-                  getMemberGearList(arr.dtoList);
-
-                  makingPagination(arr.pageList);
-              })
-
-          }
-      }
-
-      // 참가자 리스트 정렬 버튼
-      $(".party-gear-sort").on(".sortMyGear", function (){
-          console.log("clicking");
-      })
-
-      $(".sortMyGear").click(function (){
-          console.log("clicking");
-          var sort = $(this).data("sort");
-          var direction = $(this).data("dir");
-          console.log(sort);
-          console.log(direction);
-
-          loadMemberGears(1, sort, direction);
-      })
-
-      // 모임 참가자 캠핑 장비 리스트 업
       function getMemberGearList(arr){
 
           var str = "";
@@ -845,7 +851,7 @@
                   if (dto.s3Url != null){
                       str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
                   }else if(dto.s3Url == null){
-                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg".svg">';
+                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
                   }
                   str += '    </div>';
                   str += '    <div class="party-gear-info">';
@@ -881,20 +887,28 @@
 
           partyMemberListDiv.html(str);
 
-      }  // getMemberGearList  캠핑 모임 참가자 리스트 업
+      }
 
       // 참가자들 캠핑 장비 페이징
-      function makingPagination(data){
+      function makingPagination(data, sort, dir, keyword){
 
           var gearPageUl = $(".pagination");
 
           var str = "";
 
+          var sort = sort;
+          var dir = dir;
+          var keyword = keyword;
+
+          console.log(sort);
+          console.log(dir);
+          console.log(keyword);
+
           console.log(data);
 
           $(data).each(function (i, page){
               str += '<li class="page-link">';
-              str += '<a href="'+page+'">'+page+'</a>';
+              str += '<a href="'+page+'" data-sort="'+sort+'" data-dir="'+dir+'" data-keyword="'+keyword+'">'+page+'</a>';
               str += '</li>';
           }) // pageList each
 
@@ -902,7 +916,7 @@
 
       } //makingPagination
 
-      // 캠핑 장비 페이지 클릭 이벤트
+      // 캠핑 장비 페이지네이션 페이지 클릭 이벤트
       $(".list-pagination ul").on("click", "a", function (e){
 
           e.preventDefault();
@@ -910,14 +924,97 @@
           var page = 1;
 
           var targetPage = $(this).attr("href");
+          var sort = $(this).data('sort');
+          var dir = $(this).data('dir');
+          var keyword = $(this).data('keyword');
 
           page = targetPage;
 
           console.log(page);
 
-          loadMemberGears(page);
+          loadMemberGears(page, sort, dir, keyword);
 
       })
+
+
+      if(tellingCategory == "party"){
+
+          // 모든 참가자 캠핑 장비 리스트 업
+          loadMemberGears();
+          function loadMemberGears(pageValue, sortType, dir, keywordValue){
+
+              var bno = [[${dto.bno}]];
+              var sort = "";
+              var direction = "";
+              var keyword = "";
+              var page = 1;
+
+              if(pageValue != null){
+                  var page = pageValue;
+              }
+
+              if(sortType != null){
+                  sort = sortType;
+              }else if (sortType == null || sortType == "") {
+                  sort = null;
+              }
+
+              if(dir != null){
+                  direction = dir;
+              }else if (dir == "" || dir == null) {
+                  direction = null;
+              }
+
+              if (keywordValue == null || keywordValue == ""){
+                  console.log("-----keyword is null-----");
+                  keyword = null;
+              }else if(keywordValue != null){
+                  console.log("-----keyword is not null-----");
+                  keyword = keywordValue;
+              }
+
+
+              console.log(bno);
+              console.log(sort);
+              console.log(direction);
+              console.log(keyword);
+              console.log(page);
+
+              $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
+              // $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + page, function (arr){
+
+                  console.log("---loadMemberGears---");
+                  console.log(arr);
+
+                  getMemberGearList(arr.dtoList);
+                  makingPagination(arr.pageList, sort, direction, keyword);
+              })
+
+          }
+      }
+
+      // 참가자 리스트 정렬 버튼
+      // $(".party-gear-sort").on(".sortMyGear", function (){
+      //     console.log("clicking");
+      // })
+
+      // 참가가 전체 리스트 정렬 버튼 클릭 이벤트
+      $(".sortMyGear").click(function (){
+
+          var sort = $(this).data("sort");
+          var direction = $(this).data("dir");
+          // var keyword = $(this).data('keyword');
+          var keyword = null;
+
+          console.log(sort);
+          console.log(direction);
+          console.log(keyword);
+
+          loadMemberGears(1, sort, direction, keyword);
+      })
+
+      // 모임 참가자 캠핑 장비 리스트 업
+
 
       // 캠핑 모임 신청 버튼 클릭
       $(".join-party-btn").click(function (){
@@ -951,6 +1048,7 @@
                       success: function (result){
                           console.log(result);
                           loadMemberGears();
+                          self.location.reload();
                       }
                   }) // ajax
               }else if(count == '1'){
@@ -979,20 +1077,18 @@
       })  // 캠핑 파티 참가 버튼
 
       // 내 장비 등록 클릭
-      $(".party-member-list").on(".add-my-gear", function (){
-          console.log("clicking");
-
-          var gno = $(this).val();
-          console.log(gno);
-
-          var str = "";
-
-          str += '<input type="hidden" name="gno" value="'+gno+'">'
-
-          addMyGearToHidden.append(str);
-      })  // 내 장비 등록 클릭 end
-
-
+      // $(".party-member-list").on(".add-my-gear", function (){
+      //     console.log("clicking");
+      //
+      //     var gno = $(this).val();
+      //     console.log(gno);
+      //
+      //     var str = "";
+      //
+      //     str += '<input type="hidden" name="gno" value="'+gno+'">'
+      //
+      //     addMyGearToHidden.append(str);
+      // })  // 내 장비 등록 클릭 end
 
 
 

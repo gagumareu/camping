@@ -9,27 +9,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartyDTO {
+public class PartyGearDTO {
 
-    private Long pno;
-
-    private Long bno;
-
-    private String location;
-
-    private String email;
-    private String userName;
-    private String profileImg;
+    private Long pgno;
 
     private Long gno;
     private String gname;
     private String brand;
-    private int state;
+    private String material;
+    private String size;
+    private String script;
     private String sort;
+    private String state;
+    private String s3URL;
 
-    private Long ino;
-    private String fileName;
-    private String s3Url;
+    private Long bno;
+
+
 
 
 }

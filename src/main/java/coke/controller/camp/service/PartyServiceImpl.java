@@ -54,10 +54,17 @@ public class PartyServiceImpl implements PartyService{
                 (GearImage) en[4]
         ));
 
-        String dir = pageRequestDTO.getDirection() == null ? "asc" : pageRequestDTO.getDirection();
+        if (pageRequestDTO.getSort() == ""){
+            pageRequestDTO.setSort(null);
+        }
+        if (pageRequestDTO.getDirection() == ""){
+            pageRequestDTO.setDirection(null);
+        }
+
+        String dir = pageRequestDTO.getDirection() == null ? "ASC" : pageRequestDTO.getDirection();
         String str = pageRequestDTO.getSort() == null ? "email" : pageRequestDTO.getSort();
 
-        Sort sort = dir.equalsIgnoreCase("asc") ?
+        Sort sort = dir.equalsIgnoreCase("ASC") ?
                 Sort.by(Sort.Direction.ASC, str) : Sort.by(Sort.Direction.DESC, str);
 
         int page = pageRequestDTO.getPage();
@@ -68,6 +75,7 @@ public class PartyServiceImpl implements PartyService{
                 bno,
                 pageRequestDTO.getDirection(),
                 pageRequestDTO.getSort(),
+                pageRequestDTO.getKeyword(),
                 pageable);
 
         return new PageResultDTO<>(result, fn);
