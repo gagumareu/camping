@@ -732,11 +732,15 @@
             var direction = $(this).data("dir");
             console.log(direction);
 
+            var keyword = [[${pageRequestDTO.keyword}]];
+            console.log(keyword);
+
             var str = "";
             var formBox = $(".sortFormBox");
 
             str += '<input type="hidden" name="sort" value="'+sort+'">';
             str += '<input type="hidden" name="direction" value="'+direction+'">';
+            str += '<input type="hidden" name="keyword" value="'+keyword+'">';
 
             formBox.append(str);
             formBox.submit();

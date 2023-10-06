@@ -72,6 +72,7 @@ public class PartySearchRepositoryImpl extends QuerydslRepositorySupport impleme
             booleanBuilder.and(conditionBuilder);
         }
 
+
         tuple.where(booleanBuilder);
 
         Sort sort = pageable.getSort();

@@ -80,6 +80,7 @@ public interface GearService {
                 .regDate(gear.getRegDate())
                 .modDate(gear.getModDate())
                 .memberName(member.getMemberName())
+                .profileImg(member.getProfileImg())
                 .email(member.getEmail())
                 .build();
 

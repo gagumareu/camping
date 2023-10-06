@@ -26,32 +26,8 @@ public class PartyController {
 
     private final PartyGearService partyGearService;
 
-    @GetMapping(value = "/{bno}/{sort}/{direction}/{page}")
-    public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
-                                                                @PathVariable("sort") String sort,
-                                                                @PathVariable("direction") String direction,
-                                                                @PathVariable("page") int page,
-                                                                PageRequestDTO pageRequestDTO){
-        log.info("----------------getPartyMemberGearList----------------");
-
-        log.info(bno);
-        log.info("sortType: " + sort);
-        log.info("direction: " + direction);
-        log.info("page: " + page);
-        log.info(pageRequestDTO);
-
-        pageRequestDTO.setPage(page);
-        pageRequestDTO.setSort(sort);
-        pageRequestDTO.setDirection(direction);
-
-        PageResultDTO<PartyDTO, Object[]> resultDTO = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
-
-        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
-
-    }
-
     @GetMapping(value = "/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList2(@PathVariable("bno") Long bno,
+    public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
                                                                                     @PathVariable("sort") String sort,
                                                                                     @PathVariable("direction") String direction,
                                                                                     @PathVariable("keyword") String keyword,
@@ -77,6 +53,7 @@ public class PartyController {
         return new ResponseEntity<>(resultDTO, HttpStatus.OK);
 
     }
+
 
     @PostMapping(value = "/{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> joinParty(@RequestBody PartyDTO partyDTO){

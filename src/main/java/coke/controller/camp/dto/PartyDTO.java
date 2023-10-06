@@ -18,7 +18,7 @@ public class PartyDTO {
     private String location;
 
     private String email;
-    private String userName;
+    private String memberName;
     private String profileImg;
 
     private Long gno;

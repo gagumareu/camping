@@ -20,30 +20,24 @@ public class GearDTO {
 
     @NotEmpty
     private String gname;
-
     private String brand;
-
     private String material;
-
     private String size;
-
     private String script;
-
     @NotEmpty
     private String sort;
-
     private int state;
+    private String s3Url;
 
     @NotEmpty
     private String email;
-
     private String memberName;
+    private String profileImg;
 
     private Long bno;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
-
     @JsonIgnore
     private LocalDateTime modDate;
 

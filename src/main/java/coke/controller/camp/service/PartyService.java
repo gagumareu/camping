@@ -34,7 +34,7 @@ public interface PartyService {
                 .bno(board.getBno())
                 .location(party.getLocation())
                 .email(member.getEmail())
-                .userName(member.getMemberName())
+                .memberName(member.getMemberName())
                 .profileImg(member.getProfileImg())
                 .build();
 

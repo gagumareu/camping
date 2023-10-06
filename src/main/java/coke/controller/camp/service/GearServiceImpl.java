@@ -228,7 +228,8 @@ public class GearServiceImpl implements GearService{
 
         Page<Object[]> result = gearRepository.getGearListWithSearching(
                 email,
-                pageRequestDTO.getType(),
+                pageRequestDTO.getSort(),
+                pageRequestDTO.getDirection(),
                 pageRequestDTO.getKeyword(),
                 pageable);
 

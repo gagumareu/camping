@@ -27,10 +27,12 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public Page<Object[]> getGearListWithSearching(String email, String type, String keyword, Pageable pageable) {
+    public Page<Object[]> getGearListWithSearching(String email, String sortType, String direction, String keyword, Pageable pageable) {
 
         log.info("-------gear search repository impl----------");
         log.info(email);
+        log.info(sortType);
+        log.info(direction);
         log.info(keyword);
         log.info(pageable);
 
@@ -55,8 +57,14 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         BooleanExpression emailExpression = gear.member.email.eq(email);
         booleanBuilder.and(emailExpression);
 
+        if (keyword ==null || keyword == "" || keyword.isEmpty()){
+            keyword = "";
+        }
 
-        if (keyword != null){
+        if (keyword.equals("null")){
+            log.info("keyword is null");
+        }else {
+            log.info("keyword is available");
             BooleanBuilder conditionBuilder = new BooleanBuilder();
             conditionBuilder.or(gear.gname.contains(keyword));
 //            conditionBuilder.or(gear.brand.contains(keyword));
@@ -68,11 +76,23 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         Sort sort = pageable.getSort();
 
         sort.stream().forEach(order -> {
-            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            Order orderDirection = order.isAscending() ? Order.ASC : Order.DESC;
             String property = order.getProperty();
 
-            PathBuilder oderByExpression = new PathBuilder(Gear.class, "gear");
-            tuple.orderBy(new OrderSpecifier(direction, oderByExpression.get(property)));
+            switch (property){
+                case "email":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, member.email));
+                    break;
+                case "sort":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.sort));
+                    break;
+                case "gname":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.gname));
+                    break;
+            }
+
+//            PathBuilder oderByExpression = new PathBuilder(Gear.class, "gear");
+//            tuple.orderBy(new OrderSpecifier(orderDirection, oderByExpression.get(property)));
         });
 
         tuple.groupBy(gear);
@@ -91,11 +111,5 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
         return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
     }
 
-    @Override
-    public Page<Object[]> getGearListWithSearching2(String email, String type, String keyword, Pageable pageable) {
 
-
-
-        return null;
-    }
 }
