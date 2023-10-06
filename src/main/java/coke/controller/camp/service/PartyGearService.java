@@ -8,7 +8,7 @@ import coke.controller.camp.entity.PartyGear;
 public interface PartyGearService {
 
     Long register(Long bno, Long gno);
-
+    void deleteAllByBno(Long bno);
 
     default PartyGear DTOToEntity(Long bno, Long gno){
 

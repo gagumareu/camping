@@ -3,6 +3,7 @@ package coke.controller.camp.service;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.dto.PartyDTO;
+import coke.controller.camp.dto.PartyGearDTO;
 import coke.controller.camp.entity.*;
 import coke.controller.camp.repository.PartyRepository;
 import jakarta.servlet.http.Part;
@@ -72,6 +73,47 @@ public class PartyServiceImpl implements PartyService{
         Pageable pageable = PageRequest.of(page -1, 20, sort);
 
         Page<Object[]> result = partyRepository.getPartyMemberWithGears(
+                bno,
+                pageRequestDTO.getDirection(),
+                pageRequestDTO.getSort(),
+                pageRequestDTO.getKeyword(),
+                pageable);
+
+        return new PageResultDTO<>(result, fn);
+    }
+
+    @Override
+    public PageResultDTO<PartyGearDTO, Object[]> getPartyGearsListWithPagination(Long bno, PageRequestDTO pageRequestDTO) {
+
+        log.info("--------getPartyGearsListWithPagination---------");
+        log.info(bno);
+        log.info(pageRequestDTO);
+
+        Function<Object[], PartyGearDTO> fn = (en -> PartyGearEntityToDTO(
+                (PartyGear) en[0],
+                (Member) en[1],
+                (Gear) en[2],
+                (GearImage) en[3]
+        ));
+
+        if (pageRequestDTO.getSort() == ""){
+            pageRequestDTO.setSort(null);
+        }
+        if (pageRequestDTO.getDirection() == ""){
+            pageRequestDTO.setDirection(null);
+        }
+
+        String dir = pageRequestDTO.getDirection() == null ? "ASC" : pageRequestDTO.getDirection();
+        String str = pageRequestDTO.getSort() == null ? "email" : pageRequestDTO.getSort();
+
+        Sort sort = dir.equalsIgnoreCase("ASC") ?
+                Sort.by(Sort.Direction.ASC, str) : Sort.by(Sort.Direction.DESC, str);
+
+        int page = pageRequestDTO.getPage();
+
+        Pageable pageable = PageRequest.of(page -1, 20, sort);
+
+        Page<Object[]> result = partyRepository.getPartyGearList(
                 bno,
                 pageRequestDTO.getDirection(),
                 pageRequestDTO.getSort(),

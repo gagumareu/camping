@@ -3,6 +3,7 @@ package coke.controller.camp.controller;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.dto.PartyDTO;
+import coke.controller.camp.dto.PartyGearDTO;
 import coke.controller.camp.service.PartyGearService;
 import coke.controller.camp.service.PartyService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class PartyController {
                                                                                     @PathVariable("page") int page,
                                                                                     PageRequestDTO pageRequestDTO){
 
-        log.info("-------------getPartyMemberGearList2----------");
+        log.info("-------------getPartyMemberGearList----------");
 
         log.info(bno);
         log.info(sort);
@@ -49,6 +50,34 @@ public class PartyController {
         pageRequestDTO.setKeyword(keyword);
 
         PageResultDTO<PartyDTO, Object[]> resultDTO = partyService.getPartyByBnoWithList(bno, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/gear/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PageResultDTO<PartyGearDTO, Object[]>> getPartyGearList(@PathVariable("bno") Long bno,
+                                                                                    @PathVariable("sort") String sort,
+                                                                                    @PathVariable("direction") String direction,
+                                                                                    @PathVariable("keyword") String keyword,
+                                                                                    @PathVariable("page") int page,
+                                                                                    PageRequestDTO pageRequestDTO){
+
+        log.info("-------------getPartyGearList----------");
+
+        log.info(bno);
+        log.info(sort);
+        log.info(direction);
+        log.info(keyword);
+        log.info(page);
+        log.info(pageRequestDTO);
+
+        pageRequestDTO.setPage(page);
+        pageRequestDTO.setSort(sort);
+        pageRequestDTO.setDirection(direction);
+        pageRequestDTO.setKeyword(keyword);
+
+        PageResultDTO<PartyGearDTO, Object[]> resultDTO = partyService.getPartyGearsListWithPagination(bno, pageRequestDTO);
 
         return new ResponseEntity<>(resultDTO, HttpStatus.OK);
 
@@ -107,7 +136,7 @@ public class PartyController {
     @PostMapping(value = "/{bno}/{gno}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> registerGear(@PathVariable("bno") Long bno, @PathVariable("gno") Long gno){
 
-        log.info("----------register gear------------");
+        log.info("----------register gear to party gear------------");
         log.info(bno + "/" + gno);
 
         Long pgno = partyGearService.register(bno, gno);

@@ -28,4 +28,14 @@ public class PartyGearServiceImpl implements PartyGearService{
 
         return result.getPgno();
     }
+
+    @Override
+    public void deleteAllByBno(Long bno) {
+
+        log.info("---deleteAll--");
+        log.info(bno);
+
+        partyGearRepository.deleteAllByBno(bno);
+
+    }
 }

@@ -182,4 +182,70 @@ public class GearController {
 
 
 
+
+//    임시 테스트 용
+
+    @GetMapping("/pagination/{email}/{page}")
+    public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithPagination(
+            @PathVariable("email") String email,
+            @PathVariable("page") int page,
+            PageRequestDTO pageRequestDTO){
+
+        log.info("------------gear getList With pagination---------------");
+        log.info(email);
+        log.info(page);
+        log.info(pageRequestDTO);
+
+        pageRequestDTO.setPage(page);
+
+        PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/pagination/{email}/{page}/{keyword}")
+    public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithKeywordAndPagination(
+            @PathVariable("email") String email,
+            @PathVariable("page") int page,
+            @PathVariable("keyword") String keyword,
+            PageRequestDTO pageRequestDTO){
+
+        log.info("------------gear getList With keyword and pagination---------------");
+        log.info(email);
+        log.info(page);
+        log.info(pageRequestDTO);
+
+        pageRequestDTO.setPage(page);
+        pageRequestDTO.setKeyword(keyword);
+
+        PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/sort/{email}/{sort}/{direction}")
+    public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithSortAndPagination(
+            @PathVariable("email") String email,
+            @PathVariable("sort") String sort,
+            @PathVariable("direction") String direction,
+            PageRequestDTO pageRequestDTO){
+
+        log.info("------------gear getList With sort and pagination---------------");
+        log.info(email);
+        log.info(sort);
+        log.info(direction);
+
+        pageRequestDTO.setPage(1);
+        pageRequestDTO.setSort(sort);
+        pageRequestDTO.setDirection(direction);
+
+        log.info(pageRequestDTO);
+
+        PageResultDTO<GearDTO, Object[]> resultDTO = gearService.getListWithPagination(email, pageRequestDTO);
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
+    }
+
+
+
 }

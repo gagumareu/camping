@@ -1,10 +1,7 @@
 package coke.controller.camp.controller;
 
 import coke.controller.camp.dto.*;
-import coke.controller.camp.service.BoardImageService;
-import coke.controller.camp.service.BoardService;
-import coke.controller.camp.service.GearService;
-import coke.controller.camp.service.PartyService;
+import coke.controller.camp.service.*;
 import coke.controller.camp.util.S3Uploader;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -40,6 +37,8 @@ public class BoardController {
     private final S3Uploader s3Uploader;
 
     private final PartyService partyService;
+
+    private final PartyGearService partyGearService;
 
     @Value("${coke.controller.upload.path}")
     private String uploadPath;
@@ -184,6 +183,7 @@ public class BoardController {
 
         if (boardDTO.getCategory().equals("party")){
             partyService.removePartiesByBno(boardDTO.getBno());
+            partyGearService.deleteAllByBno(boardDTO.getBno());
         }
 
         gearService.backStateZero(boardDTO.getBno());

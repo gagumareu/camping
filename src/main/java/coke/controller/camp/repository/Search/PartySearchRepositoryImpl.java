@@ -115,5 +115,91 @@ public class PartySearchRepositoryImpl extends QuerydslRepositorySupport impleme
         return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
     }
 
+    @Override
+    public Page<Object[]> getPartyGearList(Long bno, String direction, String sortType, String keyword, Pageable pageable) {
+
+        log.info("-------------getPartyMemberWithGears-------------");
+        log.info(bno);
+        log.info("sortType: " + sortType);
+        log.info("direction: " + direction);
+        log.info("keyword: " + keyword);
+        log.info(pageable);
+
+        QPartyGear partyGear = QPartyGear.partyGear;
+        QGear gear = QGear.gear;
+        QGearImage gearImage = QGearImage.gearImage;
+        QMember member = QMember.member;
+//        QBoard board = QBoard.board;
+
+        JPQLQuery<PartyGear> query = from(partyGear);
+//        query.leftJoin(board).on(partyGear.board.eq(board));
+        query.leftJoin(member).on(member.email.eq(gear.member.email));
+        query.leftJoin(gear).on(partyGear.gear.eq(gear));
+        query.leftJoin(gearImage).on(gearImage.gear.eq(gear));
+
+        JPQLQuery<Tuple> tuple = query.select(partyGear, member, gear, gearImage );
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        BooleanExpression bnoExpression = partyGear.board.bno.eq(bno);
+        booleanBuilder.and(bnoExpression);
+
+        if (keyword == null || keyword == "" || keyword.isEmpty()){
+            keyword = "";
+        }
+
+        log.info(keyword);
+
+        if ( keyword.equals("null")){
+            log.info("********************keyword is null********************");
+        }else {
+            log.info("********************keyword is not null********************");
+            BooleanBuilder conditionBuilder = new BooleanBuilder();
+            conditionBuilder.or(gear.gname.contains(keyword));
+            booleanBuilder.and(conditionBuilder);
+        }
+
+        tuple.where(booleanBuilder);
+
+        Sort sort = pageable.getSort();
+
+        sort.stream().forEach(order -> {
+            Order orderDirection = order.isAscending() ? Order.ASC : Order.DESC;
+            String property = order.getProperty();
+            log.info("property: " + property);
+            log.info("sort: " + sort);
+
+            switch (property){
+                case "email":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, member.email));
+                    break;
+                case "sort":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.sort));
+                    break;
+                case "gname":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.gname));
+                    break;
+            }
+        });
+
+        log.info(sort);
+
+        tuple.groupBy(gear);
+
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
+
+        List<Tuple> result = tuple.fetch();
+
+        log.info(result);
+
+        Long count = tuple.fetchCount();
+
+        log.info(count);
+
+
+        return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
+    }
+
 
 }

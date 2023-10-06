@@ -317,7 +317,7 @@
             </th:block>
 
             <div class="col-md-12 col-sm-12 btnBox">
-                <button type="button" class="btn btn-light changingAGear">장비 변경</button>
+                <button th:if="${tellCategory == 'secondHands'}" type="button" class="btn btn-light changingAGear">장비 변경</button>
                 <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>
         </form>

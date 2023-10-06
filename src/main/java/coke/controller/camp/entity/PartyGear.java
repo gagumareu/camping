@@ -12,6 +12,7 @@ import lombok.*;
 public class PartyGear {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pgno;
 
     @ManyToOne(fetch = FetchType.LAZY)

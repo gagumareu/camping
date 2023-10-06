@@ -16,14 +16,15 @@ public class PartyGearDTO {
     private Long gno;
     private String gname;
     private String brand;
-    private String material;
-    private String size;
-    private String script;
-    private String sort;
     private String state;
-    private String s3URL;
+    private String s3Url;
 
     private Long bno;
+
+    private String email;
+    private String memberName;
+    private String profileImg;
+
 
 
 

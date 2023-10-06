@@ -305,6 +305,8 @@
 
         .join-party{
             margin: 35px 0px;
+            display: flex;
+            flex-direction: row;
 
         }
 
@@ -485,7 +487,8 @@
 
             <!--   캠핑 모임 참가 버튼      -->
             <div class="join-party">
-                <button class="btn btn-success join-party-btn">참가 신청</button>
+                <button class="btn btn-success join-party-btn applyForParty">참가 신청</button>
+                <button class="btn btn-success join-party-btn cancelingFormParty">참가 취소</button>
                 <button class="btn btn-success AllGearList">참가자 장비 전체 리스트</button>
                 <button class="btn btn-success addMyGear">내 장비 선택</button>
                 <button class="btn btn-success finalList">최종 장비 리스트</button>
@@ -567,28 +570,6 @@
 
         </div>
 
-
-        <!--/ introduce my project modal /-->
-        <div class="modal intro-myProject" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body intro-myProject-list">
-                        <div style="display: flex;">
-                            <span class="material-symbols-outlined">arrow_right</span><p>로그인 유저의 authentication.pricipal.username 값과 글 작성한 유저의 ID(email) 값이 같으면 수정 삭제 권한을 얻습니다.</p>
-                        </div>
-                        <div style="display: flex;">
-                            <span class="material-symbols-outlined">arrow_right</span><p>중고거래일 경우 게시글을 삭제하면 등록된 장비는 중고 거래 등록 및 삭제 기능이 복원됩니다.</p>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary reading-gear-close" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="add-my-gear-hidden-box" style="display: none">
 
@@ -860,7 +841,7 @@
 
           $(arr).each(function (i, dto){
 
-              if(dto.gname != null){
+              if(dto.gname != null && dto.state == 0){
                   str += '<div class="party-member-box" >';
 
                   str += '<div class="party-member-gear">';
@@ -897,11 +878,11 @@
                   }
                   str += '    </div>';
                   str += '<div>'+dto.memberName+'</div>';
-                  // str += '<div class="party-member-gear-check">';
-                  // if (dto.email == currentUser){
-                  //     str += '<input class="add-my-gear" type="checkbox" name="gno" value="'+dto.gno+'">';
-                  // }
-                  // str += '</div>';
+                  if (dto.gearImageDTOList != null && dto.email == currentUser){
+                      str += '<div class="party-member-gear-check">';
+                      str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
+                      str += '</div>';
+                  }
                   str += '</div>';
 
                   str += '</div>';
@@ -1015,7 +996,11 @@
               })
 
           }else if (witch == "finalList"){
+              $.getJSON('/party/gear/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
 
+                  getMemberGearList(arr.dtoList);
+                  makingPagination(arr.pageList, sort, direction, keyword);
+              })
 
           }
 
@@ -1055,7 +1040,6 @@
           $(".memberGearSearch").val("");
       })
 
-
       $(".AllGearList").click(function (){
           $(".party-member-list").html("");
           witchGearList = "allList";
@@ -1073,8 +1057,6 @@
           witchGearList = "finalList";
           loadGearDefult(1, null, null, null, witchGearList);
       });
-
-
 
 
 
@@ -1110,7 +1092,7 @@
                       success: function (result){
                           console.log(result);
                           loadGearDefult();
-                          self.location.reload();
+                          // self.location.reload();
                       }
                   }) // ajax
               }else if(count == '1'){
@@ -1136,8 +1118,53 @@
                   return false;
               } // end if
           })
-      })  // 캠핑 파티 참가 버튼
+      })
 
+    //  내장비 최종 장비 리스트에 등록
+      $(".party-member-list").on("click", ".add-my-gear", function (){
+
+          console.log("clicking");
+
+          var gno = $(this).data('gno');
+
+          console.log(gno);
+
+          $.ajax({
+              url: '/party/' + bno + "/" + gno,
+              method: 'POST',
+              success: function (pgno){
+                  console.log(pgno);
+              }
+          })
+      })
+
+
+      $.getJSON('/party/' + bno + "/" + currentUser, function (counting){
+
+          console.log("**********");
+          console.log(counting);
+          console.log("**********");
+
+          if (counting == 0){  // 미참가자
+
+              $(".addMyGear").css("display", "none");
+              $(".cancelingFormParty").css("display", "none");
+              $(".applyForParty").css("display", "block");
+
+          }else if (currentUser == userEmail){ // 게시물 작성자
+
+              $(".addMyGear").css("display", "block");
+              $(".join-party-btn").css("display", "none");
+
+
+          }else if (counting == 1){ // 참가자
+
+              $(".addMyGear").css("display", "blcok");
+              $(".applyForParty").css("display", "none");
+              $(".cancelingFormParty").css("display", "block");
+          }
+
+      })
 
 
 

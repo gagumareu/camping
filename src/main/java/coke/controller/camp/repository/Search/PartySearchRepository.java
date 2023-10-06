@@ -8,4 +8,5 @@ import java.util.List;
 public interface PartySearchRepository {
 
     Page<Object[]> getPartyMemberWithGears(Long bno, String direction, String sort, String keyword, Pageable pageable);
+    Page<Object[]> getPartyGearList(Long bno, String direction, String sort, String keyword, Pageable pageable);
 }

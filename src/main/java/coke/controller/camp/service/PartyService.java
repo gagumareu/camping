@@ -3,6 +3,7 @@ package coke.controller.camp.service;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.dto.PartyDTO;
+import coke.controller.camp.dto.PartyGearDTO;
 import coke.controller.camp.entity.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public interface PartyService {
 
     Long save(PartyDTO partyDTO);
     PageResultDTO<PartyDTO, Object[]> getPartyByBnoWithList(Long bno, PageRequestDTO pageRequestDTO);
+    PageResultDTO<PartyGearDTO, Object[]> getPartyGearsListWithPagination(Long bno, PageRequestDTO pageRequestDTO);
     int checkAvailableUser(Long bno, String email);
     String dropOut(Long bno, String email);
     String getLocationByBno(Long bno);
@@ -53,6 +55,26 @@ public interface PartyService {
 
         return partyDTO;
 
+    }
+
+    default PartyGearDTO PartyGearEntityToDTO(PartyGear partyGear, Member member, Gear gear, GearImage gearImage){
+
+        PartyGearDTO partyGearDTO = PartyGearDTO.builder()
+                .pgno(partyGear.getPgno())
+                .gno(gear.getGno())
+                .gname(gear.getGname())
+                .brand(gear.getBrand())
+                .state(String.valueOf(gear.getState()))
+                .email(member.getEmail())
+                .memberName(member.getMemberName())
+                .profileImg(member.getProfileImg())
+                .build();
+
+
+        if (gearImage != null){
+            partyGearDTO.setS3Url(gearImage.getS3Url());
+        }
+        return partyGearDTO;
     }
 
 
