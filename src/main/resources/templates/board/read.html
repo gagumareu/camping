@@ -868,11 +868,20 @@
                   str += '<div><b>'+i+'  '+dto.gno+'</b></div>';
 
                   str += '    <div class="party-member-gear-img-box">';
-                  if (dto.s3Url != null){
-                      str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
-                  }else if(dto.s3Url == null){
-                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                  if (dto.gearImageDTOList != null){
+                      if (dto.gearImageDTOList[0] != null){
+                          str += '<img class="gear-img available-gear-img" src="'+dto.gearImageDTOList[0].s3Url+'">';
+                      }else if(dto.gearImageDTOList[0] == null){
+                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                      }
+                  }else {
+                      if (dto.s3Url != null){
+                          str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
+                      }else if(dto.s3Url == null){
+                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                      }
                   }
+
                   str += '    </div>';
                   str += '    <div class="party-gear-info">';
                   str += '        <div>'+dto.gname+'</div><div>'+dto.sort+'</div><div>'+dto.state+'</div>';
