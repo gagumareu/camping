@@ -490,12 +490,17 @@
 
             <!--  ajax로 모든 참가자의 캠핑 장비 불러오기           -->
             <div class="party-gear-sort">
+                <img class="reboot-sort" src="/icon/reboot.svg">
                 <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc">유저순 asc</span>
                 <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc">유저순 desc</span>
                 <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>
                 <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>
                 <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>
                 <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>
+            </div>
+
+            <div>
+                <input type="text" class="form-control memberGearSearch" name="keyword" placeholder="SEARCH">
             </div>
 
             <div class="NoAvailable">
@@ -830,6 +835,8 @@
       var partyList = [[${partyList}]];
       console.log(partyList);
 
+      var keywordMaster = "";
+
       function getMemberGearList(arr){
 
           var str = "";
@@ -937,66 +944,74 @@
       })
 
 
+
+      function loadMemberGears(pageValue, sortType, dir, keywordValue){
+
+          var bno = [[${dto.bno}]];
+          var sort = "";
+          var direction = "";
+          var keyword = "";
+          var page = 1;
+
+          if(pageValue != null){
+              var page = pageValue;
+          }
+
+          if(sortType != null){
+              sort = sortType;
+          }else if (sortType == null || sortType == "") {
+              sort = null;
+          }
+
+          if(dir != null){
+              direction = dir;
+          }else if (dir == "" || dir == null) {
+              direction = null;
+          }
+
+          if (keywordValue == null || keywordValue == ""){
+              console.log("-----keyword is null-----");
+              keyword = null;
+          }else if(keywordValue != null){
+              console.log("-----keyword is not null-----");
+              keyword = keywordValue;
+          }
+
+
+          console.log(bno);
+          console.log(sort);
+          console.log(direction);
+          console.log(keyword);
+          console.log(page);
+
+          $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
+              // $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + page, function (arr){
+
+              console.log("---loadMemberGears---");
+              console.log(arr);
+
+              getMemberGearList(arr.dtoList);
+              makingPagination(arr.pageList, sort, direction, keyword);
+          })
+
+      }
+
+
+      $('.memberGearSearch').on('keydown', function(e) {
+          var keyCode = e.which;
+          if (keyCode === 13) { // Enter Key
+              keywordMaster = $(this).val();
+              loadMemberGears(1, null, null, $(this).val());
+          }
+      });
+
+
       if(tellingCategory == "party"){
 
           // 모든 참가자 캠핑 장비 리스트 업
           loadMemberGears();
-          function loadMemberGears(pageValue, sortType, dir, keywordValue){
 
-              var bno = [[${dto.bno}]];
-              var sort = "";
-              var direction = "";
-              var keyword = "";
-              var page = 1;
-
-              if(pageValue != null){
-                  var page = pageValue;
-              }
-
-              if(sortType != null){
-                  sort = sortType;
-              }else if (sortType == null || sortType == "") {
-                  sort = null;
-              }
-
-              if(dir != null){
-                  direction = dir;
-              }else if (dir == "" || dir == null) {
-                  direction = null;
-              }
-
-              if (keywordValue == null || keywordValue == ""){
-                  console.log("-----keyword is null-----");
-                  keyword = null;
-              }else if(keywordValue != null){
-                  console.log("-----keyword is not null-----");
-                  keyword = keywordValue;
-              }
-
-
-              console.log(bno);
-              console.log(sort);
-              console.log(direction);
-              console.log(keyword);
-              console.log(page);
-
-              $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
-              // $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + page, function (arr){
-
-                  console.log("---loadMemberGears---");
-                  console.log(arr);
-
-                  getMemberGearList(arr.dtoList);
-                  makingPagination(arr.pageList, sort, direction, keyword);
-              })
-
-          }
       }
-
-      // 참가자 리스트 정렬 버튼
-      // $(".party-gear-sort").on(".sortMyGear", function (){
-      //     console.log("clicking");
-      // })
 
       // 참가가 전체 리스트 정렬 버튼 클릭 이벤트
       $(".sortMyGear").click(function (){
@@ -1004,16 +1019,19 @@
           var sort = $(this).data("sort");
           var direction = $(this).data("dir");
           // var keyword = $(this).data('keyword');
-          var keyword = null;
+          // var keyword = null;
 
           console.log(sort);
           console.log(direction);
-          console.log(keyword);
+          // console.log(keyword);
 
-          loadMemberGears(1, sort, direction, keyword);
+          loadMemberGears(1, sort, direction, keywordMaster);
       })
 
-      // 모임 참가자 캠핑 장비 리스트 업
+      $(".reboot-sort").click(function (){
+          loadMemberGears();
+          $(".memberGearSearch").val("");
+      })
 
 
       // 캠핑 모임 신청 버튼 클릭
