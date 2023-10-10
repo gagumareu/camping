@@ -103,7 +103,7 @@
 
         .gear-boxes{
             height: 370px;
-
+            padding: 10px
         }
 
         .gear-boxes card{
@@ -170,6 +170,11 @@
             display: flex;
             flex-direction: row;
         }
+
+        .gear-img-box{
+            display: flex;
+            align-items: center;
+        }
     </style>
 
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -222,7 +227,7 @@
                 <div th:class="card" style="height: 100%">
                     <div class="gear-img-box">
                         <img th:if="${dto.gearImageDTOList[0] != null}" th:src="${dto.gearImageDTOList[0].thumbnailS3URL}" class="card-img-top" th:data-gno="${dto.gno}">
-                        <img th:unless="${dto.gearImageDTOList[0] != null}" src='/icon/img3.svg' class="card-img-top" th:data-gno="${dto.gno}" style="height: 100%">
+                        <img th:unless="${dto.gearImageDTOList[0] != null}" src='/icon/img3.svg' class="card-img-top" th:data-gno="${dto.gno}" style="height: 90%">
                     </div>
                     <div class="card-body gear-script">
                         <div class="card-title">

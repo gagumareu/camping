@@ -285,7 +285,7 @@
         .party-member-box{
             display: flex;
             flex-direction: row;
-            border: 1px solid;
+            border-bottom: 1px solid;
             justify-content: space-between;
         }
 
@@ -850,7 +850,7 @@
                   str += '<div class="party-member-box" >';
 
                   str += '  <div class="party-member-gear">';
-                  str +=        '<div><b>'+i+'  '+dto.gno+'</b></div>';
+                  // str +=        '<div><b>'+i+'  '+dto.gno+'</b></div>';
                   str += '    <div class="party-member-gear-img-box">';
                               if (dto.gearImageDTOList != null){
                                   if (dto.gearImageDTOList[0] != null){

@@ -89,11 +89,15 @@ public class GearSearchRepositoryImpl extends QuerydslRepositorySupport implemen
                 case "gname":
                     tuple.orderBy(new OrderSpecifier(orderDirection, gear.gname));
                     break;
+                case "gno":
+                    tuple.orderBy(new OrderSpecifier(orderDirection, gear.gno));
             }
 
 //            PathBuilder oderByExpression = new PathBuilder(Gear.class, "gear");
 //            tuple.orderBy(new OrderSpecifier(orderDirection, oderByExpression.get(property)));
         });
+
+        log.info(sort);
 
         tuple.groupBy(gear);
 

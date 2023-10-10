@@ -185,6 +185,10 @@
             width: 100%;
 
         }
+
+        .pagination-active{
+            background-color: lightgray;
+        }
     </style>
 
 </head>
@@ -284,7 +288,7 @@
                 <a class="page-link" th:unless="${pageRequestDTO.category != null}" th:href="@{/board/list(page=${boardList.start -1},  type=${pageRequestDTO.type }, keyword=${pageRequestDTO.keyword} )}">PREV</a>
             </li>
 
-            <li class="page-item" th:each="page : ${boardList.pageList}">
+            <li th:class="'page-item' + ${boardList.page == page ? ' pagination-active' : ''}" th:each="page : ${boardList.pageList}">
                 <a class="page-link" th:if="${pageRequestDTO.category != null}" th:href="@{/board/list(page=${page}, type=${pageRequestDTO.type }, keyword=${pageRequestDTO.keyword}, category=${pageRequestDTO.category} )}">[[${page}]]</a>
                 <a class="page-link" th:unless="${pageRequestDTO.category != null}" th:href="@{/board/list(page=${page}, type=${pageRequestDTO.type }, keyword=${pageRequestDTO.keyword} )}">[[${page}]]</a>
             </li>
