@@ -5,6 +5,7 @@ import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.dto.PartyDTO;
 import coke.controller.camp.dto.PartyGearDTO;
 import coke.controller.camp.entity.*;
+import coke.controller.camp.repository.PartyGearRepository;
 import coke.controller.camp.repository.PartyRepository;
 import jakarta.servlet.http.Part;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class PartyServiceImpl implements PartyService{
 
     private final PartyRepository partyRepository;
+
+    private final PartyGearRepository partyGearRepository;
 
     @Override
     public Long save(PartyDTO partyDTO) {
@@ -143,18 +146,20 @@ public class PartyServiceImpl implements PartyService{
         log.info(bno);
         log.info(email);
 
+       partyGearRepository.deleteAllByBnoAndEmail(bno, email);
+
         String result = "";
 
        int count = partyRepository.dropOutFromParty(bno, email);
-       log.info(result);
+       log.info("count: " + count);
 
-       if (count == '1'){
-           result = "success";
-       }else {
-           result = "fail";
-       }
+      if (count == 1){
+          result = "result_success";
+      }else {
+          result = "result_fail";
+      }
 
-       return result;
+        return result;
     }
 
     @Override

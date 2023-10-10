@@ -10,6 +10,14 @@ public interface PartyGearRepository extends JpaRepository<PartyGear, Long> {
 
     @Modifying
     @Query("DELETE FROM PartyGear pg WHERE pg.board.bno = :bno")
-    void deleteAllByBno(Long bno);
+    int deleteAllByBno(Long bno);
+
+    @Modifying
+    @Query("DELETE FROM PartyGear pg WHERE pg.board.bno = :bno AND pg.member.email = :email")
+    int deleteAllByBnoAndEmail(Long bno, String email);
+
+    @Modifying
+    @Query("DELETE FROM PartyGear pg WHERE pg.gear.gno = :gno")
+    int deletePartyGearByGno(Long gno);
 
 }

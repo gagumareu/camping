@@ -183,7 +183,8 @@ public class BoardController {
 
         if (boardDTO.getCategory().equals("party")){
             partyService.removePartiesByBno(boardDTO.getBno());
-            partyGearService.deleteAllByBno(boardDTO.getBno());
+            int result = partyGearService.deleteAllByBno(boardDTO.getBno());
+            log.info(result);
         }
 
         gearService.backStateZero(boardDTO.getBno());

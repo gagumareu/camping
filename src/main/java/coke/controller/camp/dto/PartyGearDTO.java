@@ -17,6 +17,7 @@ public class PartyGearDTO {
     private String gname;
     private String brand;
     private String state;
+    private String sort;
     private String s3Url;
 
     private Long bno;

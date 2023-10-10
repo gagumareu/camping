@@ -263,6 +263,13 @@
         .party-member-gear-img-box{
             width: 60px;
             height: 100%;
+            align-items: center;
+            display: flex;
+        }
+
+        .party-member-gear-img-box img{
+            width: 100%;
+            height: 85%;
         }
         .available-gear-img {
             width: 100%;
@@ -296,6 +303,7 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            column-gap: 10px;
         }
 
         .unable-gear-img{
@@ -307,7 +315,11 @@
             margin: 35px 0px;
             display: flex;
             flex-direction: row;
+            justify-content: center;
+        }
 
+        .join-party button{
+            margin-right: 15px;
         }
 
         .underConst{
@@ -482,16 +494,15 @@
         <!-- category가 party, 캠핑 모임일 경우        -->
         <th:block th:if="${dto.category eq 'party'}">
             <div class="underConst">
-            <h3>공사 중..........................................................</h3>
             </div>
 
             <!--   캠핑 모임 참가 버튼      -->
             <div class="join-party">
-                <button class="btn btn-success join-party-btn applyForParty">참가 신청</button>
-                <button class="btn btn-success join-party-btn cancelingFormParty">참가 취소</button>
-                <button class="btn btn-success AllGearList">참가자 장비 전체 리스트</button>
-                <button class="btn btn-success addMyGear">내 장비 선택</button>
-                <button class="btn btn-success finalList">최종 장비 리스트</button>
+                <button class="btn btn-outline-success join-party-btn applyForParty">참가 신청</button>
+<!--                <button class="btn btn-success join-party-btn cancelingFormParty">참가 취소</button>-->
+                <button class="btn btn-outline-success AllGearList">참가자 장비 전체 리스트</button>
+                <button class="btn btn-outline-success addMyGear">내 장비 선택</button>
+                <button class="btn btn-outline-success finalList">최종 장비 리스트</button>
             </div>
 
             <!--  ajax로 모든 참가자의 캠핑 장비 불러오기           -->
@@ -574,7 +585,6 @@
         <div class="add-my-gear-hidden-box" style="display: none">
 
         </div>
-
 
     </div> <!--/ the end /-->
 
@@ -825,11 +835,6 @@
       var keywordMaster = "";
       var witchGearList = "";
 
-      if(tellingCategory == "party"){
-          // 모든 참가자 캠핑 장비 리스트 업
-          // loadGearDefult();
-      }
-
       // 전체 참가자 장비 리스트 업 function
       function getMemberGearList(arr){
 
@@ -844,48 +849,46 @@
               if(dto.gname != null && dto.state == 0){
                   str += '<div class="party-member-box" >';
 
-                  str += '<div class="party-member-gear">';
-
-                  str += '<div><b>'+i+'  '+dto.gno+'</b></div>';
-
+                  str += '  <div class="party-member-gear">';
+                  str +=        '<div><b>'+i+'  '+dto.gno+'</b></div>';
                   str += '    <div class="party-member-gear-img-box">';
-                  if (dto.gearImageDTOList != null){
-                      if (dto.gearImageDTOList[0] != null){
-                          str += '<img class="gear-img available-gear-img" src="'+dto.gearImageDTOList[0].s3Url+'">';
-                      }else if(dto.gearImageDTOList[0] == null){
-                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
-                      }
-                  }else {
-                      if (dto.s3Url != null){
-                          str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
-                      }else if(dto.s3Url == null){
-                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
-                      }
-                  }
-
-                  str += '    </div>';
+                              if (dto.gearImageDTOList != null){
+                                  if (dto.gearImageDTOList[0] != null){
+                                      str += '<img class="gear-img available-gear-img" src="'+dto.gearImageDTOList[0].s3Url+'">';
+                                  }else if(dto.gearImageDTOList[0] == null){
+                                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                                  }
+                              }else {
+                                  if (dto.s3Url != null){
+                                      str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
+                                  }else if(dto.s3Url == null){
+                                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                                  }
+                              }
+                  str += '      </div>';
                   str += '    <div class="party-gear-info">';
                   str += '        <div>'+dto.gname+'</div><div>'+dto.sort+'</div><div>'+dto.state+'</div>';
                   str += '    </div>';
-                  str += '</div>';
+                  str += '  </div>';
 
-                  str += '<div class="party-member-info">';
-                  str += '    <div class="party-member-img-box">';
-                  if(dto.profileImg != null){
-                      str += '<img class="profile-img available-profile-img" src="'+dto.profileImg+'">';
-                  }else if(dto.profileImg == null){
-                      str += '<img class="profile-img unable-profile-img" src="/icon/person2.svg">';
-                  }
-                  str += '    </div>';
-                  str += '<div>'+dto.memberName+'</div>';
-                  if (dto.gearImageDTOList != null && dto.email == currentUser){
-                      str += '<div class="party-member-gear-check">';
-                      str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
-                      str += '</div>';
-                  }
-                  str += '</div>';
-
-                  str += '</div>';
+                  str += '  <div class="party-member-info">';
+                  str += '      <div class="party-member-img-box">';
+                                  if(dto.profileImg != null){
+                                      str += '<img class="profile-img available-profile-img" src="'+dto.profileImg+'">';
+                                  }else if(dto.profileImg == null){
+                                      str += '<img class="profile-img unable-profile-img" src="/icon/person2.svg">';
+                                  }
+                  str += '      </div>';
+                  str += '      <div>'+dto.memberName+'</div>';
+                                  if (witchGearList == "myGears" && dto.email == currentUser){
+                                      str += '<div class="party-member-gear-check">';
+                                      str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
+                                      str += '</div>';
+                                  }else if (witchGearList == "finalList" && dto.email == currentUser){
+                                      str += '<div><button type="button" class="btn btn-outline-danger remove-gear-onFinalList" data-gno="'+dto.gno+'">삭제</button></div>'
+                                  }
+                  str += '      </div>';
+                  str += '  </div>';
 
                   str += '</div>';
               }else if (dto.gname == null){
@@ -946,7 +949,13 @@
 
       })
 
-      // 파티 맴버 전체 리스트 불러오기 getJSON
+      if(tellingCategory == "party"){
+          // 모든 참가자 캠핑 장비 리스트 업
+          // loadGearDefult();
+          loadGearDefult(1, null, null, null, "finalList");
+      }
+
+      // 장비 리스트 불러오기 getJSON
       function loadGearDefult(pageValue, sortType, dir, keywordValue, witchGearList){
 
           var bno = [[${dto.bno}]];
@@ -982,22 +991,19 @@
               keyword = keywordValue;
           }
 
-          if (witch == "allList"){
+          if (witch == "allList"){      // 참가자 장비 전체 리스트
               $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
-
                   getMemberGearList(arr.dtoList);
                   makingPagination(arr.pageList, sort, direction, keyword);
               })
-          }else if (witch == "myGears"){
+          }else if (witch == "myGears"){  // 내가 등록한 장비 리스트
               $.getJSON('/gear/' + currentUser + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
-
                   getMemberGearList(arr.dtoList);
                   makingPagination(arr.pageList, sort, direction, keyword);
               })
 
-          }else if (witch == "finalList"){
+          }else if (witch == "finalList"){  // 맴버들이 선택한 장비 리스트
               $.getJSON('/party/gear/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
-
                   getMemberGearList(arr.dtoList);
                   makingPagination(arr.pageList, sort, direction, keyword);
               })
@@ -1040,18 +1046,21 @@
           $(".memberGearSearch").val("");
       })
 
+      // 모임 참가한 모든 멤버의 장비리스트
       $(".AllGearList").click(function (){
           $(".party-member-list").html("");
           witchGearList = "allList";
           loadGearDefult(1, null, null, null, witchGearList);
       });
 
+      // 내장비 리스트 보이기
       $(".addMyGear").click(function (){
           $(".party-member-list").html("");
           witchGearList = "myGears";
           loadGearDefult(1, null, null, null, witchGearList);
       });
 
+      // 최종 참가자 장비 리스트
       $(".finalList").click(function (){
           $(".party-member-list").html("");
           witchGearList = "finalList";
@@ -1090,8 +1099,9 @@
                       contentType: "application/json; charset=utf-8",
                       dataType: "text",
                       success: function (result){
+                          console.log("---참가 신청---")
                           console.log(result);
-                          loadGearDefult();
+                          loadGearDefult(1, null, null, null, "myGears");
                           // self.location.reload();
                       }
                   }) // ajax
@@ -1102,17 +1112,16 @@
 
                   }else{
                       if(confirm("이미 참가했습니다. 취소하겠습니까?")){
-                          console.log("참가 취소");
+                          console.log("---참가 취소---");
                           $.ajax({
                               url:'/party/' + bno + "/" + currentUser,
                               type: "DELETE",
                               success: function (result ){
                                   console.log(result);
-                                  loadGearDefult();
+                                  loadGearDefult(1, null, null, null, "finalList");
                                   NoAvailable.html("");
                               }
                           })
-
                       }
                   }
                   return false;
@@ -1126,44 +1135,36 @@
           console.log("clicking");
 
           var gno = $(this).data('gno');
+          var data = { gno: gno, email: currentUser }
 
-          console.log(gno);
+          console.log(data);
 
           $.ajax({
-              url: '/party/' + bno + "/" + gno,
+              url: '/party/gear/' + bno,
               method: 'POST',
+              data: JSON.stringify(data),
+              contentType: 'application/json; charset=utf-8',
               success: function (pgno){
                   console.log(pgno);
               }
           })
       })
 
+      // 선택한 장비 최종 장비 리스트에서 삭제
+      $(".party-member-list").on("click", ".remove-gear-onFinalList", function () {
 
-      $.getJSON('/party/' + bno + "/" + currentUser, function (counting){
+        var gno = $(this).data('gno');
 
-          console.log("**********");
-          console.log(counting);
-          console.log("**********");
+        console.log(gno);
 
-          if (counting == 0){  // 미참가자
-
-              $(".addMyGear").css("display", "none");
-              $(".cancelingFormParty").css("display", "none");
-              $(".applyForParty").css("display", "block");
-
-          }else if (currentUser == userEmail){ // 게시물 작성자
-
-              $(".addMyGear").css("display", "block");
-              $(".join-party-btn").css("display", "none");
-
-
-          }else if (counting == 1){ // 참가자
-
-              $(".addMyGear").css("display", "blcok");
-              $(".applyForParty").css("display", "none");
-              $(".cancelingFormParty").css("display", "block");
-          }
-
+        $.ajax({
+            url: '/party/gear/' + gno,
+            method: 'DELETE',
+            success: function (result){
+                console.log(result);
+                loadGearDefult(1, null, null, null, "finalList");
+            }
+        })
       })
 
 

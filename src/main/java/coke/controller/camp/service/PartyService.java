@@ -64,6 +64,7 @@ public interface PartyService {
                 .gno(gear.getGno())
                 .gname(gear.getGname())
                 .brand(gear.getBrand())
+                .sort(gear.getSort())
                 .state(String.valueOf(gear.getState()))
                 .email(member.getEmail())
                 .memberName(member.getMemberName())

@@ -21,5 +21,8 @@ public class PartyGear {
     @ManyToOne(fetch = FetchType.LAZY)
     private Gear gear;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
 
 }

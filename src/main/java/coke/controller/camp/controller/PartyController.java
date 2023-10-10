@@ -6,6 +6,7 @@ import coke.controller.camp.dto.PartyDTO;
 import coke.controller.camp.dto.PartyGearDTO;
 import coke.controller.camp.service.PartyGearService;
 import coke.controller.camp.service.PartyService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Map;
 @RequestMapping("/party/")
 @Log4j2
 @RequiredArgsConstructor
+@Transactional
 public class PartyController {
 
     private final PartyService partyService;
@@ -133,15 +135,29 @@ public class PartyController {
         return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/{bno}/{gno}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> registerGear(@PathVariable("bno") Long bno, @PathVariable("gno") Long gno){
+    @PostMapping(value = "/gear/{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> registerGear(@PathVariable("bno") Long bno, @RequestBody PartyGearDTO partyGearDTO){
 
         log.info("----------register gear to party gear------------");
-        log.info(bno + "/" + gno);
+        log.info(bno);
+        log.info(partyGearDTO);
 
-        Long pgno = partyGearService.register(bno, gno);
+        Long pgno = partyGearService.register(bno, partyGearDTO);
 
         return new ResponseEntity<>(pgno, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/gear/{gno}")
+    public ResponseEntity<String> deletePartyGearByGno(@PathVariable("gno") Long gno){
+
+        log.info("------deletePartyGearByGno------------");
+        log.info(gno);
+
+        int count = partyGearService.deletePartyGearByGno(gno);
+        log.info(count);
+
+        return count == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }

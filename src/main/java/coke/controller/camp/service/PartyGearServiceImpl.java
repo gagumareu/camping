@@ -15,12 +15,13 @@ public class PartyGearServiceImpl implements PartyGearService{
     private final PartyGearRepository partyGearRepository;
 
     @Override
-    public Long register(Long bno, Long gno) {
+    public Long register(Long bno, PartyGearDTO partyGearDTO) {
 
         log.info("-----register-------");
-        log.info(bno + "/" + gno);
+        log.info(bno);
+        log.info(partyGearDTO);
 
-        PartyGear partyGear = DTOToEntity(bno, gno);
+        PartyGear partyGear = DTOToEntity(bno, partyGearDTO);
 
         PartyGear result = partyGearRepository.save(partyGear);
 
@@ -30,12 +31,23 @@ public class PartyGearServiceImpl implements PartyGearService{
     }
 
     @Override
-    public void deleteAllByBno(Long bno) {
+    public int deleteAllByBno(Long bno) {
 
         log.info("---deleteAll--");
         log.info(bno);
 
-        partyGearRepository.deleteAllByBno(bno);
+        return partyGearRepository.deleteAllByBno(bno);
+
+
+    }
+
+    @Override
+    public int deletePartyGearByGno(Long gno) {
+
+        log.info("----deletePartyGearByGno-----");
+        log.info(gno);
+
+        return partyGearRepository.deletePartyGearByGno(gno);
 
     }
 }
