@@ -175,6 +175,35 @@
             display: flex;
             align-items: center;
         }
+
+        .sortBox{
+            padding: 10px;
+            border-radius: 15px;
+            row-gap: 0.1em;
+            display: none;
+            top: 284px;
+            flex-direction: column;
+            position: absolute;
+            z-index: 99;
+            background: #fafafa;
+        }
+
+        .sortBox:hover{
+            cursor: grab;
+        }
+
+        .sortMyGear:hover{
+            background-color: oldlace;
+        }
+
+        .sort-wrapper{
+            display: flex;
+            justify-content: right;
+        }
+
+        .selectedForNameDesc{
+            display: none;
+        }
     </style>
 
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
@@ -202,24 +231,43 @@
         </form>
 
         <div class="myGear-sort">
-            <div>
-            <span class="sortMyGear sortAsc" data-sort="gno" data-dir="desc">최신순 desc</span>
-            <span class="sortMyGear sortAsc" data-sort="gno" data-dir="asc">등록순 asc</span>
+            <div class="sort-wrapper">
+                <button type="button" class="btn btn-outline-secondary sortBtn" >정렬</button>
+                <div class="sortBox">
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gno' && pageRequestDTO.direction == 'desc' ? 'selected' : 'notSelected'}" 
+                          data-sort="gno" data-dir="desc"><img src="/icon/sort-des.svg">등록순</span>
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gno' && pageRequestDTO.direction == 'asc' ? 'selected' : 'notSelected'}"
+                          data-sort="gno" data-dir="asc"><img src="/icon/sort-asc.svg">등록순</span>
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gname' && pageRequestDTO.direction == 'asc' ? 'selected' : 'notSelected'}"
+                          data-sort="gname" data-dir="asc"><img src="/icon/sort-asc.svg">이름순</span>
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gname' && pageRequestDTO.direction == 'desc' ? 'selected' : 'notSelected'}"
+                          data-sort="gname" data-dir="desc"><img src="/icon/sort-des.svg">이름순</span>
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'sort' && pageRequestDTO.direction == 'asc' ? 'selected' : 'notSelected'}"
+                          data-sort="sort" data-dir="asc"><img src="/icon/sort-asc.svg">카테고리순</span>
+                    <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'sort' && pageRequestDTO.direction == 'desc' ? 'selected' : 'notSelected'}"
+                          data-sort="sort" data-dir="desc"><img src="/icon/sort-des.svg">카테고리순</span>
+                    <span class="sortMyGear sortOnDeal" data-sort="state" data-dir="desc">거래중</span>
+                </div>
             </div>
 
-            <div>
-            <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>
-            <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>
-            </div>
+<!--            <div>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gno' && pageRequestDTO.direction == 'desc' ? 'selectedForDateDesc' : ''}" data-sort="gno" data-dir="desc">최신순 desc</span>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gno' && pageRequestDTO.direction == 'asc' ? 'selectedForDateAsc' : ''}" data-sort="gno" data-dir="asc">등록순 asc</span>-->
+<!--            </div>-->
 
-            <div>
-            <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>
-            <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>
-            </div>
+<!--            <div>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gname' && pageRequestDTO.direction == 'asc' ? 'selectedForNameAsc' : ''}" data-sort="gname" data-dir="asc">이름순 asc</span>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'gname' && pageRequestDTO.direction == 'desc' ? 'selectedForNameDesc' : ''}" data-sort="gname" data-dir="desc">이름순 desc</span>-->
+<!--            </div>-->
 
-            <div>
-                <span class="sortMyGear sortOnDeal" data-sort="state" data-dir="desc">거래중</span>
-            </div>
+<!--            <div>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'sort' && pageRequestDTO.direction == 'asc' ? 'selectedForSortAsc' : ''}" data-sort="sort" data-dir="asc">카테고리순 asc</span>-->
+<!--                <span th:class="'sortMyGear sortAsc ' + ${pageRequestDTO.sort == 'sort' && pageRequestDTO.direction == 'desc' ? 'selectedForSortDesc' : ''}" data-sort="sort" data-dir="desc">카테고리순 desc</span>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <span class="sortMyGear sortOnDeal" data-sort="state" data-dir="desc">거래중</span>-->
+<!--            </div>-->
         </div>
 
         <div class="row gear-data-boxes" th:if="${gearList.dtoList}">
@@ -1125,7 +1173,10 @@
             $(".intro-myProject").modal('show');
         })
 
-
+        $(".sortBtn").click(function (){
+            $(".sortBox").css("display", "flex");
+            $(".sortBox").css("position", "absolute");
+        })
 
 
 

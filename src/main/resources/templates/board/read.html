@@ -257,6 +257,8 @@
         .party-member-gear{
             display: flex;
             flex-direction: row;
+            flex: 80%;
+            max-width: 80%;
 
         }
 
@@ -297,13 +299,16 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            flex: 20%;
+            max-width: 20%;
         }
 
         .party-gear-info{
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            column-gap: 10px;
+            flex-direction: column;
+            justify-content: center;
+            width: 45%;
+            margin-left: 1em;
         }
 
         .unable-gear-img{
@@ -376,8 +381,66 @@
             flex-direction: row;
         }
 
+        .list-pagination{
+            margin: 17px 0px;
+        }
 
+        .sortBtn-box{
+            display: none;
+            padding: 10px;
+            border-radius: 15px;
+            row-gap: 0.1em;
+            top: 1184px;
+            flex-direction: column;
+            position: absolute;
+            z-index: 99;
+            background: #fafafa;
+        }
 
+        .sort-boxing{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 50px;
+        }
+
+        .sort-boxing input {
+            width: 380px;
+        }
+
+        .sort-boxing{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 100%;
+            margin: 16px 0px;
+        }
+
+        .sort-boxing button{
+            width: 75px;
+        }
+
+        .sort-boxing img{
+            margin-right: 12px;
+            height: 59%;
+        }
+
+        .reboot-sort:hover{
+            cursor: grab;
+        }
+
+        .party-gear-btn-box{
+            margin-left: 14px;
+        }
+
+        .party-member-name{
+            margin-left: 8px;
+        }
+
+        .party-gear-sort{
+            display: flex;
+            align-self: start;
+        }
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -506,18 +569,30 @@
             </div>
 
             <!--  ajax로 모든 참가자의 캠핑 장비 불러오기           -->
-            <div class="party-gear-sort">
-                <img class="reboot-sort" src="/icon/reboot.svg">
-                <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc">유저순 asc</span>
-                <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc">유저순 desc</span>
-                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>
-                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>
-                <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>
-                <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>
-            </div>
+<!--            <div class="party-gear-sort">-->
+<!--                <img class="reboot-sort" src="/icon/reboot.svg">-->
+<!--                <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc">유저순 asc</span>-->
+<!--                <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc">유저순 desc</span>-->
+<!--                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc">이름순 asc</span>-->
+<!--                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc">이름순 desc</span>-->
+<!--                <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc">카테고리순 asc</span>-->
+<!--                <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc">카테고리순 desc</span>-->
+<!--            </div>-->
 
-            <div>
+            <div class="sort-boxing">
                 <input type="text" class="form-control memberGearSearch" name="keyword" placeholder="SEARCH">
+                <div class="sort-boxing">
+                    <img class="reboot-sort" src="/icon/reboot.svg"><button type="button" class="btn btn-outline-secondary sortBtn">정렬</button>
+                    <div class="sortBtn-box">
+                        <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc"><img src="/icon/sort-asc.svg">유저순</span>
+                        <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc"><img src="/icon/sort-des.svg">유저순</span>
+                        <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc"><img src="/icon/sort-asc.svg">이름순</span>
+                        <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc"><img src="/icon/sort-des.svg">이름순</span>
+                        <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc"><img src="/icon/sort-asc.svg">카테고리순</span>
+                        <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc"><img src="/icon/sort-des.svg">카테고리순</span>
+                    </div>
+                </div>
+
             </div>
 
             <div class="NoAvailable">
@@ -867,7 +942,7 @@
                               }
                   str += '      </div>';
                   str += '    <div class="party-gear-info">';
-                  str += '        <div>'+dto.gname+'</div><div>'+dto.sort+'</div><div>'+dto.state+'</div>';
+                  str += '        <div>'+dto.gname+'</div><div class="party-gear-sort">'+dto.sort+'</div>';
                   str += '    </div>';
                   str += '  </div>';
 
@@ -879,13 +954,13 @@
                                       str += '<img class="profile-img unable-profile-img" src="/icon/person2.svg">';
                                   }
                   str += '      </div>';
-                  str += '      <div>'+dto.memberName+'</div>';
+                  str += '      <div class="party-member-name">'+dto.memberName+'</div>';
                                   if (witchGearList == "myGears" && dto.email == currentUser){
-                                      str += '<div class="party-member-gear-check">';
+                                      str += '<div class="party-gear-btn-box">';
                                       str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
                                       str += '</div>';
                                   }else if (witchGearList == "finalList" && dto.email == currentUser){
-                                      str += '<div><button type="button" class="btn btn-outline-danger remove-gear-onFinalList" data-gno="'+dto.gno+'">삭제</button></div>'
+                                      str += '<div class="party-gear-btn-box"><button type="button" class="btn btn-outline-danger remove-gear-onFinalList" data-gno="'+dto.gno+'">삭제</button></div>'
                                   }
                   str += '      </div>';
                   str += '  </div>';
@@ -1035,6 +1110,7 @@
           console.log(sort);
           console.log(direction);
           // console.log(keyword);
+          $(".sortBtn-box").css("display", "none");
 
           loadGearDefult(1, sort, direction, keywordMaster, witchGearList);
       })
@@ -1167,7 +1243,10 @@
         })
       })
 
-
+      $(".sortBtn").click(function (){
+          $(".sortBtn-box").css("display", "flex");
+          // $(".sortBtn-box").css("position", "absolute");
+      })
 
 
 
