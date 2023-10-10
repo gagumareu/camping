@@ -401,32 +401,32 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            height: 50px;
+            height: 43px;
         }
 
         .sort-boxing input {
             width: 380px;
         }
 
-        .sort-boxing{
+        .sort-btn-boxing{
             display: flex;
             flex-direction: row;
             align-items: center;
             height: 100%;
-            margin: 16px 0px;
+            /*margin: 16px 0px;*/
         }
 
         .sort-boxing button{
             width: 75px;
         }
 
-        .sort-boxing img{
+        .reboot-sort{
             margin-right: 12px;
             height: 59%;
         }
 
         .reboot-sort:hover{
-            cursor: grab;
+            cursor: pointer;
         }
 
         .party-gear-btn-box{
@@ -581,7 +581,7 @@
 
             <div class="sort-boxing">
                 <input type="text" class="form-control memberGearSearch" name="keyword" placeholder="SEARCH">
-                <div class="sort-boxing">
+                <div class="sort-btn-boxing">
                     <img class="reboot-sort" src="/icon/reboot.svg"><button type="button" class="btn btn-outline-secondary sortBtn">정렬</button>
                     <div class="sortBtn-box">
                         <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc"><img src="/icon/sort-asc.svg">유저순</span>
