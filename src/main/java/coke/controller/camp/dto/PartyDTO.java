@@ -17,6 +17,10 @@ public class PartyDTO {
 
     private String location;
 
+    private String dDay;
+
+    private int person;
+
     private String email;
     private String memberName;
     private String profileImg;

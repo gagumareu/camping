@@ -25,6 +25,8 @@ public interface PartyService {
                 .board(Board.builder().bno(partyDTO.getBno()).build())
                 .member(Member.builder().email(partyDTO.getEmail()).build())
                 .location(partyDTO.getLocation())
+                .dDay(partyDTO.getDDay())
+                .person(partyDTO.getPerson())
                 .build();
         return party;
     }
@@ -35,6 +37,8 @@ public interface PartyService {
                 .pno(party.getPno())
                 .bno(board.getBno())
                 .location(party.getLocation())
+                .dDay(party.getDDay())
+                .person(party.getPerson())
                 .email(member.getEmail())
                 .memberName(member.getMemberName())
                 .profileImg(member.getProfileImg())
