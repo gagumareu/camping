@@ -702,7 +702,7 @@
       var tellingCategory = [[${dto.category}]];
       console.log(tellingCategory);
 
-      var totalApplicantCounting = [[partyDTOs[0].person]];
+      var totalApplicantCounting = [[${partyDTOs[0].person}]];
       console.log("---총 참가 가능한 인원---");
       console.log(totalApplicantCounting);
 
@@ -1068,7 +1068,7 @@
                   str += '<div class="party-applicant-list-boxes">';
 
                   if (dto.s3Url != null){
-                      str += '<div class="applicant-profile-available"><img src="dto.s3Url"></div>'
+                      str += '<div class="applicant-profile-available"><img src="'+dto.s3Url+'"></div>'
                   }else{
                       str += '<div class="applicant-profile-unable"><img  src="/icon/img3.svg"></div>'
                   }
@@ -1229,8 +1229,10 @@
 
           $.getJSON('/party/countingApplicant/' + bno, function (count){
               presentcounting = count;
-              console.log("----현재 참가 인원----")
+              console.log("----현재 참가 인원----");
               console.log(presentcounting);
+              console.log("----총 참가 가능 인원----")
+              console.log(totalApplicantCounting);
           })
 
           $.getJSON('/party/' + bno + "/" + currentUser, function (count){
