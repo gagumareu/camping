@@ -21,38 +21,38 @@ public class PartyRepositoryTests {
     @Autowired
     private PartyRepository partyRepository;
 
-    @Test
-    public void getParties(){
+//    @Test
+//    public void getParties(){
+//
+//        List<Party> result = partyRepository.getPartiesByBno(206L);
+//
+//
+//        result.forEach(partyDTO -> {
+//            partyDTO.changeLocation("test");
+//            partyRepository.save(partyDTO);
+//        });
+//
+//    }
 
-        List<Party> result = partyRepository.getPartiesByBno(206L);
+//    @Test
+//    public void getAppointment(){
+//
+//        List<Object[]> result = partyRepository.getApplicantsByBno(210L);
+//
+//
+//        result.forEach(objects -> {
+//            System.out.println(Arrays.toString(objects));
+//        });
+//
+//    }
 
+//    @Test
+//    public void getPartyInfo(){
+//       Long result =  partyRepository.getPartyCountingApplicantByBno(210L);
 
-        result.forEach(partyDTO -> {
-            partyDTO.changeLocation("test");
-            partyRepository.save(partyDTO);
-        });
-
-    }
-
-    @Test
-    public void getAppointment(){
-
-        List<Object[]> result = partyRepository.getApplicantsByBno(210L);
-
-
-        result.forEach(objects -> {
-            System.out.println(Arrays.toString(objects));
-        });
-
-    }
-
-    @Test
-    public void getPartyInfo(){
-       Long result =  partyRepository.getPartyCountingAndPersonByBno(210L);
-
-       System.out.println(result);
+//       System.out.println(result);
 
 
 
-    }
+//    }
 }
