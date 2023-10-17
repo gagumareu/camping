@@ -25,9 +25,17 @@ public class Party {
 
     private String location;
 
-    private String dDay;
+    private String appointment;
 
     private int person;
+
+    public void changeDDay(String appointment){
+        this.appointment = appointment;
+    }
+
+    public void changeLocation(String location){
+        this.location = location;
+    }
 
 
 

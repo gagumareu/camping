@@ -17,6 +17,9 @@ public interface PartyService {
     String dropOut(Long bno, String email);
     String getLocationByBno(Long bno);
     void removePartiesByBno(Long bno);
+    List<PartyDTO> getPartiesByBno(Long bno);
+    List<PartyDTO> getApplicantsByBno(Long bno);
+    Long getCountingApplicant(Long bno);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 
@@ -25,7 +28,7 @@ public interface PartyService {
                 .board(Board.builder().bno(partyDTO.getBno()).build())
                 .member(Member.builder().email(partyDTO.getEmail()).build())
                 .location(partyDTO.getLocation())
-                .dDay(partyDTO.getDDay())
+                .appointment(partyDTO.getAppointment())
                 .person(partyDTO.getPerson())
                 .build();
         return party;
@@ -37,7 +40,7 @@ public interface PartyService {
                 .pno(party.getPno())
                 .bno(board.getBno())
                 .location(party.getLocation())
-                .dDay(party.getDDay())
+                .appointment(party.getAppointment())
                 .person(party.getPerson())
                 .email(member.getEmail())
                 .memberName(member.getMemberName())
@@ -80,6 +83,31 @@ public interface PartyService {
             partyGearDTO.setS3Url(gearImage.getS3Url());
         }
         return partyGearDTO;
+    }
+
+    default PartyDTO standardEntityToDTO(Party party){
+
+        PartyDTO partyDTO = PartyDTO.builder()
+                .pno(party.getPno())
+                .appointment(party.getAppointment())
+                .location(party.getLocation())
+                .person(party.getPerson())
+                .build();
+        return partyDTO;
+    }
+
+    default PartyDTO applicantsEntityToDTO(Party party, Member member){
+
+        PartyDTO partyDTO = PartyDTO.builder()
+                .pno(party.getPno())
+                .appointment(party.getAppointment())
+                .person(party.getPerson())
+                .location(party.getLocation())
+                .memberName(member.getMemberName())
+                .email(member.getEmail())
+                .s3Url(member.getProfileImg())
+                .build();
+        return partyDTO;
     }
 
 

@@ -542,7 +542,7 @@
                     });
                 }
 
-                var address = [[${campingLocation}]];
+                var address = [[${partyDTOs[0].location}]];
                 console.log(address);
                 function initGeocoder() {
                     searchAddressToCoordinate(address);
@@ -557,6 +557,19 @@
         <!-- category가 party, 캠핑 모임일 경우        -->
         <th:block th:if="${dto.category eq 'party'}">
             <div class="underConst">
+            </div>
+
+            <div>
+                <h5>참가자 리스트</h5>
+            </div>
+            <div class="party-applicant-div">
+
+                <div class="applicant-list">
+
+                </div>
+                <div class="party-counting-applicant">
+                    <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTOs[0].person}]]</span>
+                </div>
             </div>
 
             <!--   캠핑 모임 참가 버튼      -->
@@ -675,8 +688,8 @@
 
   $(document).ready(function (){
 
-      var partylist = [[${partyList}]];
-      console.log(partylist);
+      var partyDTOs = [[${partyDTOs}]];
+      console.log(partyDTOs);
 
       var bno = [[${dto.bno}]];
 
@@ -688,6 +701,10 @@
 
       var tellingCategory = [[${dto.category}]];
       console.log(tellingCategory);
+
+      var totalApplicantCounting = [[partyDTOs[0].person]];
+      console.log("---총 참가 가능한 인원---");
+      console.log(totalApplicantCounting);
 
       function formatTime(str){
 
@@ -1025,10 +1042,65 @@
       })
 
       if(tellingCategory == "party"){
-          // 모든 참가자 캠핑 장비 리스트 업
-          // loadGearDefult();
-          loadGearDefult(1, null, null, null, "finalList");
+
+          loadGearDefult(1, null, null, null, "myGears");
+          getApplicantsList();
+          getCountingApplicant();
       }
+
+      // 참가자 리스트업
+      function getApplicantsList(){
+
+          $.getJSON('/party/applicants/' + bno, function (arr){
+
+              console.log(arr);
+
+              var str = "";
+              var str2 = "";
+
+              var applicantList = $(".applicant-list");
+              var totalApplicants = $(".totalApplicant");
+
+              $(arr).each(function (i, dto){
+
+                  console.log(dto);
+
+                  str += '<div class="party-applicant-list-boxes">';
+
+                  if (dto.s3Url != null){
+                      str += '<div class="applicant-profile-available"><img src="dto.s3Url"></div>'
+                  }else{
+                      str += '<div class="applicant-profile-unable"><img  src="/icon/img3.svg"></div>'
+                  }
+
+                  str += '<div>'+dto.memberName+'</div>';
+
+                  str += '</div>';
+
+                  // str2 = '<span>'+dto.person+'</span>'
+              })
+
+              applicantList.html(str);
+              // totalApplicants.html(str2);
+          })
+      }
+
+      // 현재 참가자 수 불러오기
+      function getCountingApplicant(){
+
+          $.getJSON('/party/countingApplicant/' + bno, function (count){
+
+              console.log(count);
+              var str = "";
+              var presentCounting = $(".NowApplicant");
+
+              str = '<span>'+count+'</span>';
+
+              presentCounting.html(str);
+          })
+      }
+
+
 
       // 장비 리스트 불러오기 getJSON
       function loadGearDefult(pageValue, sortType, dir, keywordValue, witchGearList){
@@ -1143,13 +1215,23 @@
           loadGearDefult(1, null, null, null, witchGearList);
       });
 
-
+      var address = [[${partyDTOs[0].location}]];
+      var appoint = [[${partyDTOs[0].appointment}]];
+      var person = [[${partyDTOs[0].person}]];
+      console.log(address);
+      console.log(appoint);
+      console.log(person);
 
       // 캠핑 모임 신청 버튼 클릭
       $(".join-party-btn").click(function (){
 
-          var bno = [[${dto.bno}]];
-          var address = [[${campingLocation}]];
+          var presentcounting = "";
+
+          $.getJSON('/party/countingApplicant/' + bno, function (count){
+              presentcounting = count;
+              console.log("----현재 참가 인원----")
+              console.log(presentcounting);
+          })
 
           $.getJSON('/party/' + bno + "/" + currentUser, function (count){
               console.log(count);
@@ -1159,26 +1241,33 @@
                   if (!confirm("캠핑 모임에 참가하겠습니까?")){
                       return;
                   }
+                  if (presentcounting >= totalApplicantCounting){
+                      alert("참가 가능한 총 인원이 마감됐습니다.");
+                      return false;
+                  }
 
                   var data = {
                       bno: bno,
                       location: address,
-                      email: currentUser
+                      appointment: appoint,
+                      email: currentUser,
+                      person: person
                   }
 
                   console.log(data);
 
                   $.ajax({
                       url: '/party/' + bno,
-                      type: "POST",
+                      method: "POST",
                       data: JSON.stringify(data),
                       contentType: "application/json; charset=utf-8",
-                      dataType: "text",
+                      dataType: "json",
                       success: function (result){
                           console.log("---참가 신청---")
                           console.log(result);
                           loadGearDefult(1, null, null, null, "myGears");
-                          // self.location.reload();
+                          getApplicantsList();
+                          getCountingApplicant();
                       }
                   }) // ajax
               }else if(count == '1'){
@@ -1195,6 +1284,8 @@
                               success: function (result ){
                                   console.log(result);
                                   loadGearDefult(1, null, null, null, "finalList");
+                                  getApplicantsList();
+                                  getCountingApplicant();
                                   NoAvailable.html("");
                               }
                           })
@@ -1247,6 +1338,7 @@
           $(".sortBtn-box").css("display", "flex");
           // $(".sortBtn-box").css("position", "absolute");
       })
+
 
 
 
