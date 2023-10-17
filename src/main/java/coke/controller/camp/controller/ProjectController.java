@@ -27,6 +27,11 @@ public class ProjectController {
 
     }
 
+    @GetMapping("/calendar")
+    public void calendar(){
+
+    }
+
     @GetMapping("/map")
     public void map(Model model){
 

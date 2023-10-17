@@ -113,16 +113,23 @@
 
         .party-info-wrapper{
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
-            height: 47px;
-            margin: 20px 0px 10px 0px;
+            /*height: 47px;*/
+
+            flex: 20%;
+            max-width: 20%;
+            /* padding: 20px; */
+            margin-top: 76px;
+            height: 100%;
         }
 
         .searchAddress{
             display: flex;
             flex-direction: row;
-            align-self: center;
+            /*align-self: center;*/
+            width: 100%;
+            padding: 20px;
         }
 
         /*#address{*/
@@ -136,39 +143,60 @@
 
         .howManyPerson{
             display: flex;
-            flex-direction: row;
-            align-self: center;
+            /*flex-direction: row;*/
+            /*align-self: center;*/
+            padding: 20px;
         }
 
         .howManyPersonLabel{
-            width: 127px;
-            margin-right: 10px;
+            /*width: 127px;*/
+            flex: 70%;
+            max-width: 70%;
+            /* background: bisque; */
+            border-radius: 10px;
+            align-self: center;
+            /* height: 100%; */
+            justify-content: center;
+            display: flex;
         }
 
         .howManyPersonSelect{
-            width: 80px;
+            flex: 30%;
+            max-width: 30%;
+            cursor: pointer;
         }
+
+        .party-get-info-wrapper{
+            display: flex;
+            margin-top: 30px;
+        }
+
+        .party-map-wrapper{
+            flex: 80%;
+            max-width: 80%;
+        }
+
+        .dDay{
+            padding: 20px;
+        }
+        .dDay input{
+            cursor: pointer;
+        }
+
+
 
     </style>
 
-    <!-- naver map API   -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hmecoefot7&submodules=geocoder"></script>
+
+    <!-- calendar library   -->
+
+
 
 </head>
 
     <div class="container-lg content" layout:fragment="content">
 
-<!--        <th:block th:if="${tellCategory == 'secondHands'}">-->
-<!--            <div class="secondHans-deal-title">-->
-<!--                <h2>중고 거래 게시글 작성</h2>-->
-<!--            </div>-->
-<!--        </th:block>-->
 
-<!--        <th:block th:if="${tellCategory == 'party'}">-->
-<!--            <div class="secondHans-deal-title">-->
-<!--                <h2>캠핑 모임 게시글 작성</h2>-->
-<!--            </div>-->
-<!--        </th:block>-->
 
         <th:block th:switch="${tellCategory}">
             <div class="secondHans-deal-title">
@@ -322,6 +350,7 @@
             <div class="hiddenBox" style="display: none"></div>
             <div class="hidden-gear-box" style="display: none"></div>
             <div class="hidden-address-box" style="display: none"></div>
+            <div class="hidden-dDay-box" style="display: none"></div>
 
             <!--  중고 거래시 등록된 캠핑 장비 리스트 불러오기         -->
             <th:block th:if="${tellCategory == 'secondHands'}">
@@ -356,136 +385,141 @@
             </th:block>
 
             <th:block th:if="${tellCategory == 'party'}">
-                <div class="party-info-wrapper">
-                    <div class="searchAddress">
-                        <input id="address" class="form-control" type="text" placeholder="주소를 검색하세요." style="width: 312px">
-                        <!--                    <button class="searchLocationBtn" type="button" id="submit">위치검색</button>-->
+
+                <div class="party-get-info-wrapper">
+                    <div class="party-map-wrapper">
+                        <div id="map" style="width:100%;height:400px;"></div>
+
+                        <script th:inline="javascript">
+
+                            var mapOptions = {
+                                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                                zoom: 10,
+                                mapTypeControl: true
+                            };
+
+                            var map = new naver.maps.Map('map', mapOptions);
+
+
+                            // 네이버 지도 검색 옵션
+                            var infoWindow = new naver.maps.InfoWindow({
+                                anchorSkew: true
+                            });
+
+                            map.setCursor('pointer');
+
+                            var savedAddress = "";
+
+                            function searchAddressToCoordinate(address) {
+                                naver.maps.Service.geocode({
+                                    query: address
+                                }, function(status, response) {
+                                    if (status === naver.maps.Service.Status.ERROR) {
+                                        return alert('Something Wrong!');
+                                    }
+
+                                    if (response.v2.meta.totalCount === 0) {
+                                        return alert('totalCount' + response.v2.meta.totalCount);
+                                    }
+
+                                    var htmlAddresses = [],
+                                        item = response.v2.addresses[0],
+                                        point = new naver.maps.Point(item.x, item.y);
+
+                                    if (item.roadAddress) {
+                                        htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+                                    }
+
+                                    if (item.jibunAddress) {
+                                        htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+                                    }
+
+                                    if (item.englishAddress) {
+                                        htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+                                    }
+
+                                    var roadAddress = item.roadAddress;
+                                    // var jibunAddress = item.jibunAddress;
+
+                                    // savedAddress = roadAddress + "|" + jibunAddress;
+
+                                    console.info(roadAddress);
+                                    // console.info(jibunAddress);
+                                    // console.info(savedAddress);
+
+                                    var str = '<input type="hidden" name="location" value="'+roadAddress+'">'
+
+                                    $(".hidden-address-box").html(str);
+
+                                    infoWindow.setContent([
+                                        '<div style="padding:10px;min-width:200px;line-height:150%;">',
+                                        '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
+                                        htmlAddresses.join('<br />'),
+                                        '</div>'
+                                    ].join('\n'));
+
+                                    map.setCenter(point);
+                                    infoWindow.open(map, point);
+                                });
+                            }
+
+                            function initGeocoder() {
+
+                                $('#address').on('keydown', function(e) {
+                                    var keyCode = e.which;
+
+                                    if (keyCode === 13) { // Enter Key
+                                        console.log(searchAddressToCoordinate($('#address').val()));
+                                        searchAddressToCoordinate($('#address').val());
+                                    }
+                                });
+
+                                // $('#submit').on('click', function(e) {
+                                //     e.preventDefault();
+                                //     console.log(searchAddressToCoordinate($('#address').val()))
+                                //     searchAddressToCoordinate($('#address').val());
+                                // });
+
+                                // 현 위치로 바꾸기
+                                // searchAddressToCoordinate('정자동 178-1');
+                            }
+
+
+                            naver.maps.onJSContentLoaded = initGeocoder;
+
+                        </script>
                     </div>
-                    <div class="howManyPerson">
-                        <label class="form-control howManyPersonLabel" style="width: 127px">참가 인원 제한</label>
-                        <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
-                            <option value="2">2인</option>
-                            <option value="3">3인</option>
-                            <option value="4">4인</option>
-                            <option value="5">5인</option>
-                            <option value="6">6인</option>
-                            <option value="7">7인</option>
-                            <option value="8">8인</option>
-                        </select>
+
+                    <div class="party-info-wrapper">
+                        <div class="searchAddress">
+                            <input id="address" class="form-control" type="text" placeholder="주소를 검색하세요." style="width: 100%">
+                        </div>
+                        <div class="dDay">
+                            <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 정하기">
+                        </div>
+
+                        <div class="howManyPerson">
+                            <span class="select-group howManyPersonLabel" style="width: 127px">참가 인원 제한</span>
+                            <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
+                                <option value="2">2인</option>
+                                <option value="3">3인</option>
+                                <option value="4">4인</option>
+                                <option value="5">5인</option>
+                                <option value="6">6인</option>
+                                <option value="7">7인</option>
+                                <option value="8">8인</option>
+                            </select>
+
+                        </div>
                     </div>
                 </div>
-
-                <div id="map" style="width:100%;height:400px;"></div>
-
-                <script th:inline="javascript">
-
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10,
-                        mapTypeControl: true
-                    };
-
-                    var map = new naver.maps.Map('map', mapOptions);
-
-
-                    // 네이버 지도 검색 옵션
-                    var infoWindow = new naver.maps.InfoWindow({
-                        anchorSkew: true
-                    });
-
-                    map.setCursor('pointer');
-
-                    var savedAddress = "";
-
-                    function searchAddressToCoordinate(address) {
-                        naver.maps.Service.geocode({
-                            query: address
-                        }, function(status, response) {
-                            if (status === naver.maps.Service.Status.ERROR) {
-                                return alert('Something Wrong!');
-                            }
-
-                            if (response.v2.meta.totalCount === 0) {
-                                return alert('totalCount' + response.v2.meta.totalCount);
-                            }
-
-                            var htmlAddresses = [],
-                                item = response.v2.addresses[0],
-                                point = new naver.maps.Point(item.x, item.y);
-
-                            if (item.roadAddress) {
-                                htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-                            }
-
-                            if (item.jibunAddress) {
-                                htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-                            }
-
-                            if (item.englishAddress) {
-                                htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-                            }
-
-                            var roadAddress = item.roadAddress;
-                            // var jibunAddress = item.jibunAddress;
-
-                            // savedAddress = roadAddress + "|" + jibunAddress;
-
-                            console.info(roadAddress);
-                            // console.info(jibunAddress);
-                            // console.info(savedAddress);
-
-                            var str = '<input type="hidden" name="location" value="'+roadAddress+'">'
-
-                            $(".hidden-address-box").html(str);
-
-                            infoWindow.setContent([
-                                '<div style="padding:10px;min-width:200px;line-height:150%;">',
-                                '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
-                                htmlAddresses.join('<br />'),
-                                '</div>'
-                            ].join('\n'));
-
-                            map.setCenter(point);
-                            infoWindow.open(map, point);
-                        });
-                    }
-
-                    function initGeocoder() {
-
-                        $('#address').on('keydown', function(e) {
-                            var keyCode = e.which;
-
-                            if (keyCode === 13) { // Enter Key
-                                console.log(searchAddressToCoordinate($('#address').val()));
-                                searchAddressToCoordinate($('#address').val());
-                            }
-                        });
-
-                        // $('#submit').on('click', function(e) {
-                        //     e.preventDefault();
-                        //     console.log(searchAddressToCoordinate($('#address').val()))
-                        //     searchAddressToCoordinate($('#address').val());
-                        // });
-
-                        // 현 위치로 바꾸기
-                        // searchAddressToCoordinate('정자동 178-1');
-                    }
-
-
-                    naver.maps.onJSContentLoaded = initGeocoder;
-
-                </script>
-
             </th:block>
-
 
             <div class="col-md-12 col-sm-12 btnBox">
                 <button th:if="${tellCategory == 'secondHands'}" type="button" class="btn btn-light changingAGear">장비 변경</button>
                 <button class="btn btn-outline-primary registerBtn">글작성</button>
             </div>
         </form>
-
-
 
 
         <div class="uploadResultUL" style="display: none">
@@ -543,6 +577,7 @@
         var checkCategory = [[${tellCategory}]];
         console.log(checkCategory);
 
+
         $("#register-form").on("keydown", function(e) {
             if (e.key === "Enter") {
                 e.preventDefault();
@@ -576,7 +611,14 @@
                     alert("주소를 검색해 주세요. ");
                     return false;
                 }
+                var dDayValue = $("input[name='dDay']").val();
+                if (dDayValue == null || dDayValue == ""){
+                    alert("날짜를 선택해 주세요.");
+                    return false;
+                }
             }
+
+
 
             var str = "";
 
