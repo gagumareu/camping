@@ -1059,7 +1059,6 @@
               var str2 = "";
 
               var applicantList = $(".applicant-list");
-              var totalApplicants = $(".totalApplicant");
 
               $(arr).each(function (i, dto){
 
@@ -1068,7 +1067,7 @@
                   str += '<div class="party-applicant-list-boxes">';
 
                   if (dto.s3Url != null){
-                      str += '<div class="applicant-profile-available"><img src="dto.s3Url"></div>'
+                      str += '<div class="applicant-profile-available"><img src="'+dto.s3Url+'"></div>'
                   }else{
                       str += '<div class="applicant-profile-unable"><img  src="/icon/img3.svg"></div>'
                   }
@@ -1077,11 +1076,9 @@
 
                   str += '</div>';
 
-                  // str2 = '<span>'+dto.person+'</span>'
               })
 
               applicantList.html(str);
-              // totalApplicants.html(str2);
           })
       }
 
