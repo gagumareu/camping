@@ -12,13 +12,9 @@ import lombok.NoArgsConstructor;
 public class PartyDTO {
 
     private Long pno;
-
     private Long bno;
-
     private String location;
-
-    private String dDay;
-
+    private String appointment;
     private int person;
 
     private String email;
@@ -34,6 +30,8 @@ public class PartyDTO {
     private Long ino;
     private String fileName;
     private String s3Url;
+
+    private int counting;
 
 
 }

@@ -5,10 +5,7 @@ import coke.controller.camp.dto.BoardImageDTO;
 import coke.controller.camp.dto.PageRequestDTO;
 import coke.controller.camp.dto.PageResultDTO;
 import coke.controller.camp.entity.*;
-import coke.controller.camp.repository.BoardImageRepository;
-import coke.controller.camp.repository.BoardRepository;
-import coke.controller.camp.repository.GearRepository;
-import coke.controller.camp.repository.ReplyRepository;
+import coke.controller.camp.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +27,7 @@ public class BoardServiceImpl implements BoardService{
     private final BoardImageRepository boardImageRepository;
     private final ReplyRepository replyRepository;
     private final GearRepository gearRepository;
+    private final PartyRepository partyRepository;
 
     @Transactional
     @Override
@@ -139,6 +137,20 @@ public class BoardServiceImpl implements BoardService{
     public void modify(BoardDTO boardDTO) {
 
         log.info("---------modify-------");
+
+        if (boardDTO.getLocation() != null && boardDTO.getAppointment() != null){
+            log.info(boardDTO.getLocation());
+            log.info(boardDTO.getAppointment());
+
+            List<Party> parties = partyRepository.getPartiesByBno(boardDTO.getBno());
+
+            parties.forEach(party -> {
+                party.changeLocation(boardDTO.getLocation());
+                party.changeDDay(boardDTO.getAppointment());
+                partyRepository.save(party);
+            });
+
+        }
 
         boardImageRepository.deleteByBno(boardDTO.getBno());
 

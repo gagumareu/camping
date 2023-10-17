@@ -180,5 +180,33 @@ public class PartyServiceImpl implements PartyService{
         partyRepository.deletePartiesByBno(bno);
     }
 
+    @Override
+    public List<PartyDTO> getPartiesByBno(Long bno) {
+
+        log.info("----getPartiesByBno----");
+
+        List<Party> parties = partyRepository.getPartiesByBno(bno);
+
+        return parties.stream().map(party -> standardEntityToDTO(party)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PartyDTO> getApplicantsByBno(Long bno) {
+
+        log.info("---------getApplicantsByBno---------");
+
+        List<Object[]> resultList = partyRepository.getApplicantsByBno(bno);
+
+        List<PartyDTO> list = resultList.stream().map(objects -> applicantsEntityToDTO((Party) objects[0], (Member) objects[1])).collect(Collectors.toList());
+
+        return list;
+    }
+
+    @Override
+    public Long getCountingApplicant(Long bno) {
+
+        return partyRepository.getPartyCountingApplicantByBno(bno);
+    }
+
 
 }

@@ -159,5 +159,21 @@ public class PartyController {
         return count == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @GetMapping(value = "/applicants/{bno}")
+    public ResponseEntity<List<PartyDTO>> getApplicantsByBno(@PathVariable("bno") Long bno){
+
+        log.info("------getApplicantsByBno------------");
+        log.info(bno);
+
+        List<PartyDTO> list = partyService.getApplicantsByBno(bno);
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/countingApplicant/{bno}")
+    public ResponseEntity<Long> getCountingApplicant(@PathVariable("bno") Long bno){
+
+        return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
+    }
 
 }
