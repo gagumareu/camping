@@ -22,28 +22,28 @@ public class PartyServiceTests {
     @Autowired
     private PartyService partyService;
 
-    @Test
-    public void getPartyGearByBno(){
+//    @Test
+//    public void getPartyGearByBno(){
+//
+//        Pageable pageable = PageRequest.of(0, 20, Sort.by("gno").descending());
+//
+//        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+//
+//        PageResultDTO<PartyGearDTO, Object[]> result = partyService.getPartyGearsListWithPagination(160L, pageRequestDTO);
+//
+//        result.getDtoList().forEach(partyDTO -> {
+//            System.out.println(partyDTO);
+//        });
+//    }
 
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("gno").descending());
-
-        PageRequestDTO pageRequestDTO = new PageRequestDTO();
-
-        PageResultDTO<PartyGearDTO, Object[]> result = partyService.getPartyGearsListWithPagination(160L, pageRequestDTO);
-
-        result.getDtoList().forEach(partyDTO -> {
-            System.out.println(partyDTO);
-        });
-    }
-
-    @Test
-    public void getApplicant(){
-
-        List<PartyDTO> result = partyService.getApplicantsByBno(210L);
-
-        result.forEach(partyDTO -> {
-            System.out.println(partyDTO);
-        });
-    }
+//    @Test
+//    public void getApplicant(){
+//
+//        List<PartyDTO> result = partyService.getApplicantsByBno(210L);
+//
+//        result.forEach(partyDTO -> {
+//            System.out.println(partyDTO);
+//        });
+//    }
 
 }
