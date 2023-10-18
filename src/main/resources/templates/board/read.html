@@ -353,7 +353,7 @@
         .party-member-img-div{
             height: 45px;
         }
-        .party-member-img-div img{
+        .availableProfile img{
             height: 100%;
             overflow: hidden;
             border-radius: 50%;
@@ -390,7 +390,7 @@
             padding: 10px;
             border-radius: 15px;
             row-gap: 0.1em;
-            top: 1184px;
+            top: 45px;
             flex-direction: column;
             position: absolute;
             z-index: 99;
@@ -402,6 +402,7 @@
             flex-direction: row;
             justify-content: space-between;
             height: 43px;
+            margin-bottom: 27px;
         }
 
         .sort-boxing input {
@@ -414,6 +415,7 @@
             align-items: center;
             height: 100%;
             /*margin: 16px 0px;*/
+            position: relative;
         }
 
         .sort-boxing button{
@@ -440,6 +442,49 @@
         .party-gear-sort{
             display: flex;
             align-self: start;
+        }
+
+        .party-applicant-list-boxes{
+            display: flex;
+            flex-direction: row;
+            height: 58px;
+            align-items: center;
+
+        }
+
+        .party-applicant-div{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .party-applicant-box{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .applicant-profile img{
+            height: 100%;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+        .applicant-profile{
+            height: 100%;
+        }
+
+        .party-applicant-name{
+            margin-left: 10px;
+        }
+
+        .party-counting-applicant{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .party-counting{
+            display: flex;
+            flex-direction: row;
         }
     </style>
 
@@ -559,16 +604,18 @@
             <div class="underConst">
             </div>
 
-            <div>
-                <h5>참가자 리스트</h5>
-            </div>
             <div class="party-applicant-div">
+                <div class="party-applicant-box">
+                    <h5>참가자 리스트</h5>
+                    <div class="applicant-list">
 
-                <div class="applicant-list">
-
+                    </div>
                 </div>
                 <div class="party-counting-applicant">
-                    <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTOs[0].person}]]</span>
+                    <h5>현재 참가 인원</h5>
+                    <div class="party-counting">
+                        <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTOs[0].person}]]</span>
+                    </div>
                 </div>
             </div>
 
@@ -925,7 +972,7 @@
       console.log(partyList);
 
       var keywordMaster = "";
-      var witchGearList = "";
+      var witchGearList = "allList";
 
       // 전체 참가자 장비 리스트 업 function
       function getMemberGearList(arr){
@@ -1037,13 +1084,13 @@
 
           console.log(page);
 
-          loadGearDefult(page, sort, dir, keyword, witchGearList);
+          loadGearDefault(page, sort, dir, keyword, witchGearList);
 
       })
 
       if(tellingCategory == "party"){
 
-          loadGearDefult(1, null, null, null, "myGears");
+          loadGearDefault(1, null, null, null, 'allList');
           getApplicantsList();
           getCountingApplicant();
       }
@@ -1063,16 +1110,15 @@
               $(arr).each(function (i, dto){
 
                   console.log(dto);
-
                   str += '<div class="party-applicant-list-boxes">';
 
                   if (dto.s3Url != null){
-                      str += '<div class="applicant-profile-available"><img src="'+dto.s3Url+'"></div>'
+                      str += '<div class="applicant-profile availableProfile"><img src="'+dto.s3Url+'"></div>'
                   }else{
-                      str += '<div class="applicant-profile-unable"><img  src="/icon/img3.svg"></div>'
+                      str += '<div class="applicant-profile unableProfile"><img  src="/icon/person2.svg"></div>'
                   }
 
-                  str += '<div>'+dto.memberName+'</div>';
+                  str += '<div class="party-applicant-name">'+dto.memberName+'</div>';
 
                   str += '</div>';
 
@@ -1100,7 +1146,7 @@
 
 
       // 장비 리스트 불러오기 getJSON
-      function loadGearDefult(pageValue, sortType, dir, keywordValue, witchGearList){
+      function loadGearDefault(pageValue, sortType, dir, keywordValue, witchGearList){
 
           var bno = [[${dto.bno}]];
           var sort = "";
@@ -1108,6 +1154,8 @@
           var keyword = "";
           var page = 1;
           var witch = witchGearList
+
+          var list = {allList: 'allList', myGears:'myGears', finalList: 'finalList'}
 
           console.log(witch);
 
@@ -1134,6 +1182,7 @@
               console.log("-----keyword is not null-----");
               keyword = keywordValue;
           }
+
 
           if (witch == "allList"){      // 참가자 장비 전체 리스트
               $.getJSON('/party/' + bno + "/" + sort + "/" + direction + "/" + keyword + "/" + page, function (arr){
@@ -1163,7 +1212,7 @@
           var keyCode = e.which;
           if (keyCode === 13) { // Enter Key
               keywordMaster = $(this).val();
-              loadGearDefult(1, null, null, $(this).val(), witchGearList);
+              loadGearDefault(1, null, null, $(this).val(), witchGearList);
           }
       });
 
@@ -1181,13 +1230,13 @@
           // console.log(keyword);
           $(".sortBtn-box").css("display", "none");
 
-          loadGearDefult(1, sort, direction, keywordMaster, witchGearList);
+          loadGearDefault(1, sort, direction, keywordMaster, witchGearList);
       })
 
       // 리스트 새로고침
       $(".reboot-sort").click(function (){
           console.log(witchGearList);
-          loadGearDefult(1, null, null, null, witchGearList);
+          loadGearDefault(1, null, null, null, witchGearList);
           $(".memberGearSearch").val("");
       })
 
@@ -1195,21 +1244,21 @@
       $(".AllGearList").click(function (){
           $(".party-member-list").html("");
           witchGearList = "allList";
-          loadGearDefult(1, null, null, null, witchGearList);
+          loadGearDefault(1, null, null, null, witchGearList);
       });
 
       // 내장비 리스트 보이기
       $(".addMyGear").click(function (){
           $(".party-member-list").html("");
           witchGearList = "myGears";
-          loadGearDefult(1, null, null, null, witchGearList);
+          loadGearDefault(1, null, null, null, witchGearList);
       });
 
       // 최종 참가자 장비 리스트
       $(".finalList").click(function (){
           $(".party-member-list").html("");
           witchGearList = "finalList";
-          loadGearDefult(1, null, null, null, witchGearList);
+          loadGearDefault(1, null, null, null, witchGearList);
       });
 
       var address = [[${partyDTOs[0].location}]];
@@ -1264,7 +1313,7 @@
                       success: function (result){
                           console.log("---참가 신청---")
                           console.log(result);
-                          loadGearDefult(1, null, null, null, "myGears");
+                          loadGearDefault(1, null, null, null, "myGears");
                           getApplicantsList();
                           getCountingApplicant();
                       }
@@ -1282,7 +1331,7 @@
                               type: "DELETE",
                               success: function (result ){
                                   console.log(result);
-                                  loadGearDefult(1, null, null, null, "finalList");
+                                  loadGearDefault(1, null, null, null, "finalList");
                                   getApplicantsList();
                                   getCountingApplicant();
                                   NoAvailable.html("");
@@ -1328,7 +1377,7 @@
             method: 'DELETE',
             success: function (result){
                 console.log(result);
-                loadGearDefult(1, null, null, null, "finalList");
+                loadGearDefault(1, null, null, null, "finalList");
             }
         })
       })
