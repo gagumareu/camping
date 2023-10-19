@@ -486,6 +486,11 @@
             display: flex;
             flex-direction: row;
         }
+
+        .party-appointment-div{
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -615,6 +620,12 @@
                     <h5>현재 참가 인원</h5>
                     <div class="party-counting">
                         <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTOs[0].person}]]</span>
+                    </div>
+                </div>
+                <div class="party-appointment-div">
+                    <h5>약소 날짜</h5>
+                    <div>
+                        [[${partyDTOs[0].appointment}]]
                     </div>
                 </div>
             </div>

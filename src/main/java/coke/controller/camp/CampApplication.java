@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CampApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(CampApplication.class, args);
     }
 

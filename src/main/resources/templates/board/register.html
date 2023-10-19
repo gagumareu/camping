@@ -492,7 +492,27 @@
                             <input id="address" class="form-control" type="text" placeholder="주소를 검색하세요." style="width: 100%">
                         </div>
                         <div class="dDay">
-                            <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 정하기">
+<!--                            <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 정하기">-->
+                            <input type="text" class="form-control" name="singleDatepicker" value="" />
+                            <script>
+                                $(function() {
+                                    $('input[name="singleDatepicker"]').daterangepicker({
+                                        singleDatePicker: true,
+                                        showDropdowns: true,
+                                    }, function(start, end, label) {
+
+                                        var data = start.format('MM/DD/YYYY');
+
+                                        console.log(data);
+
+                                        var hiddenBox = $(".hidden-dDay-box");
+                                        var str = "";
+                                        hiddenBox.html("");
+                                        str += '<input type="hidden" name="appointment" value="'+data+'">';
+                                        hiddenBox.html(str);
+                                    });
+                                });
+                            </script>
                         </div>
 
                         <div class="howManyPerson">
