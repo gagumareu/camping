@@ -146,7 +146,8 @@ public class BoardServiceImpl implements BoardService{
 
             parties.forEach(party -> {
                 party.changeLocation(boardDTO.getLocation());
-                party.changeDDay(boardDTO.getAppointment());
+                party.changeAppointment(boardDTO.getAppointment());
+                party.changePerson(boardDTO.getPerson());
                 partyRepository.save(party);
             });
 
