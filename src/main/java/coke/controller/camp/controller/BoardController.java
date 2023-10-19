@@ -221,10 +221,11 @@ public class BoardController {
     @PreAuthorize("principal.username == #boardDTO.email")
     @PostMapping("/modify")
     public String modify(@Valid BoardDTO boardDTO, BindingResult bindingResult, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
-                         RedirectAttributes redirectAttributes){
+                         RedirectAttributes redirectAttributes, PartyDTO partyDTO){
 
         log.info("----------modify---------");
         log.info(boardDTO);
+        log.info(partyDTO);
 
         if (bindingResult.hasErrors()){
             log.info("has errors.....");

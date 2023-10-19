@@ -29,14 +29,13 @@ public class Party {
 
     private int person;
 
-    public void changeDDay(String appointment){
+    public void changeAppointment(String appointment){
         this.appointment = appointment;
     }
-
     public void changeLocation(String location){
         this.location = location;
     }
-
+    public void changePerson(int person){this.person = person;}
 
 
 }

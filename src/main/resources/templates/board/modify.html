@@ -51,6 +51,77 @@
     .content{
       margin-top: 25px;
     }
+
+    .party-get-info-wrapper{
+      display: flex;
+      margin-top: 30px;
+    }
+
+    .party-map-wrapper{
+      flex: 80%;
+      max-width: 80%;
+    }
+
+    .party-info-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      /*height: 47px;*/
+
+      flex: 20%;
+      max-width: 20%;
+      /* padding: 20px; */
+      margin-top: 76px;
+      height: 100%;
+    }
+
+    .howManyPerson{
+      display: flex;
+      /*flex-direction: row;*/
+      /*align-self: center;*/
+      padding: 20px;
+    }
+
+    .searchAddress{
+      display: flex;
+      flex-direction: row;
+      /*align-self: center;*/
+      width: 100%;
+      padding: 20px;
+    }
+
+    .howManyPerson{
+      display: flex;
+      /*flex-direction: row;*/
+      /*align-self: center;*/
+      padding: 20px;
+    }
+
+    .howManyPersonLabel{
+      /*width: 127px;*/
+      flex: 70%;
+      max-width: 70%;
+      /* background: bisque; */
+      border-radius: 10px;
+      align-self: center;
+      /* height: 100%; */
+      justify-content: center;
+      display: flex;
+    }
+
+    .howManyPersonSelect{
+      flex: 30%;
+      max-width: 30%;
+      cursor: pointer;
+    }
+
+    .dDay{
+      padding: 20px;
+    }
+    .dDay input{
+      cursor: pointer;
+    }
+
   </style>
 </head>
 
@@ -243,12 +314,9 @@
       <!--     naver map API      -->
       <th:block th:if="${tellingCategory == 'party'}">
 
+        <div class="party-get-info-wrapper">
+
           <div class="party-map-wrapper">
-
-            <div>
-              <input id="address" class="form-control" type="text" placeholder="변경할 주소를 입력하세요." style="width: 100%">
-            </div>
-
             <div id="map" style="width:100%;height:400px;"></div>
 
             <script th:inline="javascript">
@@ -352,6 +420,32 @@
 
             </script>
           </div>
+
+          <div class="party-info-wrapper">
+            <div class="searchAddress">
+              <input id="address" class="form-control" type="text" placeholder="주소를 수정할 수 있습니다." style="width: 100%">
+            </div>
+            <div class="dDay">
+              <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 변경">
+            </div>
+
+            <div class="howManyPerson">
+              <span class="select-group howManyPersonLabel" style="width: 127px">참가 인원 변경</span>
+              <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
+                <option value="2">2인</option>
+                <option value="3">3인</option>
+                <option value="4">4인</option>
+                <option value="5">5인</option>
+                <option value="6">6인</option>
+                <option value="7">7인</option>
+                <option value="8">8인</option>
+              </select>
+            </div>
+
+          </div>
+
+        </div>
+
 
       </th:block>
 

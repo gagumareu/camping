@@ -48,5 +48,5 @@ public class BoardDTO {
 
     private String appointment;
     private String location;
-
+    private int person;
 }
