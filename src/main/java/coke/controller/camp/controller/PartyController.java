@@ -1,9 +1,6 @@
 package coke.controller.camp.controller;
 
-import coke.controller.camp.dto.PageRequestDTO;
-import coke.controller.camp.dto.PageResultDTO;
-import coke.controller.camp.dto.PartyDTO;
-import coke.controller.camp.dto.PartyGearDTO;
+import coke.controller.camp.dto.*;
 import coke.controller.camp.service.PartyGearService;
 import coke.controller.camp.service.PartyService;
 import jakarta.transaction.Transactional;
@@ -29,6 +26,8 @@ public class PartyController {
 
     private final PartyGearService partyGearService;
 
+
+    // 참가자 장비 전체리스트
     @GetMapping(value = "/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
                                                                                     @PathVariable("sort") String sort,
@@ -57,6 +56,7 @@ public class PartyController {
 
     }
 
+    // 참가자가 등록한 장비 리스트 불러오기
     @GetMapping(value = "/gear/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResultDTO<PartyGearDTO, Object[]>> getPartyGearList(@PathVariable("bno") Long bno,
                                                                                     @PathVariable("sort") String sort,
@@ -97,6 +97,7 @@ public class PartyController {
         return new ResponseEntity<>(rno, HttpStatus.OK);
     }
 
+    // 모임에 참가한 여부 확인
     @GetMapping(value = "/{bno}/{currentUser}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> checkAvailableUser(@PathVariable("bno") Long bno, @PathVariable("currentUser") String email){
 
@@ -122,6 +123,7 @@ public class PartyController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 참가 장소 불러오기
     @GetMapping(value = "/{bno}")
     public ResponseEntity<String> getLocation(@PathVariable("bno") Long bno){
 
@@ -159,6 +161,7 @@ public class PartyController {
         return count == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // 파티 참가자 리스트
     @GetMapping(value = "/applicants/{bno}")
     public ResponseEntity<List<PartyDTO>> getApplicantsByBno(@PathVariable("bno") Long bno){
 
@@ -170,10 +173,20 @@ public class PartyController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // 파티 참가자 수
     @GetMapping(value = "/countingApplicant/{bno}")
     public ResponseEntity<Long> getCountingApplicant(@PathVariable("bno") Long bno){
 
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
+    }
+
+    // 선택한 기간 내에 모임 리스트 불러오기
+    @GetMapping(value = "/board/range", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(String start, String end){
+
+        log.info(start + ", " + end);
+
+        return new ResponseEntity<>(partyService.getPartiesNBoardsRangeList(start, end), HttpStatus.OK);
     }
 
 }

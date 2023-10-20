@@ -1,9 +1,6 @@
 package coke.controller.camp.PartyGearService;
 
-import coke.controller.camp.dto.PageRequestDTO;
-import coke.controller.camp.dto.PageResultDTO;
-import coke.controller.camp.dto.PartyDTO;
-import coke.controller.camp.dto.PartyGearDTO;
+import coke.controller.camp.dto.*;
 import coke.controller.camp.service.PartyService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -13,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -45,5 +43,21 @@ public class PartyServiceTests {
 //            System.out.println(partyDTO);
 //        });
 //    }
+
+    @Test
+    public void getBoardListDateRange(){
+
+        String start = "10/01/2023";
+        String end = "10/31/2023";
+
+        List<BoardDTO> resultList = partyService.getPartiesNBoardsRangeList(start, end);
+
+        resultList.forEach(objects -> {
+            System.out.println(objects);
+        });
+
+    }
+
+
 
 }
