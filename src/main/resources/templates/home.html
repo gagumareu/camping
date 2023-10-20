@@ -28,21 +28,94 @@
       margin-bottom: 20px;
     }
 
+    .toast-calendar{
+        display: flex;
+        flex-direction: row;
+        /* justify-content: space-between; */
+        width: 100%;
+    }
+
+    #calendar{
+        flex: 65%;
+        max-width: 65%;
+        height: 665px;
+    }
+
+    .party-range-board-list{
+        flex: 35%;
+        max-width: 35%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .party-range-div{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .party-range-box{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
   </style>
+    <!-- toast editor   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- toast calendar   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+
 
 </head>
 
 <div class="container content" layout:fragment="content">
 
  <div>
-     <input type="text" name="daterange" value="날짜 검색" />
+     <input type="text" name="daterange" value="" />
 
     <script th:inline="javascript">
         $(function() {
             $('input[name="daterange"]').daterangepicker({
-                opens: 'left'
+                opens: 'left',
+                alwaysShowCalendars: true,
+                showOn: "both",
+                buttonText: "Show Calendar"
+
             }, function(start, end, label) {
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+
+                var startDay = start.format('MM/DD/YYYY');
+                var endDay = end.format('MM/DD/YYYY');
+
+                console.log(startDay);
+                console.log(endDay);
+
+                $.getJSON('/party/board/range', {start: startDay, end: endDay}, function (arr){
+
+                    console.log(arr);
+                    var str = "";
+                    var partiesList = $(".party-range-list");
+
+
+                    $.each(arr, function (i, dto){
+
+                        console.log(dto);
+
+                        str += '<div>';
+                        str += '<div>'+dto.title+' / '+dto.location+' / '+dto.appointment+' </div>';
+                        str += '</div>';
+
+                    })
+
+                    partiesList.html(str);
+
+                })
+
             });
         });
 
@@ -55,29 +128,150 @@
         });
     </script>
 
+     <div class="party-range-list">
 
-     <input type="text" name="birthday" value="" />
+     </div>
 
-     <script>
-         $(function() {
-             $('input[name="birthday"]').daterangepicker({
-                 singleDatePicker: true,
-                 showDropdowns: true,
-             }, function(start, end, label) {
-                 var years = moment().diff(start, 'years');
+<!------------------------------------------------------------------------------------------------>
+     <div class="toast-calendar-changeBtn">
+         <button class="prev">prev</button>
+         <button class="today">today</button>
+         <button class="next">next</button>
+     </div>
+     <div class="toast-calendar-changeView">
+         <button class="day-view">day View</button>
+         <button class="week-view">week view</button>
+         <button class="month-view">month view</button>
+         <span class="navbar-range"></span>
+     </div>
 
-                 var data = start.format('YYYY-MM-DD');
+     <div class="toast-calendar">
+         <div id="calendar" ></div>
+         <div class="party-range-board-list">
 
-                 console.log(data);
+         </div>
+     </div>
 
-                 var hiddenBox = $(".hidden-dDay-box");
-                 var str = "";
-                 hiddenBox.html("");
-                 str += '<input type="hidden" name="appointment" value="'+data+'">';
-                 hiddenBox.html(str);
-             });
+
+     <script th:inline="javascript">
+
+         var Calendar = window.tui.Calendar;
+
+         const calendar = new Calendar('#calendar', {
+             defaultView: 'month',
+             useDetailPopup: true,
+             isReadOnly: true,
+             month:{
+                 // visibleEventCount: 6,
+             },
+             template: {
+
+             },
          });
+
+
+         $(".today").click(function (){
+             calendar.today();
+             var date = calendar.getDate();
+             console.log(date);
+         })
+         $(".prev").click(function (){
+             calendar.prev();
+         })
+         $(".next").click(function (){
+             calendar.next();
+             var date = calendar.getDate();
+             console.log(date);
+         })
+         $(".day-view").click(function (){
+             calendar.changeView('day');
+         })
+         $(".week-view").click(function (){
+             // change to weekly view
+             calendar.changeView('week');
+         })
+         $(".month-view").click(function (){
+             // change to monthly view
+             calendar.changeView('month');
+         })
+
+
+
+         // calendar.on('clickDayName', (event) => {
+         //     if (calendar.getViewName() === 'week') {
+         //         const dateToMove = new Date(event.date);
+         //
+         //         calendar.setDate(dateToMove);
+         //         calendar.changeView('day');
+         //     }
+         // });
+
+         creatEvent();
+
+        function creatEvent(){
+
+            var startDay = "10/01/2023";
+            var endDay = "12/30/2023";
+
+            var date = new Date();
+            var now = date.getMonth() +1 + "/" + date.getDate() + "/" + date.getFullYear();
+            console.log(now);
+
+            var nextMonth = date.getMonth() + "/" + 0 + "/" + date.getFullYear();
+            var nextMonth2 = new Date(new Date().getFullYear(), ("0" + (new Date().getMonth() +1)).slice(-2) , ("0" + new Date().getDate()).slice(-2));
+            console.log(format(nextMonth2));
+
+            function format(date){
+                return date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+            }
+
+
+
+            $.getJSON('/party/board/range', {start: startDay, end: endDay}, function (arr){
+
+                console.log(arr)
+
+                var str = "";
+                var partiesNBoardDiv = $(".party-range-board-list");
+
+                $.each(arr, function (i, dto){
+
+                    var title = dto.title;
+                    var appointment = dto.appointment;
+
+                    calendar.createEvents([
+                        {
+                            id: i,
+                            calendarId: '1',
+                            title:  title,
+                            category: 'time',
+                            dueDateClass: '',
+                            start: appointment,
+                            end: appointment,
+                        }
+                    ]);
+
+                    str += '<div class="party-range-div">';
+                    str += '    <div class="party-range-box">';
+                    str += '        <div>'+dto.title+'</div>';
+                    str += '        <div><span>참가인원: </span>'+dto.person+'</div>';
+                    str += '        <div>'+dto.appointment+'</div>';
+                    str += '    </div>';
+                    str += '    <div class="party-range-pagination-box">';
+                    str += '    </div>';
+                    str += '</div>';
+                })
+
+                partiesNBoardDiv.html(str);
+
+            })
+        }
+
      </script>
+
+
+
+
  </div>
 
 </div> <!--/ container content  /-->

@@ -55,4 +55,20 @@ public class PartyRepositoryTests {
 
 
 //    }
+
+
+    @Test
+    public void getBoardListDateRange(){
+
+        String start = "10/01/2023";
+        String end = "10/31/2023";
+
+        List<Object[]> resultList = partyRepository.getBoardListByDateRange(start, end);
+
+
+        resultList.forEach(objects -> {
+            System.out.println(Arrays.toString(objects));
+        });
+
+    }
 }

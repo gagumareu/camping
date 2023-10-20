@@ -17,6 +17,7 @@ public interface PartyService {
     List<PartyDTO> getPartiesByBno(Long bno);
     List<PartyDTO> getApplicantsByBno(Long bno);
     Long getCountingApplicant(Long bno);
+    List<BoardDTO> getPartiesNBoardsRangeList(String start, String end);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 
@@ -105,6 +106,19 @@ public interface PartyService {
                 .s3Url(member.getProfileImg())
                 .build();
         return partyDTO;
+    }
+
+    default BoardDTO partyNBoardEntityToDTO(Long bno, Party party, Board board){
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .location(party.getLocation())
+                .appointment(party.getAppointment())
+                .person(party.getPerson())
+                .bno(board.getBno())
+                .title(board.getTitle())
+                .category(board.getCategory())
+                .build();
+        return boardDTO;
     }
 
 

@@ -205,6 +205,15 @@ public class PartyServiceImpl implements PartyService{
         return partyRepository.getPartyCountingApplicantByBno(bno);
     }
 
+    @Override
+    public List<BoardDTO> getPartiesNBoardsRangeList(String start, String end) {
+
+        List<Object[]> resultList = partyRepository.getBoardListByDateRange(start, end);
+
+
+
+        return resultList.stream().map(objects -> partyNBoardEntityToDTO((Long) objects[0], (Party) objects[1], (Board) objects[2])).collect(Collectors.toList());
+    }
 
 
 }
