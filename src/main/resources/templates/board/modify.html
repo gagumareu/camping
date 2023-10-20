@@ -423,22 +423,42 @@
 
           <div class="party-info-wrapper">
             <div class="searchAddress">
-              <input id="address" class="form-control" type="text" placeholder="주소를 수정할 수 있습니다." style="width: 100%">
+              <input id="address" class="form-control" type="text" placeholder="주소 수정" style="width: 100%">
             </div>
             <div class="dDay">
-              <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 변경">
+<!--              <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 변경">-->
+              <input type="text" name="singleDatepicker" th:value="${partyDTOs[0].appointment}" />
+              <script>
+                $(function() {
+                  $('input[name="singleDatepicker"]').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                  }, function(start, end, label) {
+
+                    var data = start.format('YYYY-MM-DD');
+
+                    console.log(data);
+
+                    var hiddenBox = $(".hidden-dDay-box");
+                    var str = "";
+                    hiddenBox.html("");
+                    str += '<input type="hidden" name="appointment" value="'+data+'">';
+                    hiddenBox.html(str);
+                  });
+                });
+              </script>
             </div>
 
             <div class="howManyPerson">
               <span class="select-group howManyPersonLabel" style="width: 127px">참가 인원 변경</span>
               <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
-                <option value="2">2인</option>
-                <option value="3">3인</option>
-                <option value="4">4인</option>
-                <option value="5">5인</option>
-                <option value="6">6인</option>
-                <option value="7">7인</option>
-                <option value="8">8인</option>
+                <option value="2" th:selected="${partyDTOs[0].person} == '2'">2인</option>
+                <option value="3" th:selected="${partyDTOs[0].person} == '3'">3인</option>
+                <option value="4" th:selected="${partyDTOs[0].person} == '4'">4인</option>
+                <option value="5" th:selected="${partyDTOs[0].person} == '5'">5인</option>
+                <option value="6" th:selected="${partyDTOs[0].person} == '6'">6인</option>
+                <option value="7" th:selected="${partyDTOs[0].person} == '7'">7인</option>
+                <option value="8" th:selected="${partyDTOs[0].person} == '8'">8인</option>
               </select>
             </div>
 
