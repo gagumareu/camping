@@ -181,6 +181,11 @@
                             회원가입
                         </a>
                     </div>
+                    <div class="header-memberPage-authentication" sec:authorize="isAuthenticated()" style="margin-right: 10px">
+                        <a th:href="@{/member/mySchedule}" style="margin-right: 0px">
+                            나의캠핑일정
+                        </a>
+                    </div>
                     <div class="header-memberPage-authentication" sec:authorize="isAuthenticated()">
                         <a th:href="@{/member/myPage}" style="margin-right: 0px">
                             마이페이지

@@ -9,9 +9,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -180,13 +182,30 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
+    //  내에 모임 리스트 불러오기
+    @GetMapping(value = "/board/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(Principal principal){
+
+        log.info("------getPartiesNBoardList-----");
+
+
+        String email = principal.getName();
+
+        return new ResponseEntity<>(partyService.getPartiesNBoardsListByEmail(email), HttpStatus.OK);
+    }
+
     // 선택한 기간 내에 모임 리스트 불러오기
-    @GetMapping(value = "/board/range", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(String start, String end){
+    @GetMapping(value = "/board/range/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardRangeList(String start, String end, Principal principal){
 
-        log.info(start + ", " + end);
+        log.info("------getPartiesNBoardRangeList-----");
 
-        return new ResponseEntity<>(partyService.getPartiesNBoardsRangeList(start, end), HttpStatus.OK);
+        String email = principal.getName();
+
+        log.info(start + " - " + end);
+        log.info(email);
+
+        return new ResponseEntity<>(partyService.getPartiesNBoardsRangeListByEmail(start, end, email), HttpStatus.OK);
     }
 
 }

@@ -45,6 +45,13 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Query("SELECT count (p.board.bno) FROM Party p where p.board.bno = :bno")
     Long getPartyCountingApplicantByBno(Long bno);
 
-    @Query("SELECT DISTINCT(p.board.bno), p, b FROM Party p LEFT JOIN p.board b WHERE p.appointment between :start AND :end GROUP BY b ORDER BY p.appointment DESC ")
-    List<Object[]> getBoardListByDateRange(String start, String end);
+    @Query("SELECT DISTINCT(p.board.bno), p, b FROM Party p LEFT JOIN p.board b WHERE p.member.email = :email ORDER BY p.appointment ASC ")
+    List<Object[]> getPartiesBoardListByEmail(String email);
+
+    @Query("SELECT DISTINCT(p.board.bno), p, b " +
+            "FROM Party p LEFT JOIN p.board b " +
+            "WHERE p.member.email = :email " +
+            "AND p.appointment BETWEEN :start AND :end GROUP BY b " +
+            "ORDER BY p.appointment DESC ")
+    List<Object[]> getPartiesBoardListByDateRangeNEmail(String start, String end, String email);
 }
