@@ -166,7 +166,26 @@
         .content{
             margin-top: 25px;
         }
+
+        #calendar{
+            flex: 65%;
+            max-width: 65%;
+            height: 665px;
+        }
+
+
     </style>
+
+
+    <!-- toast editor   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- toast calendar   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+
+
 </head>
 
 
@@ -189,6 +208,7 @@
                     <div class="modify-myInfo-btn">내 정보 변경<span>[공사중]</span></div>
                     <div class="my-writings-btn">작성한 게시글</div>
                     <div class="my-replies-btn">작성한 댓글</div>
+                    <div class="my-schedule-btn">캠핑 모임 일정 </div>
                 </div>
             </div> <!--/ myPage-left-side /-->
 
@@ -207,6 +227,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="party-range-board-list"></div>
             </div> <!--/ myPage-content /-->
 
         </div> <!--/ myPage-wrapper /-->
@@ -216,8 +237,9 @@
  <script layout:fragment="script" th:inline="javascript">
 
     $(document).ready(function (){
-        var profileImg = [[${dto}]];
-        console.info(profileImg)
+
+        var dto = [[${dto}]];
+        console.info(dto)
 
         var email = [[${#authentication.principal.username}]];
         console.log(email);
@@ -254,7 +276,7 @@
                 $(arr).each(function (i, dto){
 
                     str += '<div class="data-box">';
-                    str += '<div class="data-title" data-bno="'+dto.bno+'"><a href="/board/read?bno='+dto.bno+'" target="_blank">'+dto.title+'</a></div>';
+                    str += '<div class="data-title" data-bno="'+dto.bno+'"><a href="/board/read?bno='+dto.bno+'" >'+dto.title+'</a></div>';
                     str += '<div class="data-date">'+dto.regDate+'</div>';
                     str += '</div>';
                 })
@@ -282,7 +304,7 @@
                 $(arr).each(function (i, dto){
 
                     str += '<div class="data-box">';
-                    str += '<div class="data-title" data-rno="'+dto.rno+'"><a href="/board/read?bno='+dto.bno+'" target="_blank">'+dto.text+'</a></div>';
+                    str += '<div class="data-title" data-rno="'+dto.rno+'"><a href="/board/read?bno='+dto.bno+'" >'+dto.text+'</a></div>';
                     str += '<div class="data-date">'+dto.regDate+'</div>';
                     str += '</div>';
                 })
@@ -360,6 +382,95 @@
             formData.append(file);
 
         });
+
+        // ****************** toast calendar *********************
+        var Calendar = window.tui.Calendar;
+
+        const calendar = new Calendar('#calendar', {
+            defaultView: 'month',
+            useDetailPopup: true,
+            isReadOnly: true,
+            month:{
+                // visibleEventCount: 6,
+            },
+            template: {
+
+            },
+        });
+
+
+        $(".today").click(function (){
+            calendar.today();
+            var date = calendar.getDate();
+            console.log(date);
+        })
+        $(".prev").click(function (){
+            calendar.prev();
+        })
+        $(".next").click(function (){
+            calendar.next();
+            var date = calendar.getDate();
+            console.log(date);
+        })
+
+        function loadMySchedule(){
+
+            var str1 = "";
+            var str2 = "";
+
+            str1 += '<div class="toast-calendar">';
+            str1 += '<div id="calendar"></div>';
+            str1 += '</div> ';
+
+            loadContent.html(str1);
+
+            var partiesNBoardDiv = $(".party-range-board-list");
+
+            $.getJSON('/party/board/email', function (arr){
+
+                console.log(arr)
+
+                $.each(arr, function (i, dto){
+
+                    var title = dto.title;
+                    var appointment = dto.appointment;
+
+                    calendar.createEvents([
+                        {
+                            id: i,
+                            calendarId: '1',
+                            title:  title,
+                            category: 'time',
+                            dueDateClass: '',
+                            start: appointment,
+                            end: appointment,
+                        }
+                    ]);
+
+                    str2 += '<div class="party-range-div">';
+                    str2 += '    <div class="party-range-box">';
+                    str2 += '        <div>'+dto.title+'</div>';
+                    str2 += '        <div><span>참가인원: </span>'+dto.person+'</div>';
+                    str2 += '        <div>'+dto.appointment+'</div>';
+                    str2 += '    </div>';
+                    str2 += '    <div class="party-range-pagination-box">';
+                    str2 += '    </div>';
+                    str2 += '</div>';
+                })
+
+                partiesNBoardDiv.html(str2);
+
+            })
+
+        } // function loadMySchedule
+
+
+        $(".my-schedule-btn").click(function (){
+
+            loadMySchedule();
+
+        })
+
 
 
 

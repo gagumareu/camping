@@ -58,17 +58,31 @@ public class PartyRepositoryTests {
 
 
     @Test
-    public void getBoardListDateRange(){
+    public void getBoardListDateByEmail(){
 
-        String start = "10/01/2023";
-        String end = "10/31/2023";
-
-        List<Object[]> resultList = partyRepository.getBoardListByDateRange(start, end);
-
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByEmail("user1@email.com");
 
         resultList.forEach(objects -> {
             System.out.println(Arrays.toString(objects));
         });
 
     }
+
+    @Test
+    public void getBoardListDateRange(){
+
+        String start ="12/01/2023";
+        String end ="12/30/2023";
+
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByDateRangeNEmail(start, end,"user1@email.com");
+
+        resultList.forEach(objects -> {
+            System.out.println(Arrays.toString(objects));
+        });
+
+    }
+
+
+
+
 }

@@ -144,4 +144,12 @@ public class MemberController {
         model.addAttribute("gearList", gearList);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mySchedule")
+    public void mySchedule(Principal principal){
+
+        log.info(principal.getName());
+
+    }
+
 }

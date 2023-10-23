@@ -17,7 +17,8 @@ public interface PartyService {
     List<PartyDTO> getPartiesByBno(Long bno);
     List<PartyDTO> getApplicantsByBno(Long bno);
     Long getCountingApplicant(Long bno);
-    List<BoardDTO> getPartiesNBoardsRangeList(String start, String end);
+    List<BoardDTO> getPartiesNBoardsListByEmail(String email);
+    List<BoardDTO> getPartiesNBoardsRangeListByEmail(String start, String end, String email);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 
@@ -114,7 +115,7 @@ public interface PartyService {
                 .location(party.getLocation())
                 .appointment(party.getAppointment())
                 .person(party.getPerson())
-                .bno(board.getBno())
+                .bno(bno)
                 .title(board.getTitle())
                 .category(board.getCategory())
                 .build();

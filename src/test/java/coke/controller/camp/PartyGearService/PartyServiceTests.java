@@ -45,12 +45,21 @@ public class PartyServiceTests {
 //    }
 
     @Test
+    public void getBoardListDate(){
+
+        List<BoardDTO> resultList = partyService.getPartiesNBoardsListByEmail("user1@email.com");
+
+        resultList.forEach(objects -> {
+            System.out.println(objects);
+        });
+
+    }
+
+
+    @Test
     public void getBoardListDateRange(){
 
-        String start = "10/01/2023";
-        String end = "10/31/2023";
-
-        List<BoardDTO> resultList = partyService.getPartiesNBoardsRangeList(start, end);
+        List<BoardDTO> resultList = partyService.getPartiesNBoardsRangeListByEmail("11/01/2023", "11/30/2023", "user1@email.com");
 
         resultList.forEach(objects -> {
             System.out.println(objects);
