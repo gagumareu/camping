@@ -182,7 +182,7 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
-<<<<<<< HEAD
+
     @GetMapping(value = "/get/{bno}")
     public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
 
@@ -190,7 +190,7 @@ public class PartyController {
 
         return new ResponseEntity<>(partyService.getParty(bno), HttpStatus.OK);
     }
-=======
+
     //  내에 모임 리스트 불러오기
     @GetMapping(value = "/board/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(Principal principal){
@@ -217,5 +217,4 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getPartiesNBoardsRangeListByEmail(start, end, email), HttpStatus.OK);
     }
 
->>>>>>> 83b2e5971e14fea2c77e7358fc125c9a4a251495
 }

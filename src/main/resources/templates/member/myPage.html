@@ -227,7 +227,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="party-range-board-list"></div>
             </div> <!--/ myPage-content /-->
 
         </div> <!--/ myPage-wrapper /-->
@@ -383,93 +382,7 @@
 
         });
 
-        // ****************** toast calendar *********************
-        var Calendar = window.tui.Calendar;
 
-        const calendar = new Calendar('#calendar', {
-            defaultView: 'month',
-            useDetailPopup: true,
-            isReadOnly: true,
-            month:{
-                // visibleEventCount: 6,
-            },
-            template: {
-
-            },
-        });
-
-
-        $(".today").click(function (){
-            calendar.today();
-            var date = calendar.getDate();
-            console.log(date);
-        })
-        $(".prev").click(function (){
-            calendar.prev();
-        })
-        $(".next").click(function (){
-            calendar.next();
-            var date = calendar.getDate();
-            console.log(date);
-        })
-
-        function loadMySchedule(){
-
-            var str1 = "";
-            var str2 = "";
-
-            str1 += '<div class="toast-calendar">';
-            str1 += '<div id="calendar"></div>';
-            str1 += '</div> ';
-
-            loadContent.html(str1);
-
-            var partiesNBoardDiv = $(".party-range-board-list");
-
-            $.getJSON('/party/board/email', function (arr){
-
-                console.log(arr)
-
-                $.each(arr, function (i, dto){
-
-                    var title = dto.title;
-                    var appointment = dto.appointment;
-
-                    calendar.createEvents([
-                        {
-                            id: i,
-                            calendarId: '1',
-                            title:  title,
-                            category: 'time',
-                            dueDateClass: '',
-                            start: appointment,
-                            end: appointment,
-                        }
-                    ]);
-
-                    str2 += '<div class="party-range-div">';
-                    str2 += '    <div class="party-range-box">';
-                    str2 += '        <div>'+dto.title+'</div>';
-                    str2 += '        <div><span>참가인원: </span>'+dto.person+'</div>';
-                    str2 += '        <div>'+dto.appointment+'</div>';
-                    str2 += '    </div>';
-                    str2 += '    <div class="party-range-pagination-box">';
-                    str2 += '    </div>';
-                    str2 += '</div>';
-                })
-
-                partiesNBoardDiv.html(str2);
-
-            })
-
-        } // function loadMySchedule
-
-
-        $(".my-schedule-btn").click(function (){
-
-            loadMySchedule();
-
-        })
 
 
 

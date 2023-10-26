@@ -209,7 +209,6 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
-<<<<<<< HEAD
     public PartyDTO getParty(Long bno) {
 
         Party result = partyRepository.getParty(bno);
@@ -217,7 +216,9 @@ public class PartyServiceImpl implements PartyService{
         PartyDTO partyDTO = standardEntityToDTO(result);
 
         return partyDTO;
-=======
+    }
+
+    @Override
     public List<BoardDTO> getPartiesNBoardsListByEmail(String email) {
 
         List<Object[]> resultList = partyRepository.getPartiesBoardListByEmail(email);
@@ -241,7 +242,6 @@ public class PartyServiceImpl implements PartyService{
                 (Long) objects[0],
                 (Party) objects[1],
                 (Board) objects[2])).collect(Collectors.toList());
->>>>>>> 83b2e5971e14fea2c77e7358fc125c9a4a251495
     }
 
 
