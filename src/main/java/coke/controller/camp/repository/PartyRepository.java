@@ -45,5 +45,8 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Query("SELECT count (p.board.bno) FROM Party p where p.board.bno = :bno")
     Long getPartyCountingApplicantByBno(Long bno);
 
+    @Query("SELECT p FROM Party p WHERE p.board.bno = :bno")
+    Party getParty(Long bno);
+
 
 }

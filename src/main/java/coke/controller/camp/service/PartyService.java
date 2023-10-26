@@ -17,6 +17,7 @@ public interface PartyService {
     List<PartyDTO> getPartiesByBno(Long bno);
     List<PartyDTO> getApplicantsByBno(Long bno);
     Long getCountingApplicant(Long bno);
+    PartyDTO getParty(Long bno);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 

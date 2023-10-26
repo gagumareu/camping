@@ -681,9 +681,6 @@
                     </li>
                 </ul>
             </div>
-
-
-
         </th:block>
 
 
@@ -746,8 +743,6 @@
 
   $(document).ready(function (){
 
-      var partyDTOs = [[${partyDTOs}]];
-      console.log(partyDTOs);
 
       var bno = [[${dto.bno}]];
 
@@ -760,9 +755,7 @@
       var tellingCategory = [[${dto.category}]];
       console.log(tellingCategory);
 
-      var totalApplicantCounting = [[${partyDTOs[0].person}]];
-      console.log("---총 참가 가능한 인원---");
-      console.log(totalApplicantCounting);
+
 
       function formatTime(str){
 
@@ -775,6 +768,8 @@
               data.getMinutes();
 
       }  // formatTime
+
+
 
       // 게시물 삭제 이벤트
       $(".removeBtn").on("click", function (){
@@ -976,6 +971,8 @@
 
       //********************************** 캠핑 모임 관련 *********************************************************
 
+
+
       var NoAvailable = $(".NoAvailable");
       var addMyGearToHidden = $(".add-my-gear-hidden-box");
 
@@ -1002,19 +999,19 @@
                   str += '  <div class="party-member-gear">';
                   // str +=        '<div><b>'+i+'  '+dto.gno+'</b></div>';
                   str += '    <div class="party-member-gear-img-box">';
-                              if (dto.gearImageDTOList != null){
-                                  if (dto.gearImageDTOList[0] != null){
-                                      str += '<img class="gear-img available-gear-img" src="'+dto.gearImageDTOList[0].s3Url+'">';
-                                  }else if(dto.gearImageDTOList[0] == null){
-                                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
-                                  }
-                              }else {
-                                  if (dto.s3Url != null){
-                                      str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
-                                  }else if(dto.s3Url == null){
-                                      str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
-                                  }
-                              }
+                  if (dto.gearImageDTOList != null){
+                      if (dto.gearImageDTOList[0] != null){
+                          str += '<img class="gear-img available-gear-img" src="'+dto.gearImageDTOList[0].s3Url+'">';
+                      }else if(dto.gearImageDTOList[0] == null){
+                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                      }
+                  }else {
+                      if (dto.s3Url != null){
+                          str += '<img class="gear-img available-gear-img" src="'+dto.s3Url+'">';
+                      }else if(dto.s3Url == null){
+                          str += '<img class="gear-img unable-gear-img" src="/icon/img3.svg">';
+                      }
+                  }
                   str += '      </div>';
                   str += '    <div class="party-gear-info">';
                   str += '        <div>'+dto.gname+'</div><div class="party-gear-sort">'+dto.sort+'</div>';
@@ -1023,20 +1020,20 @@
 
                   str += '  <div class="party-member-info">';
                   str += '      <div class="party-member-img-box">';
-                                  if(dto.profileImg != null){
-                                      str += '<img class="profile-img available-profile-img" src="'+dto.profileImg+'">';
-                                  }else if(dto.profileImg == null){
-                                      str += '<img class="profile-img unable-profile-img" src="/icon/person2.svg">';
-                                  }
+                  if(dto.profileImg != null){
+                      str += '<img class="profile-img available-profile-img" src="'+dto.profileImg+'">';
+                  }else if(dto.profileImg == null){
+                      str += '<img class="profile-img unable-profile-img" src="/icon/person2.svg">';
+                  }
                   str += '      </div>';
                   str += '      <div class="party-member-name">'+dto.memberName+'</div>';
-                                  if (witchGearList == "myGears" && dto.email == currentUser){
-                                      str += '<div class="party-gear-btn-box">';
-                                      str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
-                                      str += '</div>';
-                                  }else if (witchGearList == "finalList" && dto.email == currentUser){
-                                      str += '<div class="party-gear-btn-box"><button type="button" class="btn btn-outline-danger remove-gear-onFinalList" data-gno="'+dto.gno+'">삭제</button></div>'
-                                  }
+                  if (witchGearList == "myGears" && dto.email == currentUser){
+                      str += '<div class="party-gear-btn-box">';
+                      str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
+                      str += '</div>';
+                  }else if (witchGearList == "finalList" && dto.email == currentUser){
+                      str += '<div class="party-gear-btn-box"><button type="button" class="btn btn-outline-danger remove-gear-onFinalList" data-gno="'+dto.gno+'">삭제</button></div>'
+                  }
                   str += '      </div>';
                   str += '  </div>';
 
@@ -1214,8 +1211,6 @@
 
           }
 
-
-
       }
 
       // 검색 input 이벤트
@@ -1272,90 +1267,107 @@
           loadGearDefault(1, null, null, null, witchGearList);
       });
 
-      var address = [[${partyDTOs[0].location}]];
-      var appoint = [[${partyDTOs[0].appointment}]];
-      var person = [[${partyDTOs[0].person}]];
-      console.log(address);
-      console.log(appoint);
-      console.log(person);
+      if (tellingCategory == "party"){
+
+          var address = "";
+          var appoint = "";
+          // 참가 가능한 인원
+          var totalApplicantCounting = "";
+
+          $.getJSON('/party/get/' + bno, function (dto){
+
+              console.log("***********party/get/bno**********");
+              console.log(dto);
+
+              address = dto.location;
+              appoint = dto.appointment;
+              totalApplicantCounting = dto.person;
+
+          })
+
+          console.log("캠핑 모임 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+          $(".join-party-btn").click(function (){
+
+              var presentcounting = "";
+
+              $.getJSON('/party/countingApplicant/' + bno, function (count){
+                  presentcounting = count;
+                  console.log("----현재 참가 인원----");
+                  console.log(presentcounting);
+                  console.log("----총 참가 가능 인원----")
+                  console.log(totalApplicantCounting);
+              })
+
+              $.getJSON('/party/' + bno + "/" + currentUser, function (count){
+                  console.log(count);
+
+                  if (count == '0'){
+
+                      if (!confirm("캠핑 모임에 참가하겠습니까?")){
+                          return;
+                      }
+                      // if (presentcounting >= totalApplicantCounting){
+                      //     alert("참가 가능한 총 인원이 마감됐습니다.");
+                      //     return false;
+                      // }
+
+                      var data = {
+                          bno: bno,
+                          location: address,
+                          appointment: appoint,
+                          email: currentUser,
+                          person: totalApplicantCounting
+                      }
+
+                      console.log(data);
+
+                      $.ajax({
+                          url: '/party/' + bno,
+                          method: "POST",
+                          data: JSON.stringify(data),
+                          contentType: "application/json; charset=utf-8",
+                          dataType: "json",
+                          success: function (result){
+                              console.log("---참가 신청---")
+                              console.log(result);
+                              loadGearDefault(1, null, null, null, "myGears");
+                              getApplicantsList();
+                              getCountingApplicant();
+                          }
+                      }) // ajax
+                  }else if(count == '1'){
+
+                      if(currentUser == userEmail){
+                          alert('작성자는 수정 불가능합니다.');
+
+                      }else{
+                          if(confirm("이미 참가했습니다. 취소하겠습니까?")){
+                              console.log("---참가 취소---");
+                              $.ajax({
+                                  url:'/party/' + bno + "/" + currentUser,
+                                  type: "DELETE",
+                                  success: function (result ){
+                                      console.log(result);
+                                      loadGearDefault(1, null, null, null, "finalList");
+                                      getApplicantsList();
+                                      getCountingApplicant();
+                                      NoAvailable.html("");
+                                  }
+                              })
+                          }
+                      }
+                      return false;
+                  } // end if
+              })
+          })
+
+      } // if
 
       // 캠핑 모임 신청 버튼 클릭
-      $(".join-party-btn").click(function (){
 
-          var presentcounting = "";
 
-          $.getJSON('/party/countingApplicant/' + bno, function (count){
-              presentcounting = count;
-              console.log("----현재 참가 인원----");
-              console.log(presentcounting);
-              console.log("----총 참가 가능 인원----")
-              console.log(totalApplicantCounting);
-          })
-
-          $.getJSON('/party/' + bno + "/" + currentUser, function (count){
-              console.log(count);
-
-              if (count == '0'){
-
-                  if (!confirm("캠핑 모임에 참가하겠습니까?")){
-                      return;
-                  }
-                  if (presentcounting >= totalApplicantCounting){
-                      alert("참가 가능한 총 인원이 마감됐습니다.");
-                      return false;
-                  }
-
-                  var data = {
-                      bno: bno,
-                      location: address,
-                      appointment: appoint,
-                      email: currentUser,
-                      person: person
-                  }
-
-                  console.log(data);
-
-                  $.ajax({
-                      url: '/party/' + bno,
-                      method: "POST",
-                      data: JSON.stringify(data),
-                      contentType: "application/json; charset=utf-8",
-                      dataType: "json",
-                      success: function (result){
-                          console.log("---참가 신청---")
-                          console.log(result);
-                          loadGearDefault(1, null, null, null, "myGears");
-                          getApplicantsList();
-                          getCountingApplicant();
-                      }
-                  }) // ajax
-              }else if(count == '1'){
-
-                  if(currentUser == userEmail){
-                      alert('작성자는 수정 불가능합니다.');
-
-                  }else{
-                      if(confirm("이미 참가했습니다. 취소하겠습니까?")){
-                          console.log("---참가 취소---");
-                          $.ajax({
-                              url:'/party/' + bno + "/" + currentUser,
-                              type: "DELETE",
-                              success: function (result ){
-                                  console.log(result);
-                                  loadGearDefault(1, null, null, null, "finalList");
-                                  getApplicantsList();
-                                  getCountingApplicant();
-                                  NoAvailable.html("");
-                              }
-                          })
-                      }
-                  }
-                  return false;
-              } // end if
-          })
-      })
-
-    //  내장비 최종 장비 리스트에 등록
+      //  내장비 최종 장비 리스트에 등록
       $(".party-member-list").on("click", ".add-my-gear", function (){
 
           console.log("clicking");
@@ -1379,24 +1391,27 @@
       // 선택한 장비 최종 장비 리스트에서 삭제
       $(".party-member-list").on("click", ".remove-gear-onFinalList", function () {
 
-        var gno = $(this).data('gno');
+          var gno = $(this).data('gno');
 
-        console.log(gno);
+          console.log(gno);
 
-        $.ajax({
-            url: '/party/gear/' + gno,
-            method: 'DELETE',
-            success: function (result){
-                console.log(result);
-                loadGearDefault(1, null, null, null, "finalList");
-            }
-        })
+          $.ajax({
+              url: '/party/gear/' + gno,
+              method: 'DELETE',
+              success: function (result){
+                  console.log(result);
+                  loadGearDefault(1, null, null, null, "finalList");
+              }
+          })
       })
 
       $(".sortBtn").click(function (){
           $(".sortBtn-box").css("display", "flex");
           // $(".sortBtn-box").css("position", "absolute");
       })
+
+
+
 
 
 

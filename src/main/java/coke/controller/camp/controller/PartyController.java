@@ -176,4 +176,11 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/get/{bno}")
+    public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
+
+        log.info("-----get-----");
+
+        return new ResponseEntity<>(partyService.getParty(bno), HttpStatus.OK);
+    }
 }
