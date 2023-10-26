@@ -8,6 +8,7 @@ import jakarta.servlet.http.Part;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,8 @@ public class PartyServiceImpl implements PartyService{
     private final PartyRepository partyRepository;
 
     private final PartyGearRepository partyGearRepository;
+
+    private final ModelMapper modelMapper;
 
     @Override
     public Long save(PartyDTO partyDTO) {
@@ -206,6 +209,7 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
+<<<<<<< HEAD
     public PartyDTO getParty(Long bno) {
 
         Party result = partyRepository.getParty(bno);
@@ -213,6 +217,31 @@ public class PartyServiceImpl implements PartyService{
         PartyDTO partyDTO = standardEntityToDTO(result);
 
         return partyDTO;
+=======
+    public List<BoardDTO> getPartiesNBoardsListByEmail(String email) {
+
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByEmail(email);
+
+        return resultList.stream().map(objects -> partyNBoardEntityToDTO(
+                (Long) objects[0],
+                (Party) objects[1],
+                (Board) objects[2])).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BoardDTO> getPartiesNBoardsRangeListByEmail(String start, String end, String email) {
+
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByDateRangeNEmail(start, end, email);
+
+//        List<BoardDTO> list = resultList.stream().map(objects -> modelMapper.map(objects, BoardDTO.class)).collect(Collectors.toList());
+//
+//        return list;
+
+        return resultList.stream().map(objects -> partyNBoardEntityToDTO(
+                (Long) objects[0],
+                (Party) objects[1],
+                (Board) objects[2])).collect(Collectors.toList());
+>>>>>>> 83b2e5971e14fea2c77e7358fc125c9a4a251495
     }
 
 

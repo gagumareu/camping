@@ -55,4 +55,34 @@ public class PartyRepositoryTests {
 
 
 //    }
+
+
+    @Test
+    public void getBoardListDateByEmail(){
+
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByEmail("user1@email.com");
+
+        resultList.forEach(objects -> {
+            System.out.println(Arrays.toString(objects));
+        });
+
+    }
+
+    @Test
+    public void getBoardListDateRange(){
+
+        String start ="12/01/2023";
+        String end ="12/30/2023";
+
+        List<Object[]> resultList = partyRepository.getPartiesBoardListByDateRangeNEmail(start, end,"user1@email.com");
+
+        resultList.forEach(objects -> {
+            System.out.println(Arrays.toString(objects));
+        });
+
+    }
+
+
+
+
 }

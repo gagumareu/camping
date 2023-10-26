@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .toast-calendar{
+            display: flex;
+            flex-direction: row;
+            /* justify-content: space-between; */
+            width: 100%;
+        }
+
+        #calendar{
+            flex: 65%;
+            max-width: 65%;
+            height: 665px;
+        }
+
+        .party-range-board-list{
+            flex: 35%;
+            max-width: 35%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .party-range-div{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .party-range-box{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+    </style>
+
+    <!-- toast editor   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- toast calendar   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+
+</head>
+
+<div layout:fragment="content" class="container-lg content">
+
+    <div class="wrapper">
+        <div class="toast-calendar-changeBtn">
+            <button class="prev">prev</button>
+            <button class="today">today</button>
+            <button class="next">next</button>
+        </div>
+
+        <div class="toast-calendar">
+            <div id="calendar" ></div>
+            <div class="party-range-board-list">
+
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        var Calendar = window.tui.Calendar;
+
+        const calendar = new Calendar('#calendar', {
+            defaultView: 'month',
+            useDetailPopup: true,
+            isReadOnly: true,
+            month:{
+                // visibleEventCount: 6,
+            },
+            template: {
+
+            },
+        });
+
+        var todayValue = "";
+        var firstDayValue = "";
+        var lastDayValue = "";
+        var num = 0;
+
+        console.log("num: " + num);
+
+
+        setDate(num);
+
+        function setDate(num){
+
+            var now = new Date(), y = now.getFullYear(), m = now.getMonth() + num;
+
+            console.log("*****get function****")
+
+            var today = (now.getMonth()+1) + "/" + now.getDate() + "/" + now.getFullYear();
+            console.log("today1: " + today);
+            todayValue = today;
+
+            var first = new Date(y, m, 1);
+            var firstDay = ("0" + (first.getMonth() +1).toString()).slice(-2) + "/" + ("0" + first.getDate().toString()).slice(-2) + "/" + first.getFullYear()
+            console.log("firstDay1: " + firstDay);
+            firstDayValue = firstDay;
+
+            var last = new Date(y, m+1, 0);
+            var lastDay = ("0" + (last.getMonth() +1).toString()).slice(-2) + "/" + ("0" + last.getDate().toString()).slice(-2) + "/" + last.getFullYear()
+            console.log("lastDay1: " + lastDay);
+            lastDayValue = lastDay;
+
+        }
+
+        console.log("---------------------")
+        console.log("todayValue: " + todayValue);
+        console.log("firstDayValue: " + firstDayValue);
+        console.log("lastDayValue: " + lastDayValue);
+
+
+        // 이번달 리스트 불러오기
+        $(".today").click(function (){
+            calendar.clear();
+            calendar.today();
+            var now = new Date(), y = now.getFullYear(), m = now.getMonth() ;
+            var first = new Date(y, m, 1);
+            var firstDay = (first.getMonth()+1) + "/" + first.getDate() + "/" + first.getFullYear();
+            var last = new Date(y, m+1, 1);
+            var lastDay = (last.getMonth()+1) + "/" + last.getDate() + "/" + last.getFullYear();
+            getEveyPartiesEvent(firstDay, lastDay);
+            num =0;
+        })
+
+        // 이전 달로 기간 불러오기
+        $(".prev").click(function (){
+            calendar.clear();
+            calendar.prev();
+            console.log("===============================");
+            num -= 1;
+            console.log("num: " + num);
+            setDate(num);
+            getEveyPartiesEvent(firstDayValue, lastDayValue);
+        })
+
+        // 다음달 기간 불러오기
+        $(".next").click(function (){
+            calendar.clear();
+            calendar.next();
+            console.log("===============================");
+            num += 1;
+            console.log("num: " + num);
+            setDate(num);
+
+            getEveyPartiesEvent(firstDayValue, lastDayValue);
+        })
+
+        getEveyPartiesEvent(firstDayValue, lastDayValue);
+        function getEveyPartiesEvent(firstDay, lastDay){
+
+            // 전체 기간 리스트
+            $.getJSON('/party/board/range/email', {start: firstDay, end: lastDay},  function (arr){
+
+                console.log(arr)
+
+                var str = "";
+                var partiesNBoardDiv = $(".party-range-board-list");
+
+                $.each(arr, function (i, dto){
+
+                    console.log(dto);
+
+                    var title = dto.title;
+                    var appointment = dto.appointment;
+
+                    calendar.createEvents([
+                        {
+                            id: i,
+                            calendarId: '1',
+                            title:  title,
+                            category: 'time',
+                            dueDateClass: '',
+                            start: appointment,
+                            end: appointment,
+                        }
+                    ]);
+
+                    str += '<div class="party-range-div">';
+                    str += '<a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
+                    str += '    <div class="party-range-box">';
+                    str += '        <div>'+dto.title+'</div>';
+                    str += '    </div>';
+                    str += '    <div class="party-info-box">';
+                    str += '        <div><span>참가인원: </span>'+dto.person+'</div>';
+                    str += '        <div>'+dto.appointment+'</div>';
+                    str += '    </div>';
+                    str += '    <div class="party-range-pagination-box">';
+                    str += '    </div>';
+                    str += '</a>';
+                    str += '</div>';
+                })
+
+                partiesNBoardDiv.html(str);
+
+            })
+        }
+
+    </script>
+
+
+</div>
+<script th:inline="javascript" layout:fragment="script">
+
+
+
+</script>
+</html>

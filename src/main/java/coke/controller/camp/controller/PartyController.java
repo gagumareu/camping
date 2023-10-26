@@ -1,9 +1,6 @@
 package coke.controller.camp.controller;
 
-import coke.controller.camp.dto.PageRequestDTO;
-import coke.controller.camp.dto.PageResultDTO;
-import coke.controller.camp.dto.PartyDTO;
-import coke.controller.camp.dto.PartyGearDTO;
+import coke.controller.camp.dto.*;
 import coke.controller.camp.service.PartyGearService;
 import coke.controller.camp.service.PartyService;
 import jakarta.transaction.Transactional;
@@ -12,9 +9,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,8 @@ public class PartyController {
 
     private final PartyGearService partyGearService;
 
+
+    // 참가자 장비 전체리스트
     @GetMapping(value = "/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResultDTO<PartyDTO, Object[]>> getPartyMemberGearList(@PathVariable("bno") Long bno,
                                                                                     @PathVariable("sort") String sort,
@@ -57,6 +58,7 @@ public class PartyController {
 
     }
 
+    // 참가자가 등록한 장비 리스트 불러오기
     @GetMapping(value = "/gear/{bno}/{sort}/{direction}/{keyword}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageResultDTO<PartyGearDTO, Object[]>> getPartyGearList(@PathVariable("bno") Long bno,
                                                                                     @PathVariable("sort") String sort,
@@ -97,6 +99,7 @@ public class PartyController {
         return new ResponseEntity<>(rno, HttpStatus.OK);
     }
 
+    // 모임에 참가한 여부 확인
     @GetMapping(value = "/{bno}/{currentUser}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> checkAvailableUser(@PathVariable("bno") Long bno, @PathVariable("currentUser") String email){
 
@@ -122,6 +125,7 @@ public class PartyController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 참가 장소 불러오기
     @GetMapping(value = "/{bno}")
     public ResponseEntity<String> getLocation(@PathVariable("bno") Long bno){
 
@@ -159,6 +163,7 @@ public class PartyController {
         return count == 1 ? new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // 파티 참가자 리스트
     @GetMapping(value = "/applicants/{bno}")
     public ResponseEntity<List<PartyDTO>> getApplicantsByBno(@PathVariable("bno") Long bno){
 
@@ -170,12 +175,14 @@ public class PartyController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // 파티 참가자 수
     @GetMapping(value = "/countingApplicant/{bno}")
     public ResponseEntity<Long> getCountingApplicant(@PathVariable("bno") Long bno){
 
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
+<<<<<<< HEAD
     @GetMapping(value = "/get/{bno}")
     public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
 
@@ -183,4 +190,32 @@ public class PartyController {
 
         return new ResponseEntity<>(partyService.getParty(bno), HttpStatus.OK);
     }
+=======
+    //  내에 모임 리스트 불러오기
+    @GetMapping(value = "/board/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(Principal principal){
+
+        log.info("------getPartiesNBoardList-----");
+
+
+        String email = principal.getName();
+
+        return new ResponseEntity<>(partyService.getPartiesNBoardsListByEmail(email), HttpStatus.OK);
+    }
+
+    // 선택한 기간 내에 모임 리스트 불러오기
+    @GetMapping(value = "/board/range/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardRangeList(String start, String end, Principal principal){
+
+        log.info("------getPartiesNBoardRangeList-----");
+
+        String email = principal.getName();
+
+        log.info(start + " - " + end);
+        log.info(email);
+
+        return new ResponseEntity<>(partyService.getPartiesNBoardsRangeListByEmail(start, end, email), HttpStatus.OK);
+    }
+
+>>>>>>> 83b2e5971e14fea2c77e7358fc125c9a4a251495
 }
