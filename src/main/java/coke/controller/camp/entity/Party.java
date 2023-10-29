@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
+
 @Entity
 @Builder
 @AllArgsConstructor
@@ -25,11 +27,11 @@ public class Party {
 
     private String location;
 
-    private String appointment;
+    private LocalDate appointment;
 
     private int person;
 
-    public void changeAppointment(String appointment){
+    public void changeAppointment(LocalDate appointment){
         this.appointment = appointment;
     }
     public void changeLocation(String location){

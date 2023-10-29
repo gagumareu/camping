@@ -6,89 +6,244 @@
   <meta charset="UTF-8">
   <title>Title</title>
 
+
   <style>
 
-    .index-wrapper{
-      display: flex;
-      flex-direction: column;
-      margin-top: 31px;
-    }
+      li{list-style:none;}
 
-    .resume-box{
-      width: 50%;
-      align-self: center;
-      margin-bottom: 14px;
-    }
 
-    .index-about-this p {
-      margin-bottom: 5px;
-    }
 
-    .index-name{
-      margin-bottom: 20px;
-    }
+      .party-main {
+          margin: auto;
+          /*padding: 0 10px 100px;*/
+          /*width: 960px;*/
+          height: 100%;
+      }
 
-    .toast-calendar{
-        display: flex;
-        flex-direction: row;
-        /* justify-content: space-between; */
+      .party-container {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+      }
+
+      .party-container:after{
+          content:'';
+          display:block;
+          clear:both;
+      }
+
+      .party-item {
+          margin-bottom: 5px;
+          /*background:silver;*/
+          padding:20px;
+          animation: fadeIn 1s;
+          display: flex;
+          flex-direction: column;
+          height: 390px;
+      }
+
+      .party-item:nth-child(4n) {
+          margin-right:0;
+      }
+
+      @keyframes fadeIn{
+          0% {
+              opacity:0;
+          }
+          100% {
+              opacity:1;
+          }
+      }
+
+      /*  이미지를 로딩하는 동안 보이지 않게 함*/
+      .party-item.is-loading {
+          opacity: 0;
+      }
+
+      .none-party-img{
+          width: 170px;
+          height: 100%;
+      }
+
+      .available-party-img{
         width: 100%;
-    }
+      }
 
-    #calendar{
-        flex: 65%;
-        max-width: 65%;
-        height: 665px;
-    }
+      .party-item-img{
+          flex: 90%;
 
-    .party-range-board-list{
-        flex: 35%;
-        max-width: 35%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+          max-height: 90%;
+          max-width: 100%;
 
-    .party-range-div{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
+          display: flex;
+          justify-content: center;
 
-    .party-range-box{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
+      }
+
+      .party-item-date{
+          flex: 10%;
+          max-height: 10%;
+      }
+
+      .party-item-link{
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+      }
+
+      .none-party-img{
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+      }
+
+      .available-party-img{
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+      }
+
+
 
   </style>
-    <!-- toast editor   -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-
-    <!-- toast calendar   -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
 
 
 </head>
 
 <div class="container content" layout:fragment="content">
 
- <div>
+
+    <div class="party-main">
+        <div class="row party-container">
+
+        </div>
+        <button class="btn btn-primary party-load-more-btn">LOAD MORE</button>
+    </div>
 
 
 
-
-
-
-
- </div>
 
 </div> <!--/ container content  /-->
 
-    <script th:inline="javascript" layout:fragment="script">
+<script th:inline="javascript" layout:fragment="script">
 
-    </script>
+    $(function (){
+
+        var $partyContainer = $(".party-container"),
+            $partyLoadMoreBtn = $('.party-load-more-btn'),
+            $addItemCount = 8,
+            $added = 0,
+            $allPartiesData =[];
+
+        // $partyContainer.masonry({
+        //     columnWidth: 80,
+        //     itemSelector: '.party-item',
+        //     // gutter: 5
+        // });
+
+
+        var $now = new Date(), y = $now.getFullYear(), m = $now.getMonth();
+        var $today = $now.getFullYear() + "-" + ("0" + ($now.getMonth() +1)).slice(-2) + "-" + ("0" + $now.getDate()).slice(-2);
+        console.log($today);
+
+        var $sixMonth = new Date(y, m + 7, 0);
+        var $sixMonthLater = $sixMonth.getFullYear() + "-" + ("0" + ($sixMonth.getMonth() +1)).slice(-2) + "-" + $sixMonth.getDate();
+        console.log($sixMonthLater);
+
+
+        // 이번 달로 부터 6개월 캠핑 모임 리스트 불러오기
+        $.getJSON('/party/rangeList', {start: $today, end: $sixMonthLater}, initPartyBox);
+
+        function initPartyBox(data){
+
+            console.log(data);
+
+            $allPartiesData = data;
+
+            console.log($allPartiesData);
+
+            addItem();
+
+            $partyLoadMoreBtn.click(addItem);
+
+        }
+
+        function addItem(){
+
+            var slicedData;
+            var elements = [];
+
+            slicedData = $allPartiesData.slice($added, $added + $addItemCount);
+            console.log(slicedData);
+
+            var str = "";
+
+            $.each(slicedData, function (i, dto){
+
+                str += '<div class="col-lg-3 col-sm-6 party-item">';
+                str += '<a class="party-item-link" href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
+                str += '    <div class="party-item-img">';
+                    if(dto.s3Url != null){
+                        str += '<img src="'+dto.s3Url+'" class="available-party-img">';
+                    }else{
+                        str += '<img src="/icon/img3.svg" class="none-party-img"> ';
+                    }
+                str += '    </div>';
+                str += '    <div class="party-item-date">';
+                str +=      dto.appointment ;
+                str += '    </div>';
+                str += '</a>';
+                str += '</div>';
+
+                // var itemHTML =
+                //
+                //     '<li class="party-item">'+
+                //         '<a href="#">'+
+                //             '<figure>'+
+                //
+                //                 '<img src="'+dto.s3Url+'" class="available-party-img"> '+
+                //
+                //                 '<img src="/icon/img3.svg" class="none-party-img" alt="'+dto.title+'"> '+
+                //
+                //                 '<figcaption>'+
+                //                     dto.title +
+                //                 '</figcaption>'+
+                //             '</figure>'+
+                //         '</a>'+
+                //     '<li>';
+                //
+                // elements.push($(itemHTML).get(0));
+            })
+
+            console.log(elements);
+
+            $partyContainer.append(str);
+            // $partyContainer.append(elements);
+
+            $added += slicedData.length;
+
+            if ($added < $allPartiesData.length){
+                $partyLoadMoreBtn.show();
+            }else{
+                $partyLoadMoreBtn.hide();
+            }
+
+            // $partyContainer.imagesLoaded( function() {
+            //     // images have loaded
+            //     $partyContainer.masonry( 'appended', str);
+            //     // $partyContainer.masonry( 'appended', elements);
+            // });
+
+
+        }
+
+
+
+
+    }); // the end ready function
+
+
+
+</script>
 
 </html>

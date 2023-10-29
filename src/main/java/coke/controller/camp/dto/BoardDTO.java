@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class BoardDTO {
     @Builder.Default
     private List<GearImageDTO> gearImageDTOList = new ArrayList<>();
 
-    private String appointment;
+    private LocalDate appointment;
     private String location;
     private int person;
 }

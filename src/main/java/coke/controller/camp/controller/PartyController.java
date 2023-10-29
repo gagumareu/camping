@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -182,7 +183,7 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
-
+    // get party
     @GetMapping(value = "/get/{bno}")
     public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
 
@@ -205,7 +206,7 @@ public class PartyController {
 
     // 선택한 기간 내에 모임 리스트 불러오기
     @GetMapping(value = "/board/range/email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BoardDTO>> getPartiesNBoardRangeList(String start, String end, Principal principal){
+    public ResponseEntity<List<BoardDTO>> getPartiesNBoardRangeList(LocalDate start, LocalDate end, Principal principal){
 
         log.info("------getPartiesNBoardRangeList-----");
 
@@ -215,6 +216,16 @@ public class PartyController {
         log.info(email);
 
         return new ResponseEntity<>(partyService.getPartiesNBoardsRangeListByEmail(start, end, email), HttpStatus.OK);
+    }
+
+    // 현재 날로 부터 6개월 동안 캠핑 모임 게시글 불러오기
+    @GetMapping(value = "/rangeList")
+    public ResponseEntity<List<PartyDTO>> getPartiesRangeList(LocalDate start, LocalDate end){
+
+        log.info("---------- getPartiesRangeList-----------");
+        log.info(start + " - " + end);
+
+        return new ResponseEntity<>(partyService.getAllPartiesRangeList(start, end), HttpStatus.OK);
     }
 
 }
