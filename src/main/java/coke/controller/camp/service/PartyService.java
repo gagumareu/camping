@@ -3,6 +3,7 @@ package coke.controller.camp.service;
 import coke.controller.camp.dto.*;
 import coke.controller.camp.entity.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PartyService {
@@ -19,7 +20,8 @@ public interface PartyService {
     Long getCountingApplicant(Long bno);
     PartyDTO getParty(Long bno);
     List<BoardDTO> getPartiesNBoardsListByEmail(String email);
-    List<BoardDTO> getPartiesNBoardsRangeListByEmail(String start, String end, String email);
+    List<BoardDTO> getPartiesNBoardsRangeListByEmail(LocalDate start, LocalDate end, String email);
+    List<PartyDTO> getAllPartiesRangeList(LocalDate start, LocalDate end);
 
     default Party dtoToEntity(PartyDTO partyDTO){
 
@@ -120,7 +122,24 @@ public interface PartyService {
                 .title(board.getTitle())
                 .category(board.getCategory())
                 .build();
+
         return boardDTO;
+    }
+
+    default PartyDTO partRangeEntityToDTO(Party party, Long bno, String title, String category, String s3Url){
+
+        PartyDTO partyDTO = PartyDTO.builder()
+                .pno(party.getPno())
+                .location(party.getLocation())
+                .appointment(party.getAppointment())
+                .person(party.getPerson())
+                .bno(bno)
+                .category(category)
+                .title(title)
+                .s3Url(s3Url)
+                .build();
+
+        return partyDTO;
     }
 
 

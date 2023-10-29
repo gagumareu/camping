@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -230,7 +231,7 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
-    public List<BoardDTO> getPartiesNBoardsRangeListByEmail(String start, String end, String email) {
+    public List<BoardDTO> getPartiesNBoardsRangeListByEmail(LocalDate start, LocalDate end, String email) {
 
         List<Object[]> resultList = partyRepository.getPartiesBoardListByDateRangeNEmail(start, end, email);
 
@@ -242,6 +243,22 @@ public class PartyServiceImpl implements PartyService{
                 (Long) objects[0],
                 (Party) objects[1],
                 (Board) objects[2])).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PartyDTO> getAllPartiesRangeList(LocalDate start, LocalDate end) {
+
+        List<Object[]> resultList = partyRepository.getPartiesAllListWithRange(start, end);
+
+        List<PartyDTO> list = resultList.stream().map(objects -> partRangeEntityToDTO(
+                (Party) objects[0],
+                (Long) objects[1],
+                (String) objects[2],
+                (String) objects[3],
+                (String) objects[4]
+        )).collect(Collectors.toList());
+
+        return list;
     }
 
 

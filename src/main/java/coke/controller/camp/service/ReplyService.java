@@ -16,6 +16,7 @@ public interface ReplyService {
     void modify(ReplyDTO replyDTO);
     List<ReplyDTO> getListByEmail(String email);
 
+
     default Reply dtoToEntity(ReplyDTO replyDTO){
 
         Reply reply = Reply.builder()

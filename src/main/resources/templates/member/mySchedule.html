@@ -59,7 +59,7 @@
     <div class="wrapper">
         <div class="toast-calendar-changeBtn">
             <button class="prev">prev</button>
-            <button class="today">today</button>
+            <button class="getToday">today</button>
             <button class="next">next</button>
         </div>
 
@@ -87,81 +87,105 @@
             },
         });
 
-        var todayValue = "";
-        var firstDayValue = "";
-        var lastDayValue = "";
-        var num = 0;
+        var $todayValue = "";
+        var $firstDayValue = "";
+        var $lastDayValue = "";
+        var $num = 0;
 
-        console.log("num: " + num);
+        console.log("$num: " + $num);
 
 
-        setDate(num);
+        setDate($num);
 
-        function setDate(num){
+        function setDate($num){
 
-            var now = new Date(), y = now.getFullYear(), m = now.getMonth() + num;
+            var now = new Date(), y = now.getFullYear(), m = now.getMonth() + $num;
 
             console.log("*****get function****")
 
-            var today = (now.getMonth()+1) + "/" + now.getDate() + "/" + now.getFullYear();
+            var today = now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate();
             console.log("today1: " + today);
-            todayValue = today;
+            $todayValue = today;
 
             var first = new Date(y, m, 1);
-            var firstDay = ("0" + (first.getMonth() +1).toString()).slice(-2) + "/" + ("0" + first.getDate().toString()).slice(-2) + "/" + first.getFullYear()
+            var firstDay = first.getFullYear() + "-" + ("0" + (first.getMonth() +1).toString()).slice(-2) + "-" + ("0" + first.getDate().toString()).slice(-2);
             console.log("firstDay1: " + firstDay);
-            firstDayValue = firstDay;
+            $firstDayValue = firstDay;
 
             var last = new Date(y, m+1, 0);
-            var lastDay = ("0" + (last.getMonth() +1).toString()).slice(-2) + "/" + ("0" + last.getDate().toString()).slice(-2) + "/" + last.getFullYear()
+            var lastDay = last.getFullYear() + "-" + ("0" + (last.getMonth() +1).toString()).slice(-2) + "-" + ("0" + last.getDate().toString()).slice(-2)
             console.log("lastDay1: " + lastDay);
-            lastDayValue = lastDay;
+            $lastDayValue = lastDay;
 
         }
 
         console.log("---------------------")
-        console.log("todayValue: " + todayValue);
-        console.log("firstDayValue: " + firstDayValue);
-        console.log("lastDayValue: " + lastDayValue);
+        console.log("$todayValue: " + $todayValue);
+        console.log("$firstDayValue: " + $firstDayValue);
+        console.log("$lastDayValue: " + $lastDayValue);
 
+        getEveyPartiesEvent($firstDayValue, $lastDayValue);
 
         // 이번달 리스트 불러오기
-        $(".today").click(function (){
+        $(".getToday").click(function (){
+
             calendar.clear();
             calendar.today();
-            var now = new Date(), y = now.getFullYear(), m = now.getMonth() ;
-            var first = new Date(y, m, 1);
-            var firstDay = (first.getMonth()+1) + "/" + first.getDate() + "/" + first.getFullYear();
-            var last = new Date(y, m+1, 1);
-            var lastDay = (last.getMonth()+1) + "/" + last.getDate() + "/" + last.getFullYear();
-            getEveyPartiesEvent(firstDay, lastDay);
-            num =0;
+
+            // var now = new Date(), y = now.getFullYear(), m = now.getMonth() ;
+            //
+            // var first = new Date(y, m, 1);
+            // var firstDay = first.getFullYear() + "-" + (first.getMonth()+1) + "-" + first.getDate();
+            // console.log(firstDay);
+            //
+            // var last = new Date(y, m+1, 1);
+            // var lastDay = last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+            // console.log(lastDay);
+
+            console.log("===============================");
+
+            $num = 0;
+            console.log($num);
+
+            setDate($num);
+
+            // getEveyPartiesEvent(firstDay, lastDay);
+            getEveyPartiesEvent($firstDayValue, $lastDayValue);
+
+            $num =0;
         })
 
         // 이전 달로 기간 불러오기
         $(".prev").click(function (){
+
             calendar.clear();
             calendar.prev();
+
             console.log("===============================");
-            num -= 1;
-            console.log("num: " + num);
-            setDate(num);
-            getEveyPartiesEvent(firstDayValue, lastDayValue);
+
+            $num -= 1;
+            console.log("$num: " + $num);
+
+            setDate($num);
+            getEveyPartiesEvent($firstDayValue, $lastDayValue);
         })
 
         // 다음달 기간 불러오기
         $(".next").click(function (){
+
             calendar.clear();
             calendar.next();
-            console.log("===============================");
-            num += 1;
-            console.log("num: " + num);
-            setDate(num);
 
-            getEveyPartiesEvent(firstDayValue, lastDayValue);
+            console.log("===============================");
+
+            $num += 1;
+            console.log("$num: " + $num);
+
+            setDate($num);
+            getEveyPartiesEvent($firstDayValue, $lastDayValue);
         })
 
-        getEveyPartiesEvent(firstDayValue, lastDayValue);
+
         function getEveyPartiesEvent(firstDay, lastDay){
 
             // 전체 기간 리스트
@@ -178,6 +202,8 @@
 
                     var title = dto.title;
                     var appointment = dto.appointment;
+
+                    console.log(appointment);
 
                     calendar.createEvents([
                         {

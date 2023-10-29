@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -59,7 +61,25 @@ public class PartyServiceTests {
     @Test
     public void getBoardListDateRange(){
 
-        List<BoardDTO> resultList = partyService.getPartiesNBoardsRangeListByEmail("11/01/2023", "11/30/2023", "user1@email.com");
+        LocalDate start = LocalDate.of(2023,10,01);
+        LocalDate end = LocalDate.of(2024,04,30);
+
+        List<BoardDTO> resultList = partyService.getPartiesNBoardsRangeListByEmail(start, end, "user1@email.com");
+
+        resultList.forEach(objects -> {
+            System.out.println(objects);
+        });
+
+    }
+
+    @Test
+    public void getPartiesAllList(){
+
+        LocalDate start = LocalDate.of(2023,10,01);
+        LocalDate end = LocalDate.of(2024,04,30);
+
+
+        List<PartyDTO> resultList = partyService.getAllPartiesRangeList(start, end);
 
         resultList.forEach(objects -> {
             System.out.println(objects);

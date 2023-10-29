@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PartyRepository extends JpaRepository<Party, Long>, PartySearchRepository {
@@ -55,5 +56,15 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
             "WHERE p.member.email = :email " +
             "AND p.appointment BETWEEN :start AND :end GROUP BY b " +
             "ORDER BY p.appointment DESC ")
-    List<Object[]> getPartiesBoardListByDateRangeNEmail(String start, String end, String email);
+    List<Object[]> getPartiesBoardListByDateRangeNEmail(LocalDate start, LocalDate end, String email);
+
+    // 기간 내 캠핑 모임 게시물 불러오기
+    @Query("SELECT p, b.bno, b.title, b.category, bi.s3Url " +
+            "FROM Party p " +
+            "LEFT JOIN p.board b LEFT JOIN BoardImage bi ON bi.board = b " +
+            "WHERE p.appointment BETWEEN :start AND :end " +
+            "GROUP BY b.bno order by p.appointment ASC ")
+    List<Object[]> getPartiesAllListWithRange(LocalDate start, LocalDate end);
+
+
 }
