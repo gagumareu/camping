@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface PartyRepository extends JpaRepository<Party, Long>, PartySearchRepository {
 
@@ -66,5 +67,7 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
             "GROUP BY b.bno order by p.appointment ASC ")
     List<Object[]> getPartiesAllListWithRange(LocalDate start, LocalDate end);
 
+    @Query("SELECT p FROM Party p WHERE p.board.bno = :bno GROUP BY p.board.bno")
+    Party getPartyInfoByBno(Long bno);
 
 }

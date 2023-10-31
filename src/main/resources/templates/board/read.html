@@ -592,7 +592,7 @@
                     });
                 }
 
-                var address = [[${partyDTOs[0].location}]];
+                var address = [[${partyDTO.location}]];
                 console.log(address);
                 function initGeocoder() {
                     searchAddressToCoordinate(address);
@@ -619,13 +619,13 @@
                 <div class="party-counting-applicant">
                     <h5>현재 참가 인원</h5>
                     <div class="party-counting">
-                        <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTOs[0].person}]]</span>
+                        <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTO.person}]]</span>
                     </div>
                 </div>
                 <div class="party-appointment-div">
                     <h5>약소 날짜</h5>
                     <div>
-                        [[${partyDTOs[0].appointment}]]
+                        [[${partyDTO.appointment}]]
                     </div>
                 </div>
             </div>

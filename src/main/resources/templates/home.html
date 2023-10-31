@@ -14,14 +14,14 @@
 
 
       .party-main {
-          margin: auto;
+          margin: auto 35px;
           /*padding: 0 10px 100px;*/
           /*width: 960px;*/
           height: 100%;
       }
 
       .party-container {
-          margin: 0;
+          margin: auto 35px;
           padding: 0;
           height: 100%;
       }
@@ -40,6 +40,7 @@
           display: flex;
           flex-direction: column;
           height: 390px;
+          /*border: 3px solid red;*/
       }
 
       .party-item:nth-child(4n) {
@@ -71,13 +72,15 @@
 
       .party-item-img{
           flex: 90%;
-
           max-height: 90%;
           max-width: 100%;
-
           display: flex;
           justify-content: center;
 
+      }
+
+      .party-item-img img{
+          border-radius: 20px;
       }
 
       .party-item-date{
@@ -103,23 +106,31 @@
           height: 100%;
       }
 
+      .party-main{
+          /*background: #e5fafb;*/
+      }
 
+      .party-container-btn{
+          display: flex;
+          justify-content: center;
+      }
 
   </style>
 
 
 </head>
 
-<div class="container content" layout:fragment="content">
+<div class="container-lg content" layout:fragment="content">
 
 
     <div class="party-main">
         <div class="row party-container">
 
         </div>
-        <button class="btn btn-primary party-load-more-btn">LOAD MORE</button>
+        <div class="party-container-btn">
+            <button class="btn btn-primary party-load-more-btn">더보기</button>
+        </div>
     </div>
-
 
 
 
@@ -131,15 +142,9 @@
 
         var $partyContainer = $(".party-container"),
             $partyLoadMoreBtn = $('.party-load-more-btn'),
-            $addItemCount = 8,
+            $addItemCount = 4,
             $added = 0,
             $allPartiesData =[];
-
-        // $partyContainer.masonry({
-        //     columnWidth: 80,
-        //     itemSelector: '.party-item',
-        //     // gutter: 5
-        // });
 
 
         var $now = new Date(), y = $now.getFullYear(), m = $now.getMonth();
@@ -153,7 +158,6 @@
 
         // 이번 달로 부터 6개월 캠핑 모임 리스트 불러오기
         $.getJSON('/party/rangeList', {start: $today, end: $sixMonthLater}, initPartyBox);
-
         function initPartyBox(data){
 
             console.log(data);
@@ -195,30 +199,11 @@
                 str += '</a>';
                 str += '</div>';
 
-                // var itemHTML =
-                //
-                //     '<li class="party-item">'+
-                //         '<a href="#">'+
-                //             '<figure>'+
-                //
-                //                 '<img src="'+dto.s3Url+'" class="available-party-img"> '+
-                //
-                //                 '<img src="/icon/img3.svg" class="none-party-img" alt="'+dto.title+'"> '+
-                //
-                //                 '<figcaption>'+
-                //                     dto.title +
-                //                 '</figcaption>'+
-                //             '</figure>'+
-                //         '</a>'+
-                //     '<li>';
-                //
-                // elements.push($(itemHTML).get(0));
             })
 
             console.log(elements);
 
             $partyContainer.append(str);
-            // $partyContainer.append(elements);
 
             $added += slicedData.length;
 
@@ -228,14 +213,7 @@
                 $partyLoadMoreBtn.hide();
             }
 
-            // $partyContainer.imagesLoaded( function() {
-            //     // images have loaded
-            //     $partyContainer.masonry( 'appended', str);
-            //     // $partyContainer.masonry( 'appended', elements);
-            // });
-
-
-        }
+        }  // function addItem
 
 
 

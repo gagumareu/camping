@@ -100,6 +100,20 @@ public class PartyRepositoryTests {
 
     }
 
+    @Test
+    public void getPartyInfo(){
+
+       Party party = partyRepository.getPartyInfoByBno(216L);
+
+        System.out.println(party);
+//        Party party1 = party.orElseThrow();
+//        party.forEach(party1 -> {
+//            System.out.println(party1);
+//        });
+
+
+    }
+
 
 
 

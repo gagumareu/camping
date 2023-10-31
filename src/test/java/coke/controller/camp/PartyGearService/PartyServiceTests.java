@@ -87,6 +87,11 @@ public class PartyServiceTests {
 
     }
 
+    @Test
+    public void getPartyInfo(){
+        PartyDTO partyDTO = partyService.getPartyInfoByBno(216L);
+        System.out.println(partyDTO);
+    }
 
 
 }

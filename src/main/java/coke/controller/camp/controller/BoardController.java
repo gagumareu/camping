@@ -155,8 +155,8 @@ public class BoardController {
         if (pageRequestDTO.getCategory().equals("party") || boardDTO.getCategory().equals("party")){
 
             log.info("-----------get party location------------");
-            List<PartyDTO> partyDTOs = partyService.getPartiesByBno(bno);
-            model.addAttribute("partyDTOs", partyDTOs);
+            PartyDTO partyDTO = partyService.getPartyInfoByBno(bno);
+            model.addAttribute("partyDTO", partyDTO);
         }
 
         model.addAttribute("dto", boardDTO);

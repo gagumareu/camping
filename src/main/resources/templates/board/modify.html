@@ -409,7 +409,7 @@
                 //     searchAddressToCoordinate($('#address').val());
                 // });
 
-                var campingLocation = [[${partyDTOs[0].location}]];
+                var campingLocation = [[${partyDTO.location}]];
 
 
                 searchAddressToCoordinate(campingLocation);
@@ -426,25 +426,29 @@
               <input id="address" class="form-control" type="text" placeholder="주소 수정" style="width: 100%">
             </div>
             <div class="dDay">
-<!--              <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 변경">-->
-              <input type="text" name="singleDatepicker" th:value="${partyDTOs[0].appointment}" />
+              <input type="text" name="singleDatepicker" class="form-control">
               <script>
                 $(function() {
-                  $('input[name="singleDatepicker"]').daterangepicker({
-                    singleDatePicker: true,
-                    showDropdowns: true,
-                  }, function(start, end, label) {
 
-                    var data = start.format('YYYY-MM-DD');
+                    $('input[name="singleDatepicker"]').daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                    }, function(start, end, label) {
 
-                    console.log(data);
+                      var data = start.format('YYYY-MM-DD');
 
-                    var hiddenBox = $(".hidden-dDay-box");
-                    var str = "";
-                    hiddenBox.html("");
-                    str += '<input type="hidden" name="appointment" value="'+data+'">';
-                    hiddenBox.html(str);
-                  });
+                      console.log("----data----");
+                      console.log(data);
+
+                      var hiddenBox = $(".hidden-dDay-box");
+                      var str = "";
+
+                      hiddenBox.html("");
+
+                      str += '<input type="hidden" name="appointment" value="'+data+'">';
+
+                      hiddenBox.html(str);
+                    });
                 });
               </script>
             </div>
@@ -452,13 +456,13 @@
             <div class="howManyPerson">
               <span class="select-group howManyPersonLabel" style="width: 127px">참가 인원 변경</span>
               <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
-                <option value="2" th:selected="${partyDTOs[0].person} == '2'">2인</option>
-                <option value="3" th:selected="${partyDTOs[0].person} == '3'">3인</option>
-                <option value="4" th:selected="${partyDTOs[0].person} == '4'">4인</option>
-                <option value="5" th:selected="${partyDTOs[0].person} == '5'">5인</option>
-                <option value="6" th:selected="${partyDTOs[0].person} == '6'">6인</option>
-                <option value="7" th:selected="${partyDTOs[0].person} == '7'">7인</option>
-                <option value="8" th:selected="${partyDTOs[0].person} == '8'">8인</option>
+                <option value="2" th:selected="${partyDTO.person} == '2'">2인</option>
+                <option value="3" th:selected="${partyDTO.person} == '3'">3인</option>
+                <option value="4" th:selected="${partyDTO.person} == '4'">4인</option>
+                <option value="5" th:selected="${partyDTO.person} == '5'">5인</option>
+                <option value="6" th:selected="${partyDTO.person} == '6'">6인</option>
+                <option value="7" th:selected="${partyDTO.person} == '7'">7인</option>
+                <option value="8" th:selected="${partyDTO.person} == '8'">8인</option>
               </select>
             </div>
 
@@ -473,7 +477,7 @@
       <div class="hiddenBox" style="display: none"></div>
       <div class="hidden-address-box" style="display: none"></div>
       <div class="hidden-dDay-box" style="display: none">
-        <input name="appointment" th:value="${partyDTOs[0].appointment}">
+        <input name="appointment" th:value="${partyDTO.appointment}">
       </div>
       <div class="modify-btn-box">
         <button class="btn btn-outline-primary registBtn">수정</button>
@@ -500,8 +504,17 @@
 
     $(document).ready(function (){
 
-      var partyList = [[${partyDTOs}]];
-      console.log(partyList);
+      var partyDTO = [[${partyDTO}]];
+      var appointment = [[${partyDTO.appointment}]];
+      console.log(partyDTO);
+      console.log(appointment);
+
+      var tempDate = new Date(appointment);
+      var $appoint = tempDate.getMonth()+1 + "/" + tempDate.getDate() + "/" + tempDate.getFullYear();
+
+      console.log($appoint);
+
+      $("input[name='singleDatepicker']").val(appointment);
 
 
       $("#modify-form").on("keydown", function(e) {
