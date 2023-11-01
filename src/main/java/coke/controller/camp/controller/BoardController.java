@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -245,6 +247,26 @@ public class BoardController {
         redirectAttributes.addAttribute("category", pageRequestDTO.getCategory());
 
         return "redirect:/board/read";
+    }
+
+    @GetMapping(value = "/list/talkCategory")
+    public ResponseEntity<List<BoardDTO>> getListByTalkyCategory(){
+
+        log.info("------getListByPartyCategory------");
+
+        List<BoardDTO> boardDTOList = boardService.getBoardByTalkCategoryLimit();
+
+        return new ResponseEntity<>(boardDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list/secondHands")
+    public ResponseEntity<List<BoardDTO>> getListBySecondHandsCategory(){
+
+        log.info("------getListBySecondHandsCategory------");
+
+        List<BoardDTO> boardDTOList = boardService.getBoardBySecondHandsCategoryLimit();
+
+        return new ResponseEntity<>(boardDTOList, HttpStatus.OK);
     }
 
 

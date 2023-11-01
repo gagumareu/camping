@@ -32,16 +32,53 @@
 
         .party-range-div{
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             width: 100%;
+
+        }
+
+        .party-range-list-a{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            border-bottom: 1px solid #00000069;
+            text-decoration: none;
+            padding: 10px;
         }
 
         .party-range-box{
             display: flex;
-            flex-direction: row;
-            justify-content: space-around;
+            /*flex-direction: row;*/
+            /*justify-content: space-around;*/
+            flex: 70%;
+            max-width: 70%;
+            justify-content: start;
+            align-items: center;
         }
 
+        .party-info-box{
+            flex: 30%;
+            max-width: 30%;
+            justify-content: end;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toast-calendar-changeBtn{
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            margin-top: 52px;
+            align-items: center;
+        }
+
+        .getToday{
+            margin: 0px 16px;
+        }
+
+        .schedule-date{
+            margin-left: 21px;
+        }
     </style>
 
     <!-- toast editor   -->
@@ -58,9 +95,12 @@
 
     <div class="wrapper">
         <div class="toast-calendar-changeBtn">
-            <button class="prev">prev</button>
-            <button class="getToday">today</button>
-            <button class="next">next</button>
+            <button class="btn btn-light prev">prev</button>
+            <button class="btn btn-light getToday">today</button>
+            <button class="btn btn-light next">next</button>
+            <div class="schedule-date">
+
+            </div>
         </div>
 
         <div class="toast-calendar">
@@ -91,6 +131,9 @@
         var $firstDayValue = "";
         var $lastDayValue = "";
         var $num = 0;
+        var $thisYear = "";
+        var $thisMonth = "";
+        var scheduleDateDiv = $(".schedule-date");
 
         console.log("$num: " + $num);
 
@@ -98,6 +141,8 @@
         setDate($num);
 
         function setDate($num){
+
+            var str = "";
 
             var now = new Date(), y = now.getFullYear(), m = now.getMonth() + $num;
 
@@ -117,6 +162,11 @@
             console.log("lastDay1: " + lastDay);
             $lastDayValue = lastDay;
 
+            $thisYear = first.getFullYear();
+            $thisMonth = ("0" + (first.getMonth() +1).toString()).slice(-2);
+
+            scheduleDateDiv.html($thisYear + "-" + $thisMonth);
+
         }
 
         console.log("---------------------")
@@ -131,16 +181,6 @@
 
             calendar.clear();
             calendar.today();
-
-            // var now = new Date(), y = now.getFullYear(), m = now.getMonth() ;
-            //
-            // var first = new Date(y, m, 1);
-            // var firstDay = first.getFullYear() + "-" + (first.getMonth()+1) + "-" + first.getDate();
-            // console.log(firstDay);
-            //
-            // var last = new Date(y, m+1, 1);
-            // var lastDay = last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
-            // console.log(lastDay);
 
             console.log("===============================");
 
@@ -218,17 +258,15 @@
                     ]);
 
                     str += '<div class="party-range-div">';
-                    str += '<a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
-                    str += '    <div class="party-range-box">';
-                    str += '        <div>'+dto.title+'</div>';
-                    str += '    </div>';
-                    str += '    <div class="party-info-box">';
-                    str += '        <div><span>참가인원: </span>'+dto.person+'</div>';
-                    str += '        <div>'+dto.appointment+'</div>';
-                    str += '    </div>';
-                    str += '    <div class="party-range-pagination-box">';
-                    str += '    </div>';
-                    str += '</a>';
+                    str += '    <a class="party-range-list-a" href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
+                    str += '        <div class="party-range-box">';
+                    str += '            <div>'+dto.title+'</div>';
+                    str += '        </div>';
+                    str += '        <div class="party-info-box">';
+                    str += '            <div><span>참가인원: </span>'+dto.person+'</div>';
+                    str += '            <div>'+dto.appointment+'</div>';
+                    str += '        </div>';
+                    str += '    </a>';
                     str += '</div>';
                 })
 
