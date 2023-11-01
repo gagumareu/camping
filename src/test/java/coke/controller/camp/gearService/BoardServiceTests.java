@@ -19,7 +19,7 @@ public class BoardServiceTests {
     @Test
     public void getBoardListSecondHands(){
 
-        List<BoardDTO> boardDTOList = boardService.getBoardBySecondHandsCategoryLimit20();
+        List<BoardDTO> boardDTOList = boardService.getBoardBySecondHandsCategoryLimit();
 
         boardDTOList.forEach(boardDTO -> {
             System.out.println(boardDTO);
