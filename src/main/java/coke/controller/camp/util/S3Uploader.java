@@ -56,6 +56,9 @@ public class S3Uploader {
 
     // s3 업로드 후 원본 파일 삭제
     private void removeOriginalFile(File targetFile){
+
+        log.info(targetFile);
+
         if (targetFile.exists() && targetFile.delete()){
             log.info("File delete success");
             return;
@@ -66,10 +69,10 @@ public class S3Uploader {
     public void removeS3File(String fileName){
 
         log.info("-----------removeS3File------------");
-        log.info(fileName);
+        log.info("fileName: " + fileName);
 
         String thumbnail = "s_" + fileName;
-        log.info(thumbnail);
+        log.info("thumbnail: " + thumbnail);
 
         final List<DeleteObjectRequest> deleteObjectRequestList = new ArrayList<>();
 

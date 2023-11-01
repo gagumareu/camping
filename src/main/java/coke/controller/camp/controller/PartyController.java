@@ -189,7 +189,7 @@ public class PartyController {
 
         log.info("-----get-----");
 
-        return new ResponseEntity<>(partyService.getParty(bno), HttpStatus.OK);
+        return new ResponseEntity<>(partyService.getPartyInfoByBno(bno), HttpStatus.OK);
     }
 
     //  내에 모임 리스트 불러오기

@@ -18,7 +18,6 @@ public interface PartyService {
     List<PartyDTO> getPartiesByBno(Long bno);
     List<PartyDTO> getApplicantsByBno(Long bno);
     Long getCountingApplicant(Long bno);
-    PartyDTO getParty(Long bno);
     List<BoardDTO> getPartiesNBoardsListByEmail(String email);
     List<BoardDTO> getPartiesNBoardsRangeListByEmail(LocalDate start, LocalDate end, String email);
     List<PartyDTO> getAllPartiesRangeList(LocalDate start, LocalDate end);

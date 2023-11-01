@@ -177,52 +177,63 @@
               }, // onImageUpload
               onMediaDelete: function (target){
 
-                var fileName = target.attr('src');
+                var $fileName = target.attr('src');
 
-                fileName = fileName.substring(fileName.lastIndexOf("/") +1);
+                $fileName = decodeURIComponent($fileName);
+                var $fileName2 = decodeURI($fileName);
+
+                $fileName = $fileName.substring($fileName.lastIndexOf("/") +1);
 
                 var targetS3 = target.attr('src');
 
-                console.log("fileName: " + fileName);
+                console.log("$fileName: " + $fileName);
                 console.log("targetS3: " + targetS3);
+                console.log("$fileName2: " + $fileName2);
 
-                // targetImageList.forEach(function (i){
                  $(".uploadResultUL li").each(function (i, dto){
 
-                   var s3URL = $(this).data('s3url');
-                   var telling = $(this).data('tell');
+                   var $s3URL = $(this).data('s3url');
+                   var $targetLiName = $(this).attr('name');
+                   var $telling = $(this).data('tell');
 
-                   console.log(s3URL);
-                   console.log(telling);
+                   console.log($s3URL);
+                   console.log($telling);
+                   console.log("$targetLiName: " + $targetLiName);
 
-                  // var targetName = i;
-                  // console.log("targetImage_fromList: " + targetName);
+                   var $targetLI = $("li[name='"+$fileName+"']");
 
-                  if (s3URL == targetS3){
+                   var data = {
+                     files : $fileName
+                   };
 
-                    var targetLI = $("li[name='"+fileName+"']");
+                  if ($fileName == $targetLiName && $telling == 'newOne'){
 
-                    if (telling == 'newOne'){
+                      console.log("removed for newOne");
 
-                      console.log("remove for newOne");
-
-                      targetLI.remove();
+                      $targetLI.remove();
 
                       $.ajax({
                         url: '/removeS3',
-                        data: {files: fileName},
+                        data: $fileName,
+                        contentType: 'application/json; charset=utf-8',
                         dataType: 'text',
                         type: 'delete',
                         success: function (result){
+                          console.log(result)
+                        },
+                        errors: function (jqXHR, textStatus, errorThrown){
+                          console.log(textStatus);
                         }
                       }); // ajax
 
-                    }else {
-                      console.log("remove for oldOne");
-                      targetLI.remove();
-                    }
 
-                  } // if
+                  } else if($fileName == $targetLiName && $telling == 'oldOne'){
+
+                    console.log("removed for oldOne");
+                    $targetLI.remove()
+
+                  }// if
+
                  }); // uploadResultUL forEach
 
               } // onMediaDelete
@@ -535,7 +546,7 @@
         });
 
         $(".hiddenBox").html(str);
-        $("form").submit();
+        $("#modify-form").submit();
 
       }); // register event
 
