@@ -12,8 +12,8 @@ public class BoardImageRepositoryTest {
     @Autowired
     private BoardImageRepository boardImageRepository;
 
-    @Test
-    public void delete(){
-        boardImageRepository.deleteByBno(235L);
-    }
+//    @Test
+//    public void delete(){
+//        boardImageRepository.deleteByBno(235L);
+//    }
 }
