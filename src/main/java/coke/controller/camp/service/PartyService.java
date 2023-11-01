@@ -22,7 +22,7 @@ public interface PartyService {
     List<BoardDTO> getPartiesNBoardsListByEmail(String email);
     List<BoardDTO> getPartiesNBoardsRangeListByEmail(LocalDate start, LocalDate end, String email);
     List<PartyDTO> getAllPartiesRangeList(LocalDate start, LocalDate end);
-
+    PartyDTO getPartyInfoByBno(Long bno);
     default Party dtoToEntity(PartyDTO partyDTO){
 
         Party party = Party.builder()

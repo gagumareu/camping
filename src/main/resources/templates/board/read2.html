@@ -54,7 +54,6 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            text-decoration: none;
         }
         .readBoard-btn-box{
             display: flex;
@@ -266,8 +265,8 @@
         .party-member-gear{
             display: flex;
             flex-direction: row;
-            flex: 65%;
-            max-width: 65%;
+            flex: 80%;
+            max-width: 80%;
 
         }
 
@@ -308,10 +307,8 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            flex: 35%;
-            max-width: 35%;
-            justify-content: end;
-
+            flex: 20%;
+            max-width: 20%;
         }
 
         .party-gear-info{
@@ -414,7 +411,6 @@
             justify-content: space-between;
             height: 43px;
             margin-bottom: 27px;
-            padding: 0px 20px;
         }
 
         .sort-boxing input {
@@ -468,9 +464,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
-            margin-top: 30px;
         }
-
 
         .party-applicant-box{
             display: flex;
@@ -505,26 +499,6 @@
             display: flex;
             flex-direction: column;
         }
-
-        .party-info-wrapper{
-            display: flex;
-
-        }
-
-
-        .party-member-info-wrapper{
-            flex: 50%;
-            max-width: 50%;
-        }
-        .party-gear-info-wrapper{
-            flex: 50%;
-            max-width: 50%;
-        }
-
-        .party-member-list{
-            padding: 0px 20px;
-        }
-
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -539,6 +513,7 @@
 
         <div class="writer-info">
           <div class="writer-nameNDate">
+        <!--          <a th:href="@{/member/myPage(email=${#authentication.principal.username})}" style="margin-right: 13px">-->
               <a th:href="@{#}" style="margin-right: 13px">
                   <div class="profile-img-div">
                       <img class="profile-img" th:if="${dto.profileImg != null}" th:src="${dto.profileImg}">
@@ -566,156 +541,142 @@
         <!-- 네이버 지도 API        -->
         <th:block th:if="${dto.category eq 'party' || tellingCategory eq 'party'}">
 
-            <div class="party-info-wrapper">
-
-                <div class="party-member-info-wrapper">
-                    <div id="map" style="width:100%;height:400px;"></div>
-                    <script th:inline="javascript">
+            <div id="map" style="width:100%;height:400px;"></div>
+            <script th:inline="javascript">
 
 
-                        var mapOptions = {
-                            center: new naver.maps.LatLng(37.3595704, 127.105399),
-                            zoom: 13,
-                            mapTypeControl: true
-                        };
+                var mapOptions = {
+                    center: new naver.maps.LatLng(37.3595704, 127.105399),
+                    zoom: 13,
+                    mapTypeControl: true
+                };
 
-                        var map = new naver.maps.Map('map', mapOptions);
+                var map = new naver.maps.Map('map', mapOptions);
 
-                        var infoWindow = new naver.maps.InfoWindow({
-                            anchorSkew: true
-                        });
+                var infoWindow = new naver.maps.InfoWindow({
+                    anchorSkew: true
+                });
 
-                        map.setCursor('pointer');
+                map.setCursor('pointer');
 
 
-                        function searchAddressToCoordinate(address) {
-                            naver.maps.Service.geocode({
-                                query: address
-                            }, function(status, response) {
-                                if (status === naver.maps.Service.Status.ERROR) {
-                                    return alert('Something Wrong!');
-                                }
-
-                                if (response.v2.meta.totalCount === 0) {
-                                    return alert('totalCount' + response.v2.meta.totalCount);
-                                }
-
-                                var htmlAddresses = [],
-                                    item = response.v2.addresses[0],
-                                    point = new naver.maps.Point(item.x, item.y);
-
-                                if (item.roadAddress) {
-                                    htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-                                }
-
-                                if (item.jibunAddress) {
-                                    htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-                                }
-
-                                if (item.englishAddress) {
-                                    htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-                                }
-
-                                infoWindow.setContent([
-                                    '<div style="padding:10px;min-width:200px;line-height:150%;">',
-                                    htmlAddresses.join('<br />'),
-                                    '</div>'
-                                ].join('\n'));
-
-                                map.setCenter(point);
-                                infoWindow.open(map, point);
-                            });
+                function searchAddressToCoordinate(address) {
+                    naver.maps.Service.geocode({
+                        query: address
+                    }, function(status, response) {
+                        if (status === naver.maps.Service.Status.ERROR) {
+                            return alert('Something Wrong!');
                         }
 
-                        var address = [[${partyDTO.location}]];
-                        console.log(address);
-                        function initGeocoder() {
-                            searchAddressToCoordinate(address);
+                        if (response.v2.meta.totalCount === 0) {
+                            return alert('totalCount' + response.v2.meta.totalCount);
                         }
 
-                        naver.maps.onJSContentLoaded = initGeocoder;
+                        var htmlAddresses = [],
+                            item = response.v2.addresses[0],
+                            point = new naver.maps.Point(item.x, item.y);
 
-                    </script>
+                        if (item.roadAddress) {
+                            htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+                        }
 
-                    <div class="party-applicant-div">
-                        <div class="party-applicant-box">
-                            <h5>참가자 리스트</h5>
-                            <div class="applicant-list">
+                        if (item.jibunAddress) {
+                            htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+                        }
 
-                            </div>
-                        </div>
-                        <div class="party-counting-applicant">
-                            <h5>현재 참가 인원</h5>
-                            <div class="party-counting">
-                                <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTO.person}]]</span>
-                            </div>
-                        </div>
-                        <div class="party-appointment-div">
-                            <h5>모임 날짜</h5>
-                            <div>
-                                [[${partyDTO.appointment}]]
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        if (item.englishAddress) {
+                            htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+                        }
 
+                        infoWindow.setContent([
+                            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+                            htmlAddresses.join('<br />'),
+                            '</div>'
+                        ].join('\n'));
 
-                <div class="party-gear-info-wrapper">
-<!--                    <div class="underConst">-->
-<!--                    </div>-->
+                        map.setCenter(point);
+                        infoWindow.open(map, point);
+                    });
+                }
 
-<!--                    -->
+                var address = [[${partyDTO.location}]];
+                console.log(address);
+                function initGeocoder() {
+                    searchAddressToCoordinate(address);
+                }
 
-                    <!--   캠핑 모임 참가 버튼      -->
-                    <div class="join-party">
-                        <button class="btn btn-outline-success join-party-btn applyForParty">참가 신청</button>
-                        <button class="btn btn-outline-success AllGearList">참가자 장비 전체 리스트</button>
-                        <button class="btn btn-outline-success addMyGear">내 장비 선택</button>
-                        <button class="btn btn-outline-success finalList">최종 장비 리스트</button>
-                    </div>
+                naver.maps.onJSContentLoaded = initGeocoder;
 
-
-                    <div class="sort-boxing">
-                        <input type="text" class="form-control memberGearSearch" name="keyword" placeholder="SEARCH">
-                        <div class="sort-btn-boxing">
-                            <img class="reboot-sort" src="/icon/reboot.svg"><button type="button" class="btn btn-outline-secondary sortBtn">정렬</button>
-                            <div class="sortBtn-box">
-                                <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc"><img src="/icon/sort-asc.svg">유저순</span>
-                                <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc"><img src="/icon/sort-des.svg">유저순</span>
-                                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc"><img src="/icon/sort-asc.svg">이름순</span>
-                                <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc"><img src="/icon/sort-des.svg">이름순</span>
-                                <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc"><img src="/icon/sort-asc.svg">카테고리순</span>
-                                <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc"><img src="/icon/sort-des.svg">카테고리순</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="NoAvailable">
-
-                    </div>
-
-                    <div class="party-member-list">
-
-                    </div>
-
-                    <div class="col-md-12 list-pagination">
-                        <ul class="pagination justify-content-center align-items-center">
-                            <li class="page-item">
-
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>  <!-- party info wrapper -->
-
+            </script>
         </th:block>
 
 
         <!-- category가 party, 캠핑 모임일 경우        -->
         <th:block th:if="${dto.category eq 'party'}">
+            <div class="underConst">
+            </div>
 
+            <div class="party-applicant-div">
+                <div class="party-applicant-box">
+                    <h5>참가자 리스트</h5>
+                    <div class="applicant-list">
+
+                    </div>
+                </div>
+                <div class="party-counting-applicant">
+                    <h5>현재 참가 인원</h5>
+                    <div class="party-counting">
+                        <span class="NowApplicant"></span>/<span class="totalApplicant">[[${partyDTO.person}]]</span>
+                    </div>
+                </div>
+                <div class="party-appointment-div">
+                    <h5>모임 날짜</h5>
+                    <div>
+                        [[${partyDTO.appointment}]]
+                    </div>
+                </div>
+            </div>
+
+            <!--   캠핑 모임 참가 버튼      -->
+            <div class="join-party">
+                <button class="btn btn-outline-success join-party-btn applyForParty">참가 신청</button>
+                <button class="btn btn-outline-success AllGearList">참가자 장비 전체 리스트</button>
+                <button class="btn btn-outline-success addMyGear">내 장비 선택</button>
+                <button class="btn btn-outline-success finalList">최종 장비 리스트</button>
+            </div>
+
+
+            <div class="sort-boxing">
+                <input type="text" class="form-control memberGearSearch" name="keyword" placeholder="SEARCH">
+                <div class="sort-btn-boxing">
+                    <img class="reboot-sort" src="/icon/reboot.svg"><button type="button" class="btn btn-outline-secondary sortBtn">정렬</button>
+                    <div class="sortBtn-box">
+                        <span class="sortMyGear sortAsc" data-sort="email" data-dir="asc"><img src="/icon/sort-asc.svg">유저순</span>
+                        <span class="sortMyGear sortAsc" data-sort="email" data-dir="desc"><img src="/icon/sort-des.svg">유저순</span>
+                        <span class="sortMyGear sortAsc" data-sort="gname" data-dir="asc"><img src="/icon/sort-asc.svg">이름순</span>
+                        <span class="sortMyGear sortAsc" data-sort="gname" data-dir="desc"><img src="/icon/sort-des.svg">이름순</span>
+                        <span class="sortMyGear sortAsc" data-sort="sort" data-dir="asc"><img src="/icon/sort-asc.svg">카테고리순</span>
+                        <span class="sortMyGear sortDesc" data-sort="sort" data-dir="desc"><img src="/icon/sort-des.svg">카테고리순</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="NoAvailable">
+
+            </div>
+
+            <div class="party-member-list">
+
+            </div>
+
+            <div class="col-md-12 list-pagination">
+                <ul class="pagination justify-content-center align-items-center">
+                    <li class="page-item">
+
+                    </li>
+                </ul>
+            </div>
         </th:block>
 
 

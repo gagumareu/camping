@@ -261,5 +261,15 @@ public class PartyServiceImpl implements PartyService{
         return list;
     }
 
+    @Override
+    public PartyDTO getPartyInfoByBno(Long bno) {
+
+        Party party = partyRepository.getPartyInfoByBno(bno);
+
+        PartyDTO partyDTO = standardEntityToDTO(party);
+
+        return partyDTO;
+    }
+
 
 }

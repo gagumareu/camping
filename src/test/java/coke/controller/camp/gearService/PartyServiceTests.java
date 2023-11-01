@@ -1,4 +1,4 @@
-package coke.controller.camp.PartyGearService;
+package coke.controller.camp.gearService;
 
 import coke.controller.camp.dto.*;
 import coke.controller.camp.service.PartyService;
@@ -6,13 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -87,6 +82,11 @@ public class PartyServiceTests {
 
     }
 
+    @Test
+    public void getPartyInfo(){
+        PartyDTO partyDTO = partyService.getPartyInfoByBno(216L);
+        System.out.println(partyDTO);
+    }
 
 
 }

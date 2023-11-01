@@ -7,6 +7,7 @@ import coke.controller.camp.entity.GearImage;
 import coke.controller.camp.entity.Member;
 import org.springframework.security.core.parameters.P;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public interface BoardService {
     void modify(BoardDTO boardDTO);
     List<BoardImageDTO> getBoardImageList(Long bno);
     List<BoardDTO> getBoardByEmail(String email);
+    List<BoardDTO> getBoardByTalkCategoryLimit();
+    List<BoardDTO> getBoardBySecondHandsCategoryLimit();
 
     default Map<String, Object> dtoToEntity(BoardDTO boardDTO){
 
@@ -156,6 +159,64 @@ public interface BoardService {
                 .build();
         return boardDTO;
     }
+
+    default BoardDTO entityBoardNBoardImgToDTO(Board board, BoardImage boardImage){
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(board.getBno())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .category(board.getCategory())
+                .regDate(board.getRegDate())
+                .modDate(board.getModDate())
+                .build();
+
+        List<BoardImageDTO> boardImageDTOList = new ArrayList<>();
+
+        if (boardImage != null){
+            BoardImageDTO boardImageDTO = BoardImageDTO.builder()
+                    .uuid(boardImage.getUuid())
+                    .folderPath(boardImage.getFolderPath())
+                    .fileName(boardImage.getFileName())
+                    .s3Url(boardImage.getS3Url())
+                    .build();
+            boardImageDTOList.add(boardImageDTO);
+        }
+
+        boardDTO.setBoardImageDTOList(boardImageDTOList);
+
+        return boardDTO;
+    }
+
+
+    default BoardDTO entityBoardNGearImgToDTO(Board board, GearImage gearImage){
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(board.getBno())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .category(board.getCategory())
+                .regDate(board.getRegDate())
+                .modDate(board.getModDate())
+                .build();
+
+        List<GearImageDTO> gearImageDTOList = new ArrayList<>();
+
+        if (gearImage != null){
+            GearImageDTO gearImageDTO = GearImageDTO.builder()
+                    .s3Url(gearImage.getS3Url())
+                    .folderPath(gearImage.getFolderPath())
+                    .fileName(gearImage.getFileName())
+                    .uuid(gearImage.getUuid())
+                    .build();
+            gearImageDTOList.add(gearImageDTO);
+        }
+
+        boardDTO.setGearImageDTOList(gearImageDTOList);
+
+        return boardDTO;
+    }
+
 
 
 }

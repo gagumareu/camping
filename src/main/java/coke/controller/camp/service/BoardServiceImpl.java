@@ -197,5 +197,31 @@ public class BoardServiceImpl implements BoardService{
         return result.stream().map(board -> basicEntityToDTO(board)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<BoardDTO> getBoardByTalkCategoryLimit() {
+
+        List<Object[]> resultList = boardRepository.getBoardListByCategoryTalkLimit();
+
+        List<BoardDTO> boardDTOList = resultList.stream().map(objects -> entityBoardNBoardImgToDTO(
+                (Board) objects[0],
+                (BoardImage) objects[1]
+        )).collect(Collectors.toList());
+
+        return boardDTOList;
+    }
+
+    @Override
+    public List<BoardDTO> getBoardBySecondHandsCategoryLimit() {
+
+        List<Object[]> resultList = boardRepository.getBoardListByCategorySecondHansLimit();
+
+        List<BoardDTO> boardDTOList = resultList.stream().map(objects -> entityBoardNGearImgToDTO(
+                (Board) objects[0],
+                (GearImage) objects[1]
+        )).collect(Collectors.toList());
+
+        return boardDTOList;
+    }
+
 
 }

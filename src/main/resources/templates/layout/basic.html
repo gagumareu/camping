@@ -11,9 +11,20 @@
 
 
 <style>
+
     *{
-        font-family: 'Nanum Gothic', 'Karla', sans-serif;
+        /*font-family: 'Nanum Gothic', 'Karla', sans-serif;*/
+        font-family: 'GmarketSans', 'Karla', sans-serif;
+        color: #000000c9;
+
     }
+
+    a{
+        color: #000000c9;
+        text-decoration: none;
+    }
+
+    li{list-style:none;}
 
     .wrapper{
         display:flex;
@@ -79,6 +90,7 @@
 
     .header-category a{
         margin-right: 20px;
+        color: #000000c9;
     }
 
     .footer{
@@ -95,6 +107,18 @@
 
     }
 
+    .header-memberPage div a{
+        color: #000000c9;
+    }
+
+    .header-memberPage-authentication a{
+        color: #000000c9;
+    }
+
+    .header-memberPage-authentication a{
+        color: #000000c9;
+    }
+
 
 </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -108,6 +132,9 @@
 
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+
+<!-- gmarket 산스 폰트-->
+<link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
 
     <!-- jquery ui-->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -164,9 +191,10 @@
                 <div class="header-category">
                     <a th:href="@{/board/list}">커뮤니티</a>
                     <a th:href="@{/board/list(category='party')}">캠핑모임</a>
-                    <a th:href="@{/member/myGear}">장비등록</a>
-                    <a th:href="@{/project/about}">about</a>
-                    <a th:href="@{/project/intro}">intro</a>
+                    <a th:href="@{/member/myGear}">캠핑장비</a>
+                    <a th:href="@{/project/intro}">about</a>
+                    <a th:href="@{/project/about}">개선및수정</a>
+
                 </div>
 
                 <div class="header-memberPage">
