@@ -74,7 +74,7 @@ public class PartyServiceImpl implements PartyService{
 
         int page = pageRequestDTO.getPage();
 
-        Pageable pageable = PageRequest.of(page -1, 20, sort);
+        Pageable pageable = PageRequest.of(page -1, 10, sort);
 
         Page<Object[]> result = partyRepository.getPartyMemberWithGears(
                 bno,
@@ -115,7 +115,7 @@ public class PartyServiceImpl implements PartyService{
 
         int page = pageRequestDTO.getPage();
 
-        Pageable pageable = PageRequest.of(page -1, 20, sort);
+        Pageable pageable = PageRequest.of(page -1, 10, sort);
 
         Page<Object[]> result = partyRepository.getPartyGearList(
                 bno,
@@ -209,15 +209,6 @@ public class PartyServiceImpl implements PartyService{
         return partyRepository.getPartyCountingApplicantByBno(bno);
     }
 
-    @Override
-    public PartyDTO getParty(Long bno) {
-
-        Party result = partyRepository.getParty(bno);
-
-        PartyDTO partyDTO = standardEntityToDTO(result);
-
-        return partyDTO;
-    }
 
     @Override
     public List<BoardDTO> getPartiesNBoardsListByEmail(String email) {

@@ -249,34 +249,40 @@
                             }, // onImageUpload
                             onMediaDelete: function (target){
 
-                                var fileName = target.attr('src');
+                                var $fileName = target.attr('src');
 
-                                fileName = fileName.substring(fileName.lastIndexOf("/") +1);
+                                $fileName = $fileName.substring($fileName.lastIndexOf("/") +1);
+
+                                $fileName = decodeURIComponent($fileName);
 
                                 var targetS3 = target.attr('src');
 
-                                console.log("fileName: " + fileName);
+                                console.log("fileName: " + $fileName);
                                 console.log("targetS3: " + targetS3);
 
                                 targetImageList.forEach(function (i){
 
-                                    console.log(targetImageList);
-                                    console.log(i);
-
-                                    var targetName = i;
+                                    var data = {
+                                        files: $fileName
+                                    };
 
                                     if (i == targetS3){
 
-                                        var targetLI = $("li[name='"+fileName+"']");
+                                        var targetLI = $("li[name='"+$fileName+"']");
 
                                         targetLI.remove();
 
                                         $.ajax({
                                             url: '/removeS3',
-                                            data: {files: fileName},
+                                            data: $fileName,
+                                            contentType: 'application/json; charset=utf-8',
                                             dataType: 'text',
-                                            type: 'delete',
+                                            method: 'delete',
                                             success: function (result){
+                                                console.log(result)
+                                            },
+                                            errors: function (jqXHR, textStatus, errorThrown){
+                                                console.log(textStatus);
                                             }
                                         })
                                     }

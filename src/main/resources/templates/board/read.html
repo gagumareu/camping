@@ -318,7 +318,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: 45%;
+            width: 100%;
             margin-left: 1em;
         }
 
@@ -508,6 +508,7 @@
 
         .party-info-wrapper{
             display: flex;
+            margin-bottom: 80px;
 
         }
 
@@ -523,6 +524,15 @@
 
         .party-member-list{
             padding: 0px 20px;
+        }
+
+        .unable{
+            background-color: #dfdfdf;
+        }
+
+        .page-link a{
+            text-decoration: none;
+            color: #000000c9;
         }
 
     </style>
@@ -1021,11 +1031,13 @@
 
           $(arr).each(function (i, dto){
 
-              if(dto.gname != null && dto.state == 0){
-                  str += '<div class="party-member-box" >';
-
+              if(dto.gname != null ){
+                  if (dto.state == 0){
+                      str += '<div class="party-member-box available" >';
+                  }else if(dto.state == 1){
+                      str += '<div class="party-member-box unable" >';
+                  }
                   str += '  <div class="party-member-gear">';
-                  // str +=        '<div><b>'+i+'  '+dto.gno+'</b></div>';
                   str += '    <div class="party-member-gear-img-box">';
                   if (dto.gearImageDTOList != null){
                       if (dto.gearImageDTOList[0] != null){
@@ -1042,7 +1054,11 @@
                   }
                   str += '      </div>';
                   str += '    <div class="party-gear-info">';
-                  str += '        <div>'+dto.gname+'</div><div class="party-gear-sort">'+dto.sort+'</div>';
+                  if (dto.state == 0){
+                      str += '        <div>'+dto.gname+'</div><div class="party-gear-sort">'+dto.sort+'</div>';
+                  }else if(dto.state ==1){
+                      str += '        <div>'+dto.gname+'[중고거래중]</div><div class="party-gear-sort">'+dto.sort+'</div>';
+                  }
                   str += '    </div>';
                   str += '  </div>';
 
@@ -1055,7 +1071,7 @@
                   }
                   str += '      </div>';
                   str += '      <div class="party-member-name">'+dto.memberName+'</div>';
-                  if (witchGearList == "myGears" && dto.email == currentUser){
+                  if (witchGearList == "myGears" && dto.email == currentUser && dto.state == 0){
                       str += '<div class="party-gear-btn-box">';
                       str += '<button class="btn btn-outline-danger add-my-gear" type="button" data-gno="'+dto.gno+'">등록</button>';
                       str += '</div>';

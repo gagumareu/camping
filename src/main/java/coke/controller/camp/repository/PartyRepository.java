@@ -70,4 +70,6 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     @Query("SELECT p FROM Party p WHERE p.board.bno = :bno GROUP BY p.board.bno")
     Party getPartyInfoByBno(Long bno);
 
+
+
 }

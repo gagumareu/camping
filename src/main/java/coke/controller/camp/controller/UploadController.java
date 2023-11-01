@@ -208,14 +208,14 @@ public class UploadController {
 
     }
 
-    @DeleteMapping("/removeS3")
-    public ResponseEntity<String> removeS3(String files){
+    @DeleteMapping(value = "/removeS3")
+    public ResponseEntity<String> removeS3(@RequestBody String files){
 
         log.info("-----------removeS3-----------------");
+        log.info(files);
 
         String result = files;
 
-        log.info(files);
 
         try {
             s3Uploader.removeS3File(files);
