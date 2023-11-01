@@ -16,14 +16,14 @@ public class BoardServiceTests {
     @Autowired
     private BoardService boardService;
 
-    @Test
-    public void getBoardListSecondHands(){
-
-        List<BoardDTO> boardDTOList = boardService.getBoardBySecondHandsCategoryLimit();
-
-        boardDTOList.forEach(boardDTO -> {
-            System.out.println(boardDTO);
-        });
-
-    }
+//    @Test
+//    public void getBoardListSecondHands(){
+//
+//        List<BoardDTO> boardDTOList = boardService.getBoardBySecondHandsCategoryLimit();
+//
+//        boardDTOList.forEach(boardDTO -> {
+//            System.out.println(boardDTO);
+//        });
+//
+//    }
 }

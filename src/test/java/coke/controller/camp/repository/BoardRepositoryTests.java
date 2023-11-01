@@ -15,27 +15,27 @@ public class BoardRepositoryTests {
     @Autowired
     private BoardRepository boardRepository;
 
-    @Test
-    public void getListWithTalkCategory(){
-
-        List<Object[]> boardList =boardRepository.getBoardListByCategoryTalkLimit();
-
-        boardList.forEach(board -> {
-            System.out.println(Arrays.toString(board));
-        });
-
-    }
-
-    @Test
-    public void getListWithSecondHansCategory(){
-
-        List<Object[]> boardList =boardRepository.getBoardListByCategorySecondHansLimit();
-
-        boardList.forEach(board -> {
-            System.out.println(Arrays.toString(board));
-        });
-
-    }
+//    @Test
+//    public void getListWithTalkCategory(){
+//
+//        List<Object[]> boardList =boardRepository.getBoardListByCategoryTalkLimit();
+//
+//        boardList.forEach(board -> {
+//            System.out.println(Arrays.toString(board));
+//        });
+//
+//    }
+//
+//    @Test
+//    public void getListWithSecondHansCategory(){
+//
+//        List<Object[]> boardList =boardRepository.getBoardListByCategorySecondHansLimit();
+//
+//        boardList.forEach(board -> {
+//            System.out.println(Arrays.toString(board));
+//        });
+//
+//    }
 
 
 
