@@ -281,7 +281,7 @@
         </div>
 
         <div class="row gear-data-boxes" th:if="${gearList.dtoList}">
-            <div class="col-sm-6 col-md-3 col-lg-2 gear-boxes" th:each="dto : ${gearList.dtoList}">
+            <div th:if="${gearList.dtoList != null}" class="col-sm-6 col-md-3 col-lg-2 gear-boxes" th:each="dto : ${gearList.dtoList}">
                 <div class="gearBox" style="height: 100%">
                     <div class="gear-img-box">
                         <img th:if="${dto.gearImageDTOList[0] != null}" th:src="${dto.gearImageDTOList[0].thumbnailS3URL}" class="card-img-top" th:data-gno="${dto.gno}">
@@ -306,6 +306,11 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+            <div th:unless="${gearList.dtoList != null}" class="col-sm-6 col-md-3 col-lg-2 gear-boxes" >
+                <div>
+                    <p>아직 등록된 캠핑 장비가 없습니다. 등록해 주세요.</p>
                 </div>
             </div>
         </div>

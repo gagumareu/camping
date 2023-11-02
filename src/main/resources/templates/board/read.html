@@ -536,6 +536,14 @@
             color: #000000c9;
         }
 
+        .NoAvailable{
+            padding: 0px 20px 20px;
+        }
+
+        .btnAddMyGear a{
+            text-decoration: none;
+        }
+
     </style>
 
     <!-- 네이버 지도 API   -->
@@ -1083,8 +1091,10 @@
                   str += '  </div>';
 
                   str += '</div>';
-              }else if (dto.gname == null){
-                  str2 = '<div>등록된 장비가 아직 없습니다. <button>등록하기</button></div>';
+              }else if (dto.gname == null && currentUser == dto.email){
+                  str2 = '<div>등록된 장비가 아직 없습니다. <button class="btn btn-outline-success btnAddMyGear">' +
+                      '<a href="/member/myGear">등록하기</a>' +
+                      '</button></div>';
                   NoAvailable.html(str2);
               }
 
@@ -1162,7 +1172,6 @@
 
               $(arr).each(function (i, dto){
 
-                  console.log(dto);
                   str += '<div class="party-applicant-list-boxes">';
 
                   if (dto.s3Url != null){
@@ -1452,8 +1461,6 @@
           $(".sortBtn-box").css("display", "flex");
           // $(".sortBtn-box").css("position", "absolute");
       })
-
-
 
 
 
