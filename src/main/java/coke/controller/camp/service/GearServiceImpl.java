@@ -10,6 +10,7 @@ import coke.controller.camp.entity.GearImage;
 import coke.controller.camp.entity.Member;
 import coke.controller.camp.repository.GearImageRepository;
 import coke.controller.camp.repository.GearRepository;
+import coke.controller.camp.repository.PartyGearRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +31,7 @@ public class GearServiceImpl implements GearService{
 
     private final GearRepository gearRepository;
     private final GearImageRepository gearImageRepository;
+    private final PartyGearRepository partyGearRepository;
 
     @Override
     public Long register(GearDTO gearDTO) {
@@ -86,6 +88,8 @@ public class GearServiceImpl implements GearService{
         if (gearImageList != null){
             gearImageRepository.removeByGno(gno);
         }
+
+        partyGearRepository.deletePartyGearByGno(gno);
 
         gearRepository.deleteById(gno);
 
