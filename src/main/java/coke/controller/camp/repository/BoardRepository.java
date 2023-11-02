@@ -38,10 +38,18 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
 
     List<Board> getBoardsByMemberOrderByBnoDesc(Member member);
 
-    @Query("SELECT b, bi FROM Board b LEFT JOIN BoardImage bi on bi.board = b WHERE b.category = 'talk' order by b.bno desc limit 5")
+    @Query("SELECT b, bi " +
+            "FROM Board b " +
+            "LEFT JOIN BoardImage bi on bi.board = b " +
+            "WHERE b.category = 'talk' " +
+            "GROUP BY b order by b.bno desc limit 5")
     List<Object[]> getBoardListByCategoryTalkLimit();
 
-    @Query("SELECT b, gi FROM Board b LEFT JOIN Gear g on g.board = b LEFT JOIN GearImage gi ON gi.gear = g WHERE b.category = 'secondHands' order by b.bno desc limit 5")
+    @Query("SELECT b, gi " +
+            "FROM Board b " +
+            "LEFT JOIN Gear g on g.board = b " +
+            "LEFT JOIN GearImage gi ON gi.gear = g " +
+            "WHERE b.category = 'secondHands' group by b order by b.bno desc limit 5")
     List<Object[]> getBoardListByCategorySecondHansLimit();
 
 }
