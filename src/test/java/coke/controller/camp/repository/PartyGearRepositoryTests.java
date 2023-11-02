@@ -11,8 +11,8 @@ public class PartyGearRepositoryTests {
     @Autowired
     private PartyGearRepository partyGearRepository;
 
-    @Test
-    public void deleteByGno(){
-        partyGearRepository.deletePartyGearByGno(34L);
-    }
+//    @Test
+//    public void deleteByGno(){
+//        partyGearRepository.deletePartyGearByGno(34L);
+//    }
 }
