@@ -25,15 +25,9 @@
             padding: 0px;
         }
 
-
-
-
         .gear-div-img img{
             height: 93%;
         }
-
-
-
 
         .loadGear-img-box a{
             width: 100%;
@@ -612,6 +606,22 @@
         $(".registerBtn").on("click", function (e){
 
             e.preventDefault();
+
+            var $inputTitleValue = $("input[name='title']").val();
+            var $selectCategoryValue = $("select[name='category']").val();
+
+            if ($inputTitleValue == "" || $inputTitleValue == null){
+                alert("제목을 입력해 주세요.");
+                return false;
+            }
+
+            if (checkCategory == "talk" || checkCategory == "place"){
+                if ($selectCategoryValue == "" || $selectCategoryValue == null){
+                    alert("카테고리를 선택해 주세요.");
+                    return false;
+                }
+            }
+
 
 
             var hiddenGearBox = $("input[name='state']").val();

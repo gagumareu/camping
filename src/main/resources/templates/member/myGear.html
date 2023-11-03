@@ -629,6 +629,20 @@
         // 기어 등록 버튼 클릭시 등록 이벤트
         $(".gear-submit-btn").on("click", function (e){
 
+            var $selectSortValue = $("select[name='sort']").val();
+            console.log($selectSortValue);
+
+            var $inputGnameValue = $("input[name='gname']").val();
+            console.log($inputGnameValue);
+
+            if ($selectSortValue == null || $selectSortValue == ""){
+                alert("카테고리를 선택해 주세요.");
+                return false;
+            }else if ($inputGnameValue == null || $inputGnameValue == ""){
+                alert("장비이름을 작성해 주세요.");
+                return false;
+            }
+
             e.preventDefault();
 
             var imageList = []
