@@ -1,0 +1,197 @@
+
+*{color: #000000c9;}
+
+a{
+    text-decoration: none;
+    color: #000000c9;
+}
+
+
+.party-main {
+    margin: 45px 35px;
+    /*padding: 0 10px 100px;*/
+    /*width: 960px;*/
+    height: 100%;
+}
+
+.party-container {
+    /*margin: auto 35px;*/
+    padding: 0;
+    height: 100%;
+}
+
+.party-container:after{
+    content:'';
+    display:block;
+    clear:both;
+}
+
+.party-item {
+    margin-bottom: 5px;
+    /*background:silver;*/
+    padding:20px;
+    animation: fadeIn 1s;
+    display: flex;
+    flex-direction: column;
+    height: 390px;
+    /*border: 3px solid red;*/
+}
+
+.party-item:nth-child(4n) {
+    margin-right:0;
+}
+
+
+/*  이미지를 로딩하는 동안 보이지 않게 함*/
+.party-item.is-loading {
+    opacity: 0;
+}
+
+.available-party-img{
+    width: 100%;
+}
+
+.party-item-img{
+    flex: 90%;
+    max-height: 90%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.party-item-img img{
+    border-radius: 20px;
+}
+
+.party-item-date{
+    flex: 10%;
+    max-height: 10%;
+}
+
+.party-item-title{
+    flex: 10%;
+    max-height: 10%;
+}
+
+.party-item-link{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.none-party-img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.available-party-img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.party-main{
+}
+
+.party-container-btn{
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.semi-list-wrapper{
+    display: flex;
+}
+
+.semi-list-info{
+    display: flex;
+    align-items: center;
+    margin-left: 17px;
+}
+
+.semi-list-li{
+    height: 85px;
+}
+.semi-list-li a{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+
+.semi-list-img{
+    height: 100%;
+    border-radius: 5px;
+    width: 85px;
+    object-fit: cover;
+}
+
+/* 잡담 리스트 */
+
+.talk-main{
+    flex: 50;
+    max-width: 50%;
+    padding: 54px;
+}
+
+
+.talk-list-ul{
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/*  중고거래 리스트   */
+
+
+.secondHands-main{
+    flex: 50;
+    max-width: 50%;
+    padding: 54px;
+}
+
+.secondHands-list-ul{
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.semi-list-loadMore{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 11px;
+}
+
+.semi-list-loadMore a{
+    text-decoration: none;
+    color: #0000009e;
+
+}
+
+
+.party-item-title{
+    font-weight: 300;
+}
+
+.semi-list-title{
+    font-weight: 300;
+}
+
+.content{
+    margin-top: 50px;
+}
+.home-head-info{
+    margin: 23px 35px;
+}
+
+.home-head-info a{
+    /*text-decoration: none;*/
+    color: #000000c9;
+}
