@@ -499,6 +499,22 @@
 
           console.log(arr);
 
+          // var $gnoList = [];
+          //
+          // $.getJSON('/party/partyGear/list/' + bno, function (arr){
+          //
+          //     $(arr).each(function (i, dto2){
+          //         var gno = dto2.gno;
+          //         $gnoList.push(gno);
+          //     }) // end arr
+          //
+          //     $gnoList.forEach(value =>{
+          //         console.log("---value1---")
+          //         console.log(value)
+          //     } );
+          //
+          // }) // getJSON  partyGear list
+
           $(arr).each(function (i, dto){
 
               if(dto.gname != null ){
@@ -562,7 +578,8 @@
                       '<a href="/member/myGear">등록하기</a>' +
                       '</button></div>';
                   NoAvailable.html(str2);
-              }
+              } // end if
+
 
           })
 
@@ -647,7 +664,7 @@
                       str += '<div class="applicant-profile unableProfile"><img  src="/icon/person2.svg"></div>'
                   }
 
-                  str += '  <div class="party-applicant-name">'+dto.memberName+'</div>';
+                  str += '   <div class="party-applicant-name">'+dto.memberName+'</div>';
 
                   str += '</div>';
 

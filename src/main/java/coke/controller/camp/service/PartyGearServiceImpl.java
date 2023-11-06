@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -49,5 +52,15 @@ public class PartyGearServiceImpl implements PartyGearService{
 
         return partyGearRepository.deletePartyGearByGno(gno);
 
+    }
+
+    @Override
+    public List<PartyGearDTO> getPartyListByBno(Long bno) {
+
+        List<PartyGear> resultList = partyGearRepository.getListPartyGearsByBno(bno);
+
+        List<PartyGearDTO> dtoList = resultList.stream().map(partyGear -> entityToDTO(partyGear)).collect(Collectors.toList());
+
+        return dtoList;
     }
 }
