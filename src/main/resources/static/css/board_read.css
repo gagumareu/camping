@@ -533,3 +533,7 @@ a{
 .btnAddMyGear a{
     text-decoration: none;
 }
+
+.addMyGear{
+    display: none;
+}

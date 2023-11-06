@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {"board", "gear"})
+@ToString(exclude = {"board", "gear", "member"})
 public class PartyGear {
 
     @Id

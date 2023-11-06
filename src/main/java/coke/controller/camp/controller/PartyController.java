@@ -228,4 +228,16 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getAllPartiesRangeList(start, end), HttpStatus.OK);
     }
 
+    // partyGear list 불러오기
+    @GetMapping(value = "/partyGear/list/{bno}")
+    public ResponseEntity<List<PartyGearDTO>> getPartyGearList(@PathVariable("bno") Long bno){
+
+        log.info("---------- getPartyGearList-----------");
+        log.info(bno);
+
+        return new ResponseEntity<>(partyGearService.getPartyListByBno(bno), HttpStatus.OK);
+    }
+
+
+
 }

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface PartyGearRepository extends JpaRepository<PartyGear, Long> {
 
     @Modifying
@@ -22,6 +24,8 @@ public interface PartyGearRepository extends JpaRepository<PartyGear, Long> {
     @Query("DELETE FROM PartyGear pg WHERE pg.gear.gno = :gno")
     int deletePartyGearByGno(Long gno);
 
-
+    @Transactional
+    @Query("SELECT pg FROM PartyGear pg WHERE pg.board.bno = :bno")
+    List<PartyGear> getListPartyGearsByBno(Long bno);
 
 }
