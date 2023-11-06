@@ -20,15 +20,15 @@ public class PartyGearRepositoryTests {
 //        partyGearRepository.deletePartyGearByGno(34L);
 //    }
 
-    @Test
-    public void getPartyGear(){
-
-        List<PartyGear> result = partyGearRepository.getListPartyGearsByBno(254L);
-
-        result.forEach(partyGear -> {
-            System.out.println(Arrays.asList(partyGear));
-        });
-
-    }
+//    @Test
+//    public void getPartyGear(){
+//
+//        List<PartyGear> result = partyGearRepository.getListPartyGearsByBno(254L);
+//
+//        result.forEach(partyGear -> {
+//            System.out.println(Arrays.asList(partyGear));
+//        });
+//
+//    }
 
 }

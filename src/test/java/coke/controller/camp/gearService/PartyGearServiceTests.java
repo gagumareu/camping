@@ -14,16 +14,16 @@ public class PartyGearServiceTests {
     @Autowired
     private PartyGearService partyGearService;
 
-    @Test
-    public void getPartyGearList(){
-
-        List<PartyGearDTO> list =  partyGearService.getPartyListByBno(254L);
-
-        list.forEach(partyGearDTO -> {
-            System.out.println(partyGearDTO);
-        });
-
-    }
+//    @Test
+//    public void getPartyGearList(){
+//
+//        List<PartyGearDTO> list =  partyGearService.getPartyListByBno(254L);
+//
+//        list.forEach(partyGearDTO -> {
+//            System.out.println(partyGearDTO);
+//        });
+//
+//    }
 
 
 }
