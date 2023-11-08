@@ -31,7 +31,7 @@ a{
     flex-direction: row;
     justify-content: space-between;
     padding-bottom: 25px;
-    border-bottom: 1px solid #f0efef;
+    /*border-bottom: 1px solid #f0efef;*/
 }
 
 .writer-nameNDate{
