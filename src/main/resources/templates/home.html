@@ -131,8 +131,8 @@
                 str += '<div class="col-lg-3 col-sm-6 party-item">';
                 str += '<a class="party-item-link" href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
                 str += '    <div class="party-item-img">';
-                    if(dto.s3Url != null){
-                        str += '<img src="'+dto.s3Url+'" class="available-party-img">';
+                    if(dto.boardImageDTO != null){
+                        str += '<img src="'+dto.boardImageDTO.s3Url+'" class="available-party-img">';
                     }else{
                         str += '<img src="/icon/img3.svg" class="none-party-img"> ';
                     }
@@ -188,7 +188,7 @@
                 str += '<li class="semi-list-li">';
                 str += '    <a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">'
                 if(dto.boardImageDTOList[0] != null){
-                    str += '        <img src="'+dto.boardImageDTOList[0].s3Url+'" class="semi-list-img">'
+                    str += '        <img src="'+dto.boardImageDTOList[0].thumbnailS3URL+'" class="semi-list-img">'
                 }else if(dto.gearImageDTOList[0] == null){
                     str += '<img src="/icon/img3.svg">';
                 }
@@ -221,7 +221,7 @@
                 str += '<li class="semi-list-li">';
                 str += '    <a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">'
                 if(dto.gearImageDTOList[0] != null){
-                    str += '        <img src="'+dto.gearImageDTOList[0].s3Url+'" class="semi-list-img">'
+                    str += '        <img src="'+dto.gearImageDTOList[0].thumbnailS3URL+'" class="semi-list-img">'
                 }else if(dto.gearImageDTOList[0] == null){
                     str += '<img src="/icon/img3.svg">';
                 }

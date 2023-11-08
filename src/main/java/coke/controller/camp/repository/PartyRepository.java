@@ -60,7 +60,7 @@ public interface PartyRepository extends JpaRepository<Party, Long>, PartySearch
     List<Object[]> getPartiesBoardListByDateRangeNEmail(LocalDate start, LocalDate end, String email);
 
     // 기간 내 캠핑 모임 게시물 불러오기
-    @Query("SELECT p, b.bno, b.title, b.category, bi.s3Url " +
+    @Query("SELECT p, b.bno, b.title, b.category, bi " +
             "FROM Party p " +
             "LEFT JOIN p.board b LEFT JOIN BoardImage bi ON bi.board = b " +
             "WHERE p.appointment BETWEEN :start AND :end " +

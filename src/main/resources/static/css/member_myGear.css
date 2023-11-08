@@ -87,6 +87,11 @@ ul{
     padding: 10px
 }
 
+.gear-boxes:hover{
+    background: #faf8fd;
+    border-radius: 11px;
+}
+
 .gear-script{
     overflow: auto;
     flex: 40%;

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -40,6 +42,9 @@ public class PartyDTO {
     private Long ino;
     private String fileName;
     private String s3Url;
+    @Builder.Default
+    private List<BoardImageDTO> boardImageDTOList = new ArrayList<>();
+    private BoardImageDTO boardImageDTO;
 
     private int counting;
 

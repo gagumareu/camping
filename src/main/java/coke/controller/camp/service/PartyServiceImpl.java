@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -246,7 +247,7 @@ public class PartyServiceImpl implements PartyService{
                 (Long) objects[1],
                 (String) objects[2],
                 (String) objects[3],
-                (String) objects[4]
+                (BoardImage) objects[4]
         )).collect(Collectors.toList());
 
         return list;

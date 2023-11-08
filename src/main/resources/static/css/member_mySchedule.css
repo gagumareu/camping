@@ -35,6 +35,10 @@
     padding: 10px;
 }
 
+.party-range-list-a:hover{
+    background-color: #faf8fd;
+}
+
 .party-range-box{
     display: flex;
     /*flex-direction: row;*/

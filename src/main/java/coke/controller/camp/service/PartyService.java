@@ -5,6 +5,7 @@ import coke.controller.camp.entity.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface PartyService {
 
@@ -125,7 +126,7 @@ public interface PartyService {
         return boardDTO;
     }
 
-    default PartyDTO partRangeEntityToDTO(Party party, Long bno, String title, String category, String s3Url){
+    default PartyDTO partRangeEntityToDTO(Party party, Long bno, String title, String category, BoardImage boardImage){
 
         PartyDTO partyDTO = PartyDTO.builder()
                 .pno(party.getPno())
@@ -135,8 +136,14 @@ public interface PartyService {
                 .bno(bno)
                 .category(category)
                 .title(title)
-                .s3Url(s3Url)
                 .build();
+
+       BoardImageDTO boardImageDTO = BoardImageDTO.builder()
+               .uuid(boardImage.getUuid())
+               .folderPath(boardImage.getFolderPath())
+               .fileName(boardImage.getFileName())
+               .s3Url(boardImage.getS3Url()).build();
+       partyDTO.setBoardImageDTO(boardImageDTO);
 
         return partyDTO;
     }

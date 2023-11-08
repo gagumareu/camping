@@ -1,8 +1,22 @@
+/*
+    body background color: #fff
+    border-bottom: 1px solid #f0efef;
+
+    캠팡 모임 게시글 참가자 박스 배경색 : #faf8fd
+
+*/
+
+
 *{
     /*font-family: 'Nanum Gothic', 'Karla', sans-serif;*/
-    font-family: 'GmarketSans', 'Karla', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
+    /*font-family: 'Prompt', sans-serif;*/
     color: #000000c9;
 
+}
+
+body{
+    background: #fff;
 }
 
 a{
@@ -22,6 +36,7 @@ html{
     height: 100%
 }
 
+
 .header a {
     text-decoration: none;
     height: 100%;
@@ -33,8 +48,9 @@ html{
     justify-content: space-between;
     margin-top: 20px;
     align-items: center;
-    margin-bottom: 20px;
-    height: 44px;
+    /*margin-bottom: 20px;*/
+    height: 64px;
+    border-bottom: 1px solid #f0efef;
 }
 
 
@@ -72,6 +88,10 @@ a:visited{
     display: flex;
     flex-direction: row;
     font-size: 1.1em;
+    font-weight: 300;
+}
+.header-category a:hover{
+    border-bottom: 1px solid #000000c9;
 }
 
 .header-category a{
@@ -104,3 +124,5 @@ a:visited{
 .header-memberPage-authentication a{
     color: #000000c9;
 }
+
+

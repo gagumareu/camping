@@ -12,7 +12,7 @@ a{
 }
 
 .box{
-    border: 1px solid black;
+    border: 1px solid #000000c9;
 }
 
 .replyModifyingForm{
@@ -30,7 +30,8 @@ a{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0efef;
 }
 
 .writer-nameNDate{
@@ -256,8 +257,8 @@ a{
 .party-member-gear{
     display: flex;
     flex-direction: row;
-    flex: 65%;
-    max-width: 65%;
+    flex: 70%;
+    max-width: 70%;
 
 }
 
@@ -288,6 +289,8 @@ a{
     flex-direction: row;
     border-bottom: 1px solid;
     justify-content: space-between;
+    height: 7vh;
+    padding: 1%;
 }
 
 .party-member-img-box{
@@ -298,8 +301,8 @@ a{
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex: 35%;
-    max-width: 35%;
+    flex: 30%;
+    max-width: 30%;
     justify-content: end;
 
 }
@@ -318,7 +321,7 @@ a{
 }
 
 .join-party{
-    margin: 35px 0px;
+    margin: 24px 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -404,7 +407,7 @@ a{
     flex-direction: row;
     justify-content: space-between;
     height: 43px;
-    margin-bottom: 27px;
+    /*margin-bottom: 27px;*/
     padding: 0px 20px;
 }
 
@@ -466,6 +469,9 @@ a{
 .party-applicant-box{
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    background: #faf8fd;
+    border-radius: 12px;
 }
 
 .applicant-profile img{
@@ -485,6 +491,10 @@ a{
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 10px;
+    background: #faf8fd;
+    border-radius: 12px;
+    height: 8vh;
 }
 
 .party-counting{
@@ -495,6 +505,10 @@ a{
 .party-appointment-div{
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    background: #faf8fd;
+    border-radius: 12px;
+    height: 8vh;
 }
 
 .party-info-wrapper{
@@ -507,14 +521,24 @@ a{
 .party-member-info-wrapper{
     flex: 50%;
     max-width: 50%;
+    border-top: 1px solid #f0efef;
+    border-bottom: 1px solid #f0efef;
+    padding: 10px;
 }
 .party-gear-info-wrapper{
     flex: 50%;
     max-width: 50%;
+    border-top: 1px solid #f0efef;
+    border-left: 1px solid #f0efef;
+    border-bottom: 1px solid #f0efef;
 }
 
 .party-member-list{
-    padding: 0px 20px;
+    /*padding: 0px 20px;*/
+    margin: 10px;
+    border-top: 1px solid #000000c9;
+    /*border-left: 1px solid #000000c9;*/
+    /*border-right: 1px solid #000000c9;*/
 }
 
 .unable{
