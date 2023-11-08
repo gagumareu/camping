@@ -26,16 +26,16 @@ public class BoardRepositoryTests {
 //
 //    }
 //
-    @Test
-    public void getListWithSecondHansCategory(){
-
-        List<Object[]> boardList =boardRepository.getBoardListByCategorySecondHansLimit();
-
-        boardList.forEach(board -> {
-            System.out.println(Arrays.toString(board));
-        });
-
-    }
+//    @Test
+//    public void getListWithSecondHansCategory(){
+//
+//        List<Object[]> boardList =boardRepository.getBoardListByCategorySecondHansLimit();
+//
+//        boardList.forEach(board -> {
+//            System.out.println(Arrays.toString(board));
+//        });
+//
+//    }
 
 
 

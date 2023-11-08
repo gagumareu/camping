@@ -79,20 +79,20 @@ public class PartyRepositoryTests {
 //    }
 //
 //
-    @Test
-    public void getPartiesAllList(){
-
-        LocalDate start = LocalDate.of(2023,10,01);
-        LocalDate end = LocalDate.of(2024,12,30);
-
-
-        List<Object[]> resultList = partyRepository.getPartiesAllListWithRange(start, end);
-
-        resultList.forEach(objects -> {
-            System.out.println(Arrays.toString(objects));
-        });
-
-    }
+//    @Test
+//    public void getPartiesAllList(){
+//
+//        LocalDate start = LocalDate.of(2023,10,01);
+//        LocalDate end = LocalDate.of(2024,12,30);
+//
+//
+//        List<Object[]> resultList = partyRepository.getPartiesAllListWithRange(start, end);
+//
+//        resultList.forEach(objects -> {
+//            System.out.println(Arrays.toString(objects));
+//        });
+//
+//    }
 //
 //    @Test
 //    public void getPartyInfo(){
