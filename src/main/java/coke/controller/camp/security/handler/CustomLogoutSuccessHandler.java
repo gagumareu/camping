@@ -17,7 +17,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
        log.info("CustomLogoutSuccessHandler.......................");
 
-       response.sendRedirect("/board/list");
+       response.sendRedirect("");
 
     }
 }

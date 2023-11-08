@@ -18,14 +18,11 @@
         <span th:class="'category-header' + ${pageRequestDTO.category == 'talk' ? ' active' : ''}">
             <a th:href="@{/board/list(category='talk')}">이러저런</a>
         </span>
-<!--        <span th:class="'category-header' + ${pageRequestDTO.category == 'place' ? ' active' : ''}">-->
-<!--            <a th:href="@{/board/list(category='place')}">캠핑장</a>-->
-<!--        </span>-->
-        <span th:class="'category-header' + ${pageRequestDTO.category == 'party' ? ' active' : ''}">
-            <a th:href="@{/board/list(category='party')}">캠핑모임</a>
-        </span>
         <span th:class="'category-header' + ${pageRequestDTO.category == 'secondHands' ? ' active' : ''}">
             <a th:href="@{/board/list(category='secondHands')}">중고거래</a>
+        </span>
+        <span th:class="'category-header' + ${pageRequestDTO.category == 'party' ? ' active' : ''}">
+            <a th:href="@{/board/list(category='party')}">캠핑모임</a>
         </span>
     </div>
 
