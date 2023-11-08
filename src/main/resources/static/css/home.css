@@ -33,8 +33,13 @@ a{
     animation: fadeIn 1s;
     display: flex;
     flex-direction: column;
-    height: 33vh;
+    height: 43vh;
     /*border: 3px solid red;*/
+    /*background: #faf8fd;*/
+}
+
+.party-item-link:hover{
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
 }
 
 .party-item:nth-child(4n) {
@@ -53,7 +58,7 @@ a{
 
 .party-item-img{
     flex: 90%;
-    max-height: 90%;
+    max-height: 28vh;
     max-width: 100%;
     display: flex;
     justify-content: center;
@@ -71,7 +76,10 @@ a{
 
 .party-item-title{
     flex: 10%;
-    max-height: 10%;
+    max-height: 12%;
+    margin-top: 7px;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .party-item-link{
@@ -79,6 +87,9 @@ a{
     display: flex;
     flex-direction: column;
     text-decoration: none;
+    padding: 13px;
+    background: #faf8fd;
+    border-radius: 15px;
 }
 
 .none-party-img{
@@ -99,6 +110,7 @@ a{
 .party-container-btn{
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 
@@ -187,10 +199,6 @@ a{
 }
 
 
-.party-item-title{
-    font-weight: 300;
-}
-
 .semi-list-title{
     font-weight: 300;
 }
@@ -205,4 +213,19 @@ a{
 .home-head-info a{
     /*text-decoration: none;*/
     color: #000000c9;
+}
+
+.party-item-location{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.icon-location{
+    height: 24px;
+    width: 24px;
+}
+.party-item-person{
+    margin-left: 24px;
+    margin-top: 3px;
 }

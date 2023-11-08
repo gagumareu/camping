@@ -38,9 +38,7 @@
                 <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
                 <input th:if="${tellCategory == 'party'}" class="form-control categorySelector" type="text" name="category" value="party" readonly>
                 <select th:unless="${tellCategory == 'secondHands' || tellCategory == 'party'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
-                    <option value="">-------카테고리 선택-------</option>
                     <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
-                    <option th:selected="${tellCategory == 'place'}" value="place">캠핑장</option>
                 </select>
             </div>
 

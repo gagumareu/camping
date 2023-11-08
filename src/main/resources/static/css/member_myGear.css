@@ -84,12 +84,13 @@ ul{
 
 .gear-boxes{
     height: 370px;
-    padding: 10px
+    padding: 10px;
+    border-radius: 11px;
 }
 
 .gear-boxes:hover{
     background: #faf8fd;
-    border-radius: 11px;
+
 }
 
 .gear-script{

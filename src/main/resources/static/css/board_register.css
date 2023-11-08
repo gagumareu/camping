@@ -39,7 +39,7 @@ ul {
     height: 85px;
     border-bottom: 1px solid;
 }
-.gear-boxes:hover{
+.selecting-gear:hover{
     background-color: #faf8fd;
 }
 .gear-info{

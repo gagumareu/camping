@@ -50,7 +50,7 @@
 
         <div class="talk-main">
             <div class="semi-list-loadMore">
-                <div class="semi-list-title">커뮤니티 게시판</div>
+                <div class="semi-list-title">잡담</div>
                 <a href="/board/list?category=talk">더보기</a>
             </div>
             <ul class="talk-list-ul">
@@ -60,7 +60,7 @@
 
         <div class="secondHands-main">
             <div class="semi-list-loadMore">
-                <div class="semi-list-title">중고거래 게시판</div>
+                <div class="semi-list-title">중고거래</div>
                 <a href="/board/list?category=secondHands">더보기</a>
             </div>
             <ul class="secondHands-list-ul">
@@ -85,7 +85,7 @@
 
         var $partyContainer = $(".party-container"),
             $partyLoadMoreBtn = $('.party-load-more-btn'),
-            $addItemCount = 4,
+            $addItemCount = 8,
             $added = 0,
             $allPartiesData =[];
 
@@ -137,11 +137,19 @@
                         str += '<img src="/icon/img3.svg" class="none-party-img"> ';
                     }
                 str += '    </div>';
-                // str += '    <div class="party-item-date">';
-                // str +=      dto.appointment ;
-                // str += '    </div>';
+
                 str += '    <div class="party-item-title">';
                 str +=      dto.title ;
+                str += '    </div>';
+
+                str += '    <div class="party-item-location">';
+                str += '<img src="/icon/locationIcon1.png" class="icon-location">'
+                str +=      dto.location ;
+                str += '    </div>';
+
+                str += '    <div class="party-item-person">';
+                str +=      dto.person;
+                str += '<span>명 모집</span>'
                 str += '    </div>';
 
                 str += '</a>';

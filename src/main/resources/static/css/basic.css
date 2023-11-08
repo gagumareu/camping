@@ -88,7 +88,7 @@ a:visited{
     display: flex;
     flex-direction: row;
     font-size: 1.1em;
-    font-weight: 300;
+    font-weight: 500;
 }
 .header-category a:hover{
     border-bottom: 1px solid #000000c9;
@@ -115,6 +115,10 @@ a:visited{
 
 .header-memberPage div a{
     color: #000000c9;
+}
+
+.header-memberPage div a:hover{
+    border-bottom: 1px solid #000000c9;
 }
 
 .header-memberPage-authentication a{

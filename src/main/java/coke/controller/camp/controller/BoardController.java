@@ -52,6 +52,11 @@ public class BoardController {
         log.info("---------list-------");
         log.info(pageRequestDTO);
 
+        if (pageRequestDTO.getPage() <= 0){
+            log.info("**********pagination exception test*******************");
+            pageRequestDTO.setPage(1);
+        }
+
         PageResultDTO<BoardDTO, Object[]> result =  boardService.getListWithImageMemberAndReplyCnt(pageRequestDTO);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
