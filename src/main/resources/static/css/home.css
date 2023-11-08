@@ -58,7 +58,7 @@ a{
 
 .party-item-img{
     flex: 90%;
-    max-height: 28vh;
+    max-height: 70%;
     max-width: 100%;
     display: flex;
     justify-content: center;
