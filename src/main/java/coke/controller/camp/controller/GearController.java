@@ -141,29 +141,7 @@ public class GearController {
     }
 
 
-
-    public void deleteFiles(List<GearImageDTO> gearImageDTOList){
-
-        log.info("--------------deleteFiles---------------");
-
-        gearImageDTOList.forEach(gearImageDTO -> {
-
-            String folderPath = gearImageDTO.getFolderPath();
-            String uuid = gearImageDTO.getUuid();
-            String fileName = gearImageDTO.getFileName();
-
-            File file = new File(uploadPath + File.separator + folderPath + File.separator + uuid + "_" + fileName);
-            log.info(file);
-            file.delete();
-
-            File thumbnail = new File(file.getParent() + File.separator + "s_" + file.getName());
-            log.info(thumbnail);
-            thumbnail.delete();
-
-        });
-    }
-
-    @GetMapping("/myGear/{gno}")
+    @GetMapping("/my-gear/{gno}")
     public ResponseEntity<GearDTO> getGearByGno(@PathVariable Long gno){
 
         log.info("-------get gear...--------");
@@ -180,12 +158,9 @@ public class GearController {
     }
 
 
-
-
-
 //    임시 테스트 용
 
-    @GetMapping("/pagination/{email}/{page}")
+    @GetMapping("/lists-pagination/{email}/{page}")
     public ResponseEntity<PageResultDTO<GearDTO, Object[]>> getListWithPagination(
             @PathVariable("email") String email,
             @PathVariable("page") int page,

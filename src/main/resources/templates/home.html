@@ -100,7 +100,7 @@
 
 
         // 이번 달로 부터 6개월 캠핑 모임 리스트 불러오기
-        $.getJSON('/party/rangeList', {start: $today, end: $sixMonthLater}, initPartyBox);
+        $.getJSON('/party/date-range-Lists', {start: $today, end: $sixMonthLater}, initPartyBox);
 
         function initPartyBox(data){
 

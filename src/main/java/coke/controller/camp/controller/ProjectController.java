@@ -27,24 +27,7 @@ public class ProjectController {
 
     }
 
-    @GetMapping("/calendar")
-    public void calendar(){
-
-    }
-
-    @GetMapping("/map")
-    public void map(Model model){
-
-        log.info("****** camping location ************");
-        String location = partyService.getLocationByBno(156L);
-        model.addAttribute("campingLocation", location);
-    }
-
-    @GetMapping("/map2")
-    public void map2(Model model){
 
 
-
-    }
 
 }

@@ -157,7 +157,7 @@
         function getEveyPartiesEvent(firstDay, lastDay){
 
             // 전체 기간 리스트
-            $.getJSON('/party/board/range/email', {start: firstDay, end: lastDay},  function (arr){
+            $.getJSON('/party/date-range-boards', {start: firstDay, end: lastDay},  function (arr){
 
                 console.log(arr)
 

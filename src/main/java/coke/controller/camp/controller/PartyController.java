@@ -9,16 +9,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/party/")
 @Log4j2
 @RequiredArgsConstructor
@@ -88,7 +85,7 @@ public class PartyController {
 
     }
 
-
+    // 캠핑 모임 참가
     @PostMapping(value = "/{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> joinParty(@RequestBody PartyDTO partyDTO){
 
@@ -101,7 +98,7 @@ public class PartyController {
     }
 
     // 모임에 참가한 여부 확인
-    @GetMapping(value = "/{bno}/{currentUser}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/bno/{bno}/email/{currentUser}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> checkAvailableUser(@PathVariable("bno") Long bno, @PathVariable("currentUser") String email){
 
         log.info("------------checkAvailableUser-------");
@@ -114,7 +111,7 @@ public class PartyController {
         return new ResponseEntity<Integer>(count, HttpStatus.OK );
     }
 
-    @DeleteMapping(value = "/{bno}/{currentUser}")
+    @DeleteMapping(value = "/bno/{bno}/email/{currentUser}")
     public ResponseEntity<String> dropOut(@PathVariable("bno") Long bno, @PathVariable("currentUser") String email){
 
         log.info("------------dropOut-------");
@@ -127,17 +124,27 @@ public class PartyController {
     }
 
     // 참가 장소 불러오기
+//    @GetMapping(value = "/location/{bno}")
+//    public ResponseEntity<String> getLocation(@PathVariable("bno") Long bno){
+//
+//        log.info("--------get location--------");
+//        log.info(bno);
+//
+//        String address = partyService.getLocationByBno(bno);
+//
+//        log.info(address);
+//
+//        return new ResponseEntity<>(address, HttpStatus.OK);
+//    }
+
+
+    // get party
     @GetMapping(value = "/{bno}")
-    public ResponseEntity<String> getLocation(@PathVariable("bno") Long bno){
+    public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
 
-        log.info("--------get location--------");
-        log.info(bno);
+        log.info("-----get-----");
 
-        String address = partyService.getLocationByBno(bno);
-
-        log.info(address);
-
-        return new ResponseEntity<>(address, HttpStatus.OK);
+        return new ResponseEntity<>(partyService.getPartyInfoByBno(bno), HttpStatus.OK);
     }
 
     @PostMapping(value = "/gear/{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -183,29 +190,22 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getCountingApplicant(bno), HttpStatus.OK);
     }
 
-    // get party
-    @GetMapping(value = "/get/{bno}")
-    public ResponseEntity<PartyDTO> getParty(@PathVariable("bno") Long bno){
 
-        log.info("-----get-----");
-
-        return new ResponseEntity<>(partyService.getPartyInfoByBno(bno), HttpStatus.OK);
-    }
 
     //  내에 모임 리스트 불러오기
-    @GetMapping(value = "/board/email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(Principal principal){
+//    @GetMapping(value = "/board/email", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<BoardDTO>> getPartiesNBoardList(Principal principal){
+//
+//        log.info("------getPartiesNBoardList-----");
+//
+//
+//        String email = principal.getName();
+//
+//        return new ResponseEntity<>(partyService.getPartiesNBoardsListByEmail(email), HttpStatus.OK);
+//    }
 
-        log.info("------getPartiesNBoardList-----");
-
-
-        String email = principal.getName();
-
-        return new ResponseEntity<>(partyService.getPartiesNBoardsListByEmail(email), HttpStatus.OK);
-    }
-
-    // 선택한 기간 내에 모임 리스트 불러오기
-    @GetMapping(value = "/board/range/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    // 선택한 기간 내에 모임 게시판 리스트 불러오기
+    @GetMapping(value = "/date-range-boards", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BoardDTO>> getPartiesNBoardRangeList(LocalDate start, LocalDate end, Principal principal){
 
         log.info("------getPartiesNBoardRangeList-----");
@@ -218,25 +218,25 @@ public class PartyController {
         return new ResponseEntity<>(partyService.getPartiesNBoardsRangeListByEmail(start, end, email), HttpStatus.OK);
     }
 
-    // 현재 날로 부터 6개월 동안 캠핑 모임 게시글 불러오기
-    @GetMapping(value = "/rangeList")
+    // 범위로 선택된 날짜의 캠핑 모임을 불러오기
+    @GetMapping(value = "/date-range-Lists")
     public ResponseEntity<List<PartyDTO>> getPartiesRangeList(LocalDate start, LocalDate end){
 
-        log.info("---------- getPartiesRangeList-----------");
+        log.info("---------- getPartiesRangeLists-----------");
         log.info(start + " - " + end);
 
         return new ResponseEntity<>(partyService.getAllPartiesRangeList(start, end), HttpStatus.OK);
     }
 
     // partyGear list 불러오기
-    @GetMapping(value = "/partyGear/list/{bno}")
-    public ResponseEntity<List<PartyGearDTO>> getPartyGearList(@PathVariable("bno") Long bno){
-
-        log.info("---------- getPartyGearList-----------");
-        log.info(bno);
-
-        return new ResponseEntity<>(partyGearService.getPartyListByBno(bno), HttpStatus.OK);
-    }
+//    @GetMapping(value = "/partyGear/list/{bno}")
+//    public ResponseEntity<List<PartyGearDTO>> getPartyGearList(@PathVariable("bno") Long bno){
+//
+//        log.info("---------- getPartyGearList-----------");
+//        log.info(bno);
+//
+//        return new ResponseEntity<>(partyGearService.getPartyListByBno(bno), HttpStatus.OK);
+//    }
 
 
 

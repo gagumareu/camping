@@ -505,8 +505,7 @@
             var alertBox = $(".alert-box");
             var str = "";
 
-            $.getJSON('/gear/pagination/' + email +"/"+ page, function (data){
-            // $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
+            $.getJSON('/gear/lists-pagination/' + email +"/"+ page, function (data){
                 console.log(data.dtoList);
                 console.log(data);
 
@@ -529,32 +528,6 @@
         });
 
 
-        // 장비 검색 액션
-        // $(".gear-search-input").change(function (e){
-        //
-        //     var keyword = $(this).val();
-        //     console.log(keyword);
-        //
-        //     var alertBox = $(".alert-box");
-        //     var str = "";
-        //
-        //     $.getJSON('/gear/pagination/' + email +"/"+ page + "/" + keyword, function (data){
-        //
-        //         console.log(data.dtoList);
-        //         console.log(data);
-        //
-        //         if (data.dtoList.length == 0){
-        //             console.log("there are no result");
-        //             str = '<h3>검색된 장비가 없습니다.</h3>';
-        //             alertBox.html(str);
-        //         }
-        //
-        //         // 기어리스트 DTO 업로드
-        //         showGearBoxes(data.dtoList);
-        //         // pagination 업로드
-        //         makingPagination(data);
-        //     })
-        // })
 
         // 기어리스트 DTO 업로드
         function showGearBoxes(dtoList){
@@ -639,6 +612,7 @@
 
 
 
+
         // 기어선택 클릭 이벤트
         $(".modal-gear-list").on("click", ".selecting-gear", function (){
 
@@ -661,7 +635,7 @@
 
             hiddenGearBox.html(str);
 
-            $.getJSON('/gear/myGear/' + gno, function (dto){
+            $.getJSON('/gear/my-gear/' + gno, function (dto){
 
                 var name = dto.gname;
                 var brand = dto.brand;
@@ -718,7 +692,7 @@
             var gno = gearDTO.gno;
             console.log(gno);
 
-            $.getJSON('/gear/myGear/' + gno, function (dto){
+            $.getJSON('/gear/my-gear/' + gno, function (dto){
 
                 var name = dto.gname;
                 var brand = dto.brand;

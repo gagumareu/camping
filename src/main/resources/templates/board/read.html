@@ -499,22 +499,6 @@
 
           console.log(arr);
 
-          // var $gnoList = [];
-          //
-          // $.getJSON('/party/partyGear/list/' + bno, function (arr){
-          //
-          //     $(arr).each(function (i, dto2){
-          //         var gno = dto2.gno;
-          //         $gnoList.push(gno);
-          //     }) // end arr
-          //
-          //     $gnoList.forEach(value =>{
-          //         console.log("---value1---")
-          //         console.log(value)
-          //     } );
-          //
-          // }) // getJSON  partyGear list
-
           $(arr).each(function (i, dto){
 
               if(dto.gname != null ){
@@ -819,7 +803,7 @@
           // 참가 가능한 인원
           var totalApplicantCounting = "";
 
-          $.getJSON('/party/get/' + bno, function (dto){
+          $.getJSON('/party/' + bno, function (dto){
 
               console.log(dto);
 
@@ -842,7 +826,7 @@
                   console.log(totalApplicantCounting);
               })
 
-              $.getJSON('/party/' + bno + "/" + currentUser, function (count){
+              $.getJSON('/party/bno/' + bno + "/email/" + currentUser, function (count){
                   console.log(count);
 
                   if (count == '0'){
@@ -850,10 +834,6 @@
                       if (!confirm("캠핑 모임에 참가하겠습니까?")){
                           return;
                       }
-                      // if (presentcounting >= totalApplicantCounting){
-                      //     alert("참가 가능한 총 인원이 마감됐습니다.");
-                      //     return false;
-                      // }
 
                       var data = {
                           bno: bno,
@@ -888,7 +868,7 @@
                           if(confirm("이미 참가했습니다. 취소하겠습니까?")){
                               console.log("---참가 취소---");
                               $.ajax({
-                                  url:'/party/' + bno + "/" + currentUser,
+                                  url:'/party/bno/' + bno + "/email/" + currentUser,
                                   type: "DELETE",
                                   success: function (result ){
                                       console.log(result);
