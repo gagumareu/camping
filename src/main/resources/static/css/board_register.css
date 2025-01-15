@@ -1,0 +1,171 @@
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+ul {
+    list-style: none;
+}
+
+.titleAndSearchBox{
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0px 14px 0px;
+    padding: 0px;
+}
+
+.gear-div-img img{
+    height: 93%;
+}
+
+.loadGear-img-box a{
+    width: 100%;
+}
+
+
+.gear-info span{
+    margin-bottom: 2px;
+}
+
+
+.telling-box div{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.gear-boxes{
+    width: 100%;
+    height: 85px;
+    border-bottom: 1px solid;
+}
+.selecting-gear:hover{
+    background-color: #faf8fd;
+}
+.gear-info{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    cursor: grab;
+}
+.gear-info img{
+    width: 70px;
+    height: 100%;
+}
+
+.content{
+    margin-top: 25px;
+}
+
+.pagination{
+    margin-top: 18px;
+}
+
+.btnBox{
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+}
+
+.inputTitle{
+    margin-right: 30px;
+}
+
+.categorySelector{
+    width: 20em;
+}
+
+.page-info-div{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 20px;
+
+}
+
+.myGear-search{
+    margin-bottom: 25px;
+}
+
+.card-body{
+    display: flex;
+    align-items: center;
+    margin-left: 13px;
+
+}
+
+.changingAGear{
+    margin-right: 20px;
+}
+
+.party-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /*height: 47px;*/
+
+    flex: 20%;
+    max-width: 20%;
+    /* padding: 20px; */
+    margin-top: 76px;
+    height: 100%;
+}
+
+.searchAddress{
+    display: flex;
+    flex-direction: row;
+    /*align-self: center;*/
+    width: 100%;
+    padding: 20px;
+}
+
+/*#address{*/
+/*    width: 312px;*/
+/*    margin-right: 16px;*/
+/*}*/
+
+.searchLocationBtn{
+    width: 68px;
+}
+
+.howManyPerson{
+    display: flex;
+    /*flex-direction: row;*/
+    /*align-self: center;*/
+    padding: 20px;
+}
+
+.howManyPersonLabel{
+    /*width: 127px;*/
+    flex: 70%;
+    max-width: 70%;
+    /* background: bisque; */
+    border-radius: 10px;
+    align-self: center;
+    /* height: 100%; */
+    justify-content: center;
+    display: flex;
+}
+
+.howManyPersonSelect{
+    flex: 30%;
+    max-width: 30%;
+    cursor: pointer;
+}
+
+.party-get-info-wrapper{
+    display: flex;
+    margin-top: 30px;
+}
+
+.party-map-wrapper{
+    flex: 80%;
+    max-width: 80%;
+}
+
+.dDay{
+    padding: 20px;
+}
+.dDay input{
+    cursor: pointer;
+}
+

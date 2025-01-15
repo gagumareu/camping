@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Direct</title>
+
+    <link th:href="@{/css/board_register.css}" rel="stylesheet">
+
+</head>
+
+    <div class="container-lg content" layout:fragment="content">
+
+
+
+        <th:block th:switch="${tellCategory}">
+            <div class="secondHans-deal-title">
+                <h2 th:case="party">캠핑 모임 게시글 작성</h2>
+                <h2 th:case="secondHands">중고 거래 게시글 작성</h2>
+            </div>
+        </th:block>
+
+        <div class="page-info-div" th:if="${tellCategory == 'secondHands'}">
+        <button class="btn btn-info page-info">페이지 설명</button>
+        </div>
+
+        <form id="register-form" th:action="@{/board/register}" method="post">
+
+            <div style="display: none" class="register-hidden-for-state">
+
+            </div>
+
+
+            <div class="titleAndSearchBox">
+                <input name="title" type="text" class="form-control inputTitle" placeholder="TITLE" required>
+                <input th:if="${tellCategory == 'secondHands'}" class="form-control categorySelector" type="text" name="category" value="secondHands" readonly>
+                <input th:if="${tellCategory == 'party'}" class="form-control categorySelector" type="text" name="category" value="party" readonly>
+                <select th:unless="${tellCategory == 'secondHands' || tellCategory == 'party'}" class="form-control categorySelector" aria-label="Default select example" name="category" style="width: 20em;" required>
+                    <option th:selected="${tellCategory == 'talk'}" value="talk">잡담</option>
+                </select>
+            </div>
+
+            <textarea id="summernote" placeholder="CONTENT" name="content" required></textarea>
+            <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
+                    integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
+            <!-- language pack -->
+            <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js"
+                    integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script>
+
+            <script>
+                $(document).ready(function() {
+
+                    var targetImageList = [];
+
+                    $('#summernote').summernote({
+                        height: 600,
+                        lang: "ko-KR",
+                        maximumImageFileSize: 10485760,
+                        callbacks:{
+                            onImageUpload: function (files, editor, welEditable){
+                                for (var i = files.length -1; i >= 0; i--){
+                                    console.info(files[i]);
+                                    uploadImageFiles(files[i], this);
+                                } //for
+                            }, // onImageUpload
+                            onMediaDelete: function (target){
+
+                                var $fileName = target.attr('src');
+
+                                $fileName = $fileName.substring($fileName.lastIndexOf("/") +1);
+
+                                $fileName = decodeURIComponent($fileName);
+
+                                var targetS3 = target.attr('src');
+
+                                console.log("fileName: " + $fileName);
+                                console.log("targetS3: " + targetS3);
+
+                                targetImageList.forEach(function (i){
+
+                                    var data = {
+                                        files: $fileName
+                                    };
+
+                                    if (i == targetS3){
+
+                                        var targetLI = $("li[name='"+$fileName+"']");
+
+                                        targetLI.remove();
+
+                                        $.ajax({
+                                            url: '/removeS3',
+                                            data: $fileName,
+                                            contentType: 'application/json; charset=utf-8',
+                                            dataType: 'text',
+                                            method: 'delete',
+                                            success: function (result){
+                                                console.log(result)
+                                            },
+                                            errors: function (jqXHR, textStatus, errorThrown){
+                                                console.log(textStatus);
+                                            }
+                                        })
+                                    }
+                                }); // targetImageList forEach
+                            } // onMediaDelete
+                        } // callbacks
+                    }); // summernote
+
+                    function uploadImageFiles(files, el){
+
+                        var formData = new FormData();
+
+                        formData.append("uploadFiles", files);
+
+                        $.ajax({
+                            url: '/uploadAjax',
+                            data: formData,
+                            dataType: 'json',
+                            contentType: false,
+                            processData: false,
+                            type: 'POST',
+                            success:function (result){
+                                console.info(result);
+                                uploadResultUL(result);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown){
+                                console.info(textStatus);
+                            }
+                        }); // ajax
+                    } // function uploadImageFiles
+
+                    function uploadResultUL(result){
+
+                        var uploadResultUL = $(".uploadResultUL ul");
+                        var str = "";
+
+                        $(result).each(function (i, dto){
+
+                            str += '<li data-path="'+dto.folderPath+'" ' +
+                                'data-uuid="'+dto.uuid+'" ' +
+                                'data-name="'+dto.fileName+'" ' +
+                                'name="'+dto.uuid+'_'+dto.fileName+'" data-s3Url="'+dto.s3Url+'" data-tell="new"></li>';
+
+                            // var imageURL = dto.imageURL;
+                            //
+                            // console.log("imageURL: " + imageURL);
+
+                            $('#summernote').summernote('insertImage', dto.s3Url);
+
+                            var s3Url = dto.s3Url;
+                            console.log(s3Url)
+
+                            targetImageList.push(s3Url);
+                            console.log(targetImageList);
+
+                        }); // result each
+
+                        uploadResultUL.append(str);
+
+                    }; // function uploadResultUL
+
+                }); // the end
+            </script>
+
+            <div class="col-md-12 col-sm-12" style="display: none">
+                <input name="email" type="hidden" class="form-control inputEmail" placeholder="EMAIL" th:value="${#authentication.principal.username}" readonly>
+            </div>
+            <div class="hiddenBox" style="display: none"></div>
+            <div class="hidden-gear-box" style="display: none"></div>
+            <div class="hidden-address-box" style="display: none"></div>
+            <div class="hidden-dDay-box" style="display: none"></div>
+
+            <!--  중고 거래시 등록된 캠핑 장비 리스트 불러오기         -->
+            <th:block th:if="${tellCategory == 'secondHands'}">
+                <div class="modal myGearListModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+<!--                            <div class="modal-header">-->
+<!--                                <form action="">-->
+<!--                                    <input type="text" class="form-control" name="keyword" placeholder="SEARCH">-->
+<!--                                    <button type="submit" class="btn btn-outline-secondary">검색</button>-->
+<!--                                </form>-->
+<!--                            </div>-->
+                            <div class="modal-body">
+                                <div class="modal-gear-list">
+
+                                </div>
+                                <div class="col-md-12 list-pagination">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </th:block>
+
+            <th:block th:if="${tellCategory == 'party'}">
+
+                <div class="party-get-info-wrapper">
+                    <div class="party-map-wrapper">
+                        <div id="map" style="width:100%;height:400px;"></div>
+
+                        <script th:inline="javascript">
+
+                            var mapOptions = {
+                                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                                zoom: 10,
+                                mapTypeControl: true
+                            };
+
+                            var map = new naver.maps.Map('map', mapOptions);
+
+
+                            // 네이버 지도 검색 옵션
+                            var infoWindow = new naver.maps.InfoWindow({
+                                anchorSkew: true
+                            });
+
+                            map.setCursor('pointer');
+
+                            var savedAddress = "";
+
+                            function searchAddressToCoordinate(address) {
+                                naver.maps.Service.geocode({
+                                    query: address
+                                }, function(status, response) {
+                                    if (status === naver.maps.Service.Status.ERROR) {
+                                        return alert('Something Wrong!');
+                                    }
+
+                                    if (response.v2.meta.totalCount === 0) {
+                                        return alert('totalCount' + response.v2.meta.totalCount);
+                                    }
+
+                                    var htmlAddresses = [],
+                                        item = response.v2.addresses[0],
+                                        point = new naver.maps.Point(item.x, item.y);
+
+                                    if (item.roadAddress) {
+                                        htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+                                    }
+
+                                    if (item.jibunAddress) {
+                                        htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+                                    }
+
+                                    if (item.englishAddress) {
+                                        htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+                                    }
+
+                                    var roadAddress = item.roadAddress;
+                                    // var jibunAddress = item.jibunAddress;
+
+                                    // savedAddress = roadAddress + "|" + jibunAddress;
+
+                                    console.info(roadAddress);
+                                    // console.info(jibunAddress);
+                                    // console.info(savedAddress);
+
+                                    var str = '<input type="hidden" name="location" value="'+roadAddress+'">'
+
+                                    $(".hidden-address-box").html(str);
+
+                                    infoWindow.setContent([
+                                        '<div style="padding:10px;min-width:200px;line-height:150%;">',
+                                        '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
+                                        htmlAddresses.join('<br />'),
+                                        '</div>'
+                                    ].join('\n'));
+
+                                    map.setCenter(point);
+                                    infoWindow.open(map, point);
+                                });
+                            }
+
+                            function initGeocoder() {
+
+                                $('#address').on('keydown', function(e) {
+                                    var keyCode = e.which;
+
+                                    if (keyCode === 13) { // Enter Key
+                                        console.log(searchAddressToCoordinate($('#address').val()));
+                                        searchAddressToCoordinate($('#address').val());
+                                    }
+                                });
+
+                                // $('#submit').on('click', function(e) {
+                                //     e.preventDefault();
+                                //     console.log(searchAddressToCoordinate($('#address').val()))
+                                //     searchAddressToCoordinate($('#address').val());
+                                // });
+
+                                // 현 위치로 바꾸기
+                                // searchAddressToCoordinate('정자동 178-1');
+                            }
+
+
+                            naver.maps.onJSContentLoaded = initGeocoder;
+
+                        </script>
+                    </div>
+
+                    <div class="party-info-wrapper">
+                        <div class="searchAddress">
+                            <input id="address" class="form-control" type="text" placeholder="주소를 검색하세요." style="width: 100%">
+                        </div>
+                        <div class="dDay">
+<!--                            <input type="text" id="datepicker" class="form-control" placeholder="약속 날짜 정하기">-->
+                            <input type="text" class="form-control" name="singleDatepicker" value="" />
+                            <script>
+                                $(function() {
+                                    $('input[name="singleDatepicker"]').daterangepicker({
+                                        singleDatePicker: true,
+                                        showDropdowns: true,
+                                        alwaysShowCalendars: true
+                                    }, function(start, end, label) {
+
+                                        var data = start.format('YYYY-MM-DD');
+
+                                        console.log(data);
+
+                                        var hiddenBox = $(".hidden-dDay-box");
+                                        var str = "";
+                                        hiddenBox.html("");
+                                        str += '<input type="hidden" name="appointment" value="'+data+'">';
+                                        hiddenBox.html(str);
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <div class="howManyPerson">
+                            <span class="select-group howManyPersonLabel" style="width: 127px">참가 인원 제한</span>
+                            <select class="form-control howManyPersonSelect" name="person" style="width: 80px">
+                                <option value="2">2인</option>
+                                <option value="3">3인</option>
+                                <option value="4">4인</option>
+                                <option value="5">5인</option>
+                                <option value="6">6인</option>
+                                <option value="7">7인</option>
+                                <option value="8">8인</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+            <div class="col-md-12 col-sm-12 btnBox">
+                <button th:if="${tellCategory == 'secondHands'}" type="button" class="btn btn-light changingAGear">장비 변경</button>
+                <button class="btn btn-outline-primary registerBtn">글작성</button>
+            </div>
+        </form>
+
+
+        <div class="uploadResultUL" style="display: none">
+            <ul>
+
+            </ul>
+        </div>
+
+        <!--/ introduce my project modal /-->
+        <div class="modal intro-myProject" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body intro-myProject-list">
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>유저가 등록한 장비를 비동기 방식으로 불러 옵니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>장비를 선택하면 에디터에 정보 및 이미지가 업데이트 됩니다.</p>
+                        </div>
+                        <div style="display: flex;">
+                            <span class="material-symbols-outlined">arrow_right</span><p>중고거래 게시물을 등록하면 등록된 장비는 거래 중 상태로 변경 됩니다. (마이기어 페이지에서 확인가능)</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary reading-gear-close" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<script th:inline="javascript"  layout:fragment="script">
+
+    const errors = [[${errors}]]
+    console.info(errors)
+
+    let errorMsg = ''
+
+    if (errors){
+        errorMsg = '제목이 너무 짧거나 또는 내용 및 카테고리를 입력해주세요'
+        // for(let i =0; i < errors.length; i++){
+        //     errorMsg += `${errors[i].field}은(는) ${errors[i].code}\n`
+        // }
+        alert(errorMsg);
+    }
+
+    $(document).ready(function (){
+
+        var email = [[${#authentication.principal.username}]];
+
+        var checkCategory = [[${tellCategory}]];
+        console.log(checkCategory);
+
+
+        $("#register-form").on("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+            }
+        });
+
+        // 게시판 작성 버튼 이벤트
+        $(".registerBtn").on("click", function (e){
+
+            e.preventDefault();
+
+            var $inputTitleValue = $("input[name='title']").val();
+            var $selectCategoryValue = $("select[name='category']").val();
+
+            if ($inputTitleValue == "" || $inputTitleValue == null){
+                alert("제목을 입력해 주세요.");
+                return false;
+            }
+
+            if (checkCategory == "talk" || checkCategory == "place"){
+                if ($selectCategoryValue == "" || $selectCategoryValue == null){
+                    alert("카테고리를 선택해 주세요.");
+                    return false;
+                }
+            }
+
+
+
+            var hiddenGearBox = $("input[name='state']").val();
+
+            if (checkCategory == 'secondHands' ){
+
+                if(!hiddenGearBox == '1'){
+                    console.log("hiddenGearBox != 1")
+                    alert('중고 장비를 선택해주세요.');
+                    return false;
+                }
+                if(hiddenGearBox == '1'){
+                    console.log("hiddenGearBox == 1")
+                }
+
+            }
+
+            if (checkCategory == 'party'){
+                var locationValue = $("input[name='location']").val();
+                if (locationValue == null || locationValue == ""){
+                    alert("주소를 검색해 주세요. ");
+                    return false;
+                }
+                var dDayValue = $("input[name='appointment']").val();
+                if (dDayValue == null || dDayValue == ""){
+                    alert("날짜를 선택해 주세요.");
+                    return false;
+                }
+            }
+
+
+
+            var str = "";
+
+            $(".uploadResultUL li").each(function (i, dto){
+
+                var target = $(dto);
+
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].folderPath" value="'+target.data("path")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].uuid" value="'+target.data("uuid")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].fileName" value="'+target.data("name")+'">';
+                str += '<input type="hidden" name="boardImageDTOList['+i+'].s3Url" value="'+target.data("s3url")+'">';
+
+            });
+
+            $(".hiddenBox").html(str);
+            $("form").submit();
+
+
+        }); // register btn clicking event
+
+
+        function loadGearBoxes(page){
+
+            console.log("page: " + page)
+
+            var alertBox = $(".alert-box");
+            var str = "";
+
+            $.getJSON('/gear/lists-pagination/' + email +"/"+ page, function (data){
+                console.log(data.dtoList);
+                console.log(data);
+
+                if (data.dtoList.length == 0){
+                    alert('등록된 장비가 없습니다. 등록 페이지로 이동합니다.');
+                    window.self.location = '/member/myGear';
+                }
+
+                showGearBoxes(data.dtoList);
+                makingPagination(data);
+            })
+        }
+
+        $(".changingAGear").click(function (){
+            console.log("clicking");
+            $(".myGearListModal").modal('show');
+
+            loadGearBoxes(1);
+
+        });
+
+
+
+        // 기어리스트 DTO 업로드
+        function showGearBoxes(dtoList){
+
+            var gearList = $(".modal-gear-list");
+            var str = "";
+
+            console.info(dtoList);
+
+            $.each(dtoList, function (i, dto){
+
+                str += '<div class="gear-boxes">';
+
+                if (dto.state == '0'){
+                    str += '<div class="gear-info selecting-gear" style="height: 100%" data-gno="'+dto.gno+'">';
+                }else if (dto.state == '1'){
+                    str += '<div class="gear-info on-the-market unable-gear" style="height: 100%">';
+                }
+
+                if (dto.gearImageDTOList[0] !== null){
+                    str += "<img class='gear-info-img' src='"+dto.gearImageDTOList[0]?.thumbnailS3URL+"' data-gno='"+dto.gno+"'>";
+                }else {
+                    str += "<img class='gear-info-img' src='/icon/img3.svg' style='height: 100%' data-gno='"+dto.gno+"'>";
+                }
+
+                str += '<div class="card-body gear-script">'
+                if(dto.state == '1'){
+                    str += '    <p class="card-title">'+dto.gname+' <b>[중고거래중]</b></p>';
+                }else if(dto.state == '0'){
+                    str += '    <p class="card-title">'+dto.gname+'</p>';
+                }
+                str += '</div>';
+                str += '</div>';
+
+                str += '</div>';
+
+            }) // dtoList each
+
+            gearList.html(str);
+        } // showGearBoxes
+
+        function makingPagination(data){
+
+            var gearPageUl = $(".pagination");
+
+            var str = "";
+
+            $(data).each(function (i, dto){
+
+                console.log(dto);
+
+                $.each(dto.pageList, function (i, page){
+                    str += '<li class="page-link">';
+                    str += '<a href="'+page+'">'+page+'</a>';
+                    str += '</li>';
+                })
+
+            }) // pageList each
+
+            gearPageUl.html(str);
+
+        } //makingPagination
+
+        // var page = 1;
+
+        // pagination 클릭시 이베트
+        $(".list-pagination ul").on("click", "a", function (e){
+
+            e.preventDefault();
+
+            console.log("clicking");
+
+            var targetPage = $(this).attr("href");
+
+            page = targetPage;
+
+            console.log(page);
+
+            loadGearBoxes(page);
+
+        })
+
+
+
+
+        // 기어선택 클릭 이벤트
+        $(".modal-gear-list").on("click", ".selecting-gear", function (){
+
+            if (!confirm("해당 장비로 변경하시겠습니까?")){
+                return;
+            }
+
+            $('#summernote').summernote('reset');
+
+            var gno = $(this).data("gno");
+
+            console.info(gno);
+
+            var str =""
+
+            var hiddenGearBox = $(".hidden-gear-box");
+
+            str += '<input type="hidden" name="gno" value="'+gno+'">';
+            str += '<input type="hidden" name="state" value="1">';
+
+            hiddenGearBox.html(str);
+
+            $.getJSON('/gear/my-gear/' + gno, function (dto){
+
+                var name = dto.gname;
+                var brand = dto.brand;
+                var size = dto.size;
+                var material = dto.material;
+                var script = dto.script;
+                var sort = dto.sort;
+                var state = dto.state;
+
+                // var HTMLString = '<div><p>이름: '+name+'</p><p>브랜드: '+brand+'</p><p>사이즈: '+size+'</p>' +
+                //     '<p>소재: '+material+'</p><p>설명: '+script+'</p><p><br></p></div>'
+
+                var HTMLString = '<div><p>'+name+'</p><p>'+brand+'</p><p>'+size+'</p>' +
+                    '<p>'+material+'</p><p>'+script+'</p><p><br></p></div>'
+
+                $('#summernote').summernote('pasteHTML', HTMLString);
+
+            }); // getJSON for gear info
+
+
+            $.getJSON('/gear/images/' + gno, function (arr){
+
+                console.info("---------/gear/images/'----------");
+
+                console.info(arr);
+
+                $.each(arr, function (i, dto){
+
+                    if (dto !== null){
+                        $('#summernote').summernote('insertImage', dto.s3Url);
+                    }else {
+                        console.info("there are no avalable images");
+                    }
+                });
+
+            }); // getJSON for images
+
+            $(".myGearListModal").modal('hide');
+
+        }); // 기어선택 클릭 이벤트 종료
+
+
+        $(".modal-gear-list").on("click", ".unable-gear", function (){
+            alert("이미 중고 거래 등록된 상태입니다.");
+            return false;
+        })
+
+        var gearDTO = [[${gearDTO}]];
+        console.log(gearDTO)
+
+        // 선택된 중고 상품 editor로 업로드 from myGear
+        if(gearDTO !== null){
+
+            var gno = gearDTO.gno;
+            console.log(gno);
+
+            $.getJSON('/gear/my-gear/' + gno, function (dto){
+
+                var name = dto.gname;
+                var brand = dto.brand;
+                var size = dto.size;
+                var material = dto.material;
+                var script = dto.script;
+                var sort = dto.sort;
+                var state = dto.state;
+
+                var HTMLString = '<div><p>'+name+'</p><p>'+brand+'</p><p>'+size+'</p>' +
+                    '<p>'+material+'</p><p>'+script+'</p><p><br></p></div>'
+
+                $('#summernote').summernote('pasteHTML', HTMLString);
+
+            }); // getJSON
+
+            $.getJSON('/gear/images/' + gno, function (arr){
+
+                console.info("---------/gear/images/'----------");
+
+                console.info(arr);
+
+                $.each(arr, function (i, dto){
+
+                    if (dto !== null){
+                        $('#summernote').summernote('insertImage', dto.s3Url);
+                    }else {
+                        console.info("there are no avalable images");
+                    }
+                });
+
+            }); // getJSON for images
+
+            var str = "";
+
+            var hiddenGearBox = $(".hidden-gear-box");
+
+            str += '<input type="hidden" name="gno" value="'+gno+'">';
+            str += '<input type="hidden" name="state" value="1">';
+
+            hiddenGearBox.html(str);
+
+        } // load gearDTO from myGear
+
+
+        $(".page-info").click(function (){
+            $(".intro-myProject").modal('show');
+        })
+
+
+
+
+    }); // the end
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,229 @@
+
+.form-control{
+    margin-bottom: 13px;
+}
+
+ul{
+    list-style-type: none;
+
+}
+.uploadUL{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.uploadUL li{
+    margin-right: 10px;
+}
+
+.modal-gear-img-ul{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.modal-gear-img-ul li{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.register-main-body{
+    display: flex;
+}
+
+.form-group{
+    /*flex: 50%;*/
+}
+
+
+.gear-info span{
+    margin-bottom: 2px;
+}
+
+
+
+.loadGear-img-box img{
+    /*border: 1px solid;*/
+    width: 60%;
+}
+
+.gear-btn-box button{
+    background-color: white;
+    border: 1px solid;
+    border-radius: 5px;
+    /*margin-left: 8px;*/
+    margin-bottom: 1px;
+}
+
+.myGear-list-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 35px;
+}
+
+
+
+
+.list-pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+
+.telling-box div{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.on-the-market{
+    background-color: #6591e545;
+}
+
+.gear-boxes{
+    height: 370px;
+    padding: 10px;
+    border-radius: 11px;
+}
+
+.gear-boxes:hover{
+    background: #faf8fd;
+
+}
+
+.gear-script{
+    overflow: auto;
+    flex: 40%;
+    max-height: 40%;
+}
+
+.gear-boxes card{
+    height: 100%;
+}
+
+.list-group{
+    overflow: auto;
+}
+
+
+.gear-btn-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*height: 3em;*/
+    /*position: absolute;*/
+    /*display: none;*/
+    /*height: 72px;*/
+    /*row-gap: 6px;*/
+    margin-top: 5px;
+
+}
+
+.gear-btn-box a{
+    font-size: 0.9em;
+}
+
+.gear-btn-box a:hover{
+    cursor: grab;
+}
+
+.gear-btn-box button{
+    height: 2.2em;
+    font-size: 0.8em;
+    width: 79px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.reading-gear-img{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.reading-gear-info{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.card img:hover{
+    cursor: zoom-in;
+}
+
+.content{
+    margin-top: 25px;
+
+}
+
+.page-info{
+    margin-right: 11px;
+}
+
+.readyForRegisterBtn{
+    display: flex;
+    flex-direction: row;
+}
+
+.gear-img-box{
+    display: flex;
+    align-items: center;
+    flex: 60%;
+    max-height: 60%;
+    position: relative;
+}
+
+.gear-img-box:hover{
+    cursor: zoom-in;
+}
+.gear-img-box img{
+    height: 100%;
+    padding: 7px;
+    border-radius: 17px;
+}
+
+.gearBox{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ff00002e;
+    border-radius: 11px;
+}
+
+.sortBox{
+    padding: 10px;
+    border-radius: 15px;
+    row-gap: 0.1em;
+    display: none;
+    top: 284px;
+    flex-direction: column;
+    position: absolute;
+    z-index: 99;
+    background: #fafafa;
+}
+
+/*.gear-boxes:hover{*/
+/*    cursor: grab;*/
+/*}*/
+
+.sortMyGear:hover{
+    background-color: oldlace;
+}
+
+.sort-wrapper{
+    display: flex;
+    justify-content: right;
+}
+
+.selectedForNameDesc{
+    display: none;
+}
+
+.card-title{
+    padding: 0px 10px;
+}

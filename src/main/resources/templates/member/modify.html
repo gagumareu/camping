@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Direct</title>
+
+    <style>
+
+        .member_modify_wrapper{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* margin: 50px auto; */
+            margin-top: 100px;
+        }
+
+        .btn-modify-div{
+
+        }
+
+        .modify-form{
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            row-gap: 12px;
+        }
+
+        .btn-modify-div{
+            display: flex;
+            justify-content: center;
+
+        }
+
+    </style>
+
+    <link th:href="@{/css/member_modify.css}" rel="stylesheet">
+</head>
+
+    <div class="container-lg content" layout:fragment="content">
+
+        <div class="member_modify_wrapper">
+            <div>
+                <p>구글 OAuth2 계정 로그인 닉네임 및 비밀번호 변경</p>
+            </div>
+            <form th:action="@{/member/modify}" method="post" class="modify-form">
+                <input type="text" name="name" class="form-control" placeholder="NAME">
+                <input type="password" name="password" class="form-control" placeholder="PASSWORD">
+                <input type="hidden" name="email" th:value="${#authentication.principal.username}">
+                <div class="btn-modify-div">
+                    <button type="submit" class="btn btn-primary">수정</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+<script th:inline="javascript" layout:fragment="script">
+
+
+
+</script>
+
+</html>

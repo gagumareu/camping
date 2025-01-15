@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Camping Direct</title>
+
+
+  <style>
+
+
+  </style>
+
+
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+
+    <link href="/css/home.css" rel="stylesheet">
+    <link th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+
+<div class="container-lg content" layout:fragment="content">
+
+    <div class="home-head-info">
+        <h3>캠핑 커뮤니티</h3>
+        <p>[이 프로잭트의 주요기능]</p>
+        <a href="/member/myGear"><p>내가 소유한 캠핑 장비를 등록 및 관리할 수 있습니다. (상단 캠핌장비 탭 클릭)</p></a>
+        <p><a href="/member/myGear">등록된 장비를 중고거래에 쉽게 등록할 수 있습니다. (등록된 캠핑장비에서 중고 버튼 클릭)</a></p>
+        <br>
+        <p><a href="/board/register?category='party'">캠핑 일정을 작성하고 다른 회원들과 함께 캠핑 모임을 만듭니다. (캠핑모임 탭 클릭)</a></p>
+        <p><a href="/board/list?category=party">모임 참가 버튼을 눌러 참가 후 회원들 끼리 등록된 장비를 모임일정에 맞게 공유할 수 있습니다.</a></p>
+
+    </div>
+
+
+    <div class="party-main">
+        <div class="party-item-title">
+            금일 부터 6개월 동안 캠핑 모임 게시물 리스트
+        </div>
+        <div class="row party-container">
+
+        </div>
+        <div class="party-container-btn">
+            <button class="btn btn-outline-primary party-load-more-btn">더보기</button>
+        </div>
+    </div>
+
+    <div class="semi-list-wrapper">
+
+        <div class="talk-main">
+            <div class="semi-list-loadMore">
+                <div class="semi-list-title">잡담</div>
+                <a href="/board/list?category=talk">더보기</a>
+            </div>
+            <ul class="talk-list-ul">
+
+            </ul>
+        </div>
+
+        <div class="secondHands-main">
+            <div class="semi-list-loadMore">
+                <div class="semi-list-title">중고거래</div>
+                <a href="/board/list?category=secondHands">더보기</a>
+            </div>
+            <ul class="secondHands-list-ul">
+
+            </ul>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+</div> <!--/ container content  /-->
+
+<script th:inline="javascript" layout:fragment="script">
+
+    $(function (){
+
+        var $partyContainer = $(".party-container"),
+            $partyLoadMoreBtn = $('.party-load-more-btn'),
+            $addItemCount = 8,
+            $added = 0,
+            $allPartiesData =[];
+
+
+        var $now = new Date(), y = $now.getFullYear(), m = $now.getMonth();
+        var $today = $now.getFullYear() + "-" + ("0" + ($now.getMonth() +1)).slice(-2) + "-" + ("0" + $now.getDate()).slice(-2);
+        console.log($today);
+
+        var $sixMonth = new Date(y, m + 7, 0);
+        var $sixMonthLater = $sixMonth.getFullYear() + "-" + ("0" + ($sixMonth.getMonth() +1)).slice(-2) + "-" + $sixMonth.getDate();
+        console.log($sixMonthLater);
+
+
+        // 이번 달로 부터 6개월 캠핑 모임 리스트 불러오기
+        $.getJSON('/party/date-range-Lists', {start: $today, end: $sixMonthLater}, initPartyBox);
+
+        function initPartyBox(data){
+
+            console.log(data);
+
+            $allPartiesData = data;
+
+            console.log($allPartiesData);
+
+            addItem();
+
+            $partyLoadMoreBtn.click(addItem);
+
+        }
+        // 더보기 클릭 이벤트
+        function addItem(){
+
+            var slicedData;
+            var elements = [];
+
+            slicedData = $allPartiesData.slice($added, $added + $addItemCount);
+            console.log(slicedData);
+
+            var str = "";
+
+            $.each(slicedData, function (i, dto){
+
+                str += '<div class="col-lg-3 col-sm-6 party-item">';
+                str += '<a class="party-item-link" href="/board/read?bno='+dto.bno+'&category='+dto.category+'">';
+                str += '    <div class="party-item-img">';
+                    if(dto.boardImageDTO != null){
+                        str += '<img src="'+dto.boardImageDTO.s3Url+'" class="available-party-img">';
+                    }else{
+                        str += '<img src="/icon/img3.svg" class="none-party-img"> ';
+                    }
+                str += '    </div>';
+
+                str += '    <div class="party-item-title">';
+                str +=      dto.title ;
+                str += '    </div>';
+
+                str += '    <div class="party-item-location">';
+                str += '<img src="/icon/locationIcon1.png" class="icon-location">'
+                str +=      dto.location ;
+                str += '    </div>';
+
+                str += '    <div class="party-item-person">';
+                str +=      dto.person;
+                str += '<span>명 모집</span>'
+                str += '    </div>';
+
+                str += '</a>';
+                str += '</div>';
+
+            })
+
+            console.log(elements);
+
+            $partyContainer.append(str);
+
+            $added += slicedData.length;
+
+            if ($added < $allPartiesData.length){
+                $partyLoadMoreBtn.show();
+            }else{
+                $partyLoadMoreBtn.hide();
+            }
+
+        }  // function addItem
+        // *************** board talk category list *************
+
+        var $homeMain = $(".talk-main"),
+            $talkUl = $(".talk-list-ul"),
+            $talkLi = $(".semi-list-li"),
+            $secondHands = $(".secondHands-list-ul");
+
+
+        // 잡담 게시판 리스트 불러오기
+        $.getJSON('/board/list/talkCategory', loadTalkBoard);
+
+        function loadTalkBoard(arr){
+
+            console.log("talk");
+
+            console.log(arr);
+
+            var str ="";
+
+            $.each(arr, function (i, dto){
+
+
+
+                str += '<li class="semi-list-li">';
+                str += '    <a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">'
+                if(dto.boardImageDTOList[0] != null){
+                    str += '        <img src="'+dto.boardImageDTOList[0].thumbnailS3URL+'" class="semi-list-img">'
+                }else if(dto.gearImageDTOList[0] == null){
+                    str += '<img src="/icon/img3.svg">';
+                }
+                str += '        <div class="semi-list-info">';
+                str +=         '<span>'+dto.title+'</span>';
+                str += '        </div>';
+                str += '    </a>'
+                str += '</li>';
+
+            });
+
+            $talkUl.html(str);
+
+        } // loadTalkBoard
+
+
+        //  중고거래 불러오기
+        $.getJSON('/board/list/secondHands',loadSecondHands);
+
+        function loadSecondHands(arr){
+
+            console.log("secondHands");
+
+            console.log(arr);
+
+            var str ="";
+
+            $.each(arr, function (i, dto){
+
+                str += '<li class="semi-list-li">';
+                str += '    <a href="/board/read?bno='+dto.bno+'&category='+dto.category+'">'
+                if(dto.gearImageDTOList[0] != null){
+                    str += '        <img src="'+dto.gearImageDTOList[0].thumbnailS3URL+'" class="semi-list-img">'
+                }else if(dto.gearImageDTOList[0] == null){
+                    str += '<img src="/icon/img3.svg">';
+                }
+                str += '        <div class="semi-list-info">';
+                str +=         '<span>'+dto.title+'</span>';
+                str += '        </div>';
+                str += '    </a>'
+                str += '</li>';
+
+            });
+
+            $secondHands.html(str);
+
+        } // loadSecondHands
+
+
+
+
+
+
+
+
+    }); // the end ready function
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Direct</title>
+
+    <link th:href="@{/css/member_join.css}" rel="stylesheet">
+
+</head>
+
+    <div class="container-lg content" layout:fragment="content">
+        <div class="signIn-page-wrapper">
+            <div class="signIn-header">
+                <h2>회원 가입</h2>
+            </div>
+            <div class="signIn-body">
+                <form id="registerForm" action="/member/join" method="post">
+                    <div class="input-group-text">
+                        <span class="input-group-text">EMAIL</span>
+                        <input id="inputEmailVal" type="email" name="email" class="form-control" autofocus oninput="checkingId()">
+                    </div>
+                    <div class="input-group-text">
+                        <span class="input-group-text">PASSWORD</span>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="input-group-text">
+                        <span class="input-group-text">NAME</span>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div class="signIn-Btn">
+                        <button type="submit" class="btn btn-primary">JOIN</button>
+                        <button type="reset" class="btn btn-secondary">RESET</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script layout:fragment="script" th:inline="javascript">
+
+        const error = [[${error}]]
+
+        if (error && error === 'email'){
+            alert("동일한 email를 가진 계정이 존재합니다.")
+        }
+
+    </script>
+
+</html>

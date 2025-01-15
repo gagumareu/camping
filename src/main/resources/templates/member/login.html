@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Direct</title>
+
+    <style>
+
+        .member-login-sign-in{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-evenly;
+        }
+
+
+        .social-login{
+            /*font-size: 1.5em;*/
+            /*height: 32px;*/
+            margin-bottom: 6px;
+            width: 100%;
+            height: 40px;
+            background: #faf8fd;
+
+        }
+
+        .social-login a{
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+        }
+
+        .social-login a img{
+            height: 100%;
+            width: 35px;
+        }
+        .social-login a span {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+        .social-login:hover{
+            box-shadow: 0 0 11px rgba(33,33,33,.2);
+        }
+    </style>
+
+    <link th:href="@{/css/member_login.css}" rel="stylesheet">
+</head>
+
+
+  <div class="container-lg content" layout:fragment="content">
+
+      <div class="login-form-wrapper">
+
+          <th:block th:if="${param.logout != null}">
+              <h1>Logout.......</h1>
+          </th:block>
+          <div class="signUp-header">
+              <h2>로그인</h2>
+          </div>
+          <form id="registerForm" action="/member/login" method="post">
+              <div class="input-group ">
+                  <input type="text" name="username" class="form-control" placeholder="USER EMAIL">
+              </div>
+
+              <div class="input-group ">
+                  <input type="password" name="password" class="form-control" placeholder="PASSWORD">
+              </div>
+              <div class="member-login-sign-in">
+                  <div class="login-btn">
+                      <button type="submit" class="btn btn-primary submitBtn">LOGIN</button>
+                  </div>
+                  <div class="sign-up-box">
+                      <a href="/member/join">
+                          <button class="btn btn-secondary login-sign-in">회원 가입</button>
+                      </a>
+                  </div>
+              </div>
+
+          </form>
+
+          <div class="social-login-box">
+              <div class="social-login">
+                  <a href="/oauth2/authorization/google">
+                      <img src="/icon/googleIcon.svg"><span>구글 로그인</span>
+                  </a>
+              </div>
+
+          </div> <!--/ social-login-box /-->
+
+          <div class="telling-box">
+            <p>샘플 아이디</p>
+            <p>ID : user1@email.com </p>
+            <p>PWD : 1234 </p>
+              <p>캠핑 장비를 미리 등록 했습니다.</p>
+          </div>
+
+      </div> <!--/ login-form-wrapper /-->
+
+
+
+
+  </div>
+<!--</th:block>-->
+
+</html>

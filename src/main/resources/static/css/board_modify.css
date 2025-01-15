@@ -1,0 +1,114 @@
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.modify-title{
+    margin: 10px 0px 14px 0px;
+    padding: 0px;
+}
+
+.uploadResultUL{
+    display: none;
+}
+
+.modify-btn-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.modify-btn-box button{
+    margin: 0px 3px;
+}
+
+.titleAndSearchBox{
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0px 14px 0px;
+    padding: 0px;
+}
+
+.inputTitle{
+    margin-right: 10px;
+    flex: 70%;
+}
+
+.categorySelector{
+    flex: 20%;
+}
+
+.content{
+    margin-top: 25px;
+}
+
+.party-get-info-wrapper{
+    display: flex;
+    margin-top: 30px;
+}
+
+.party-map-wrapper{
+    flex: 80%;
+    max-width: 80%;
+}
+
+.party-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /*height: 47px;*/
+
+    flex: 20%;
+    max-width: 20%;
+    /* padding: 20px; */
+    margin-top: 76px;
+    height: 100%;
+}
+
+.howManyPerson{
+    display: flex;
+    /*flex-direction: row;*/
+    /*align-self: center;*/
+    padding: 20px;
+}
+
+.searchAddress{
+    display: flex;
+    flex-direction: row;
+    /*align-self: center;*/
+    width: 100%;
+    padding: 20px;
+}
+
+.howManyPerson{
+    display: flex;
+    /*flex-direction: row;*/
+    /*align-self: center;*/
+    padding: 20px;
+}
+
+.howManyPersonLabel{
+    /*width: 127px;*/
+    flex: 70%;
+    max-width: 70%;
+    /* background: bisque; */
+    border-radius: 10px;
+    align-self: center;
+    /* height: 100%; */
+    justify-content: center;
+    display: flex;
+}
+
+.howManyPersonSelect{
+    flex: 30%;
+    max-width: 30%;
+    cursor: pointer;
+}
+
+.dDay{
+    padding: 20px;
+}
+.dDay input{
+    cursor: pointer;
+}

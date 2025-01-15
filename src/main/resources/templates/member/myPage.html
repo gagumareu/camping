@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Camping Direct</title>
+
+    <!-- toast editor   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- toast calendar   -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+
+    <link th:href="@{/css/member_myPage.css}" rel="stylesheet">
+
+</head>
+
+
+
+    <div class="container-lg content" layout:fragment="content">
+        <div class="myPage-wrapper">
+
+            <div class="myPage-left-side">
+                <div class="meyPage-left-myName">
+                    <div class="myPage-left-imgDiv">
+                        <img th:if="${dto.profileImg != null}" th:src="${dto.profileImg}">
+                        <img th:unless="${dto.profileImg != null}" src="/icon/person-circle.svg">
+                        <input type="file" name="uploadFiles" style="display: none">
+                    </div>
+                    <span class="userInfo">
+                        <h3 class="userName">[[${dto.memberName}]]</h3>
+                    </span>
+                </div>
+                <div class="col-md-12 myPage-left-category">
+                    <div class="modify-myInfo-btn">내 정보 변경<span>[공사중]</span></div>
+                    <div class="my-writings-btn">작성한 게시글</div>
+                    <div class="my-replies-btn">작성한 댓글</div>
+                    <div class="my-schedule-btn">
+                        <a href="/member/mySchedule" style="text-decoration: none">
+                            캠핑 모임 일정
+                        </a>
+                    </div>
+                </div>
+            </div> <!--/ myPage-left-side /-->
+
+            <div class="myPage-content">
+                <h1 class="myPage-title">마이 페이지</h1>
+
+                <div class="content-wrapper">
+                    <div class="load-content">
+                        <div class="memberInfo-box">
+                            <div class="member-name">
+                                이름: [[${dto.memberName}]]
+                            </div>
+                            <div class="member-email">
+                                이메일: [[${dto.email}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!--/ myPage-content /-->
+
+        </div> <!--/ myPage-wrapper /-->
+
+    </div> <!--/ container content /-->
+
+ <script layout:fragment="script" th:inline="javascript">
+
+    $(document).ready(function (){
+
+        var dto = [[${dto}]];
+        console.info(dto)
+
+        var email = [[${#authentication.principal.username}]];
+        console.log(email);
+
+        function formatTime(times){
+
+            var date = new Date(times);
+
+            return date.getFullYear() + '/' +
+                (date.getMonth() +1) +  '/' +
+                date.getDate() + ' ' +
+                date.getHours() + ":" +
+                date.getMinutes();
+        }
+
+        var loadContent = $(".load-content");
+
+
+        // 작성한 게시글 클릭시 리스트 불러오는 이벤트
+        $(".my-writings-btn").on("click", function (e){
+            getBoardList(email);
+            $(".myPage-title").html("작성한 게시글");
+        })
+
+        // 내가 작성한 게시물 리스트 ajax
+        function getBoardList(email){
+
+            var str = "";
+
+            $.getJSON('/member/board/' + email, function (arr){
+
+                console.log(arr);
+
+                $(arr).each(function (i, dto){
+
+                    str += '<div class="data-box">';
+                    str += '<div class="data-title" data-bno="'+dto.bno+'"><a href="/board/read?bno='+dto.bno+'" >'+dto.title+'</a></div>';
+                    str += '<div class="data-date">'+dto.regDate+'</div>';
+                    str += '</div>';
+                })
+
+                loadContent.html(str);
+
+            })
+        } // function getBoardList
+
+        // 작성한 댓글 클릭시 리스트 불러오는 이벤트
+        $(".my-replies-btn").on("click", function (e){
+            getRepliesList(email);
+            $(".myPage-title").html("작성한 댓글");
+        })
+
+        // 내가 쓴 댓글 리스트 ajax
+        function getRepliesList(email){
+
+            var str = "";
+
+            $.getJSON('/member/replies/' + email, function (arr){
+
+                console.log(arr);
+
+                $(arr).each(function (i, dto){
+
+                    str += '<div class="data-box">';
+                    str += '<div class="data-title" data-rno="'+dto.rno+'"><a href="/board/read?bno='+dto.bno+'" >'+dto.text+'</a></div>';
+                    str += '<div class="data-date">'+dto.regDate+'</div>';
+                    str += '</div>';
+                })
+
+                loadContent.html(str);
+
+            })
+        } // function getRepliesList
+
+        // 내 정보 변경 클릭 이벤트
+        // $(".modify-myInfo-btn").click(function (){
+        //
+        //     $(".myPage-title").html("계정 정보 변경");
+        //
+        //     var str = "";
+        //
+        //     str += '<form class="modify-info" action="/member/modify" method="post">';
+        //     str += '<input type="text" class="form-control inputName" name="name" placeholder="닉네임 변경">';
+        //     str += '<input type="hidden" name="email" value="'+email+'">';
+        //     str += '<div class="profileImage"><img src="/icon/person-circle.svg" class="personIcon"><input id="inputFile" type="file" name="uploadFiles"></div>';
+        //     str += '<div class="modifyBtn">';
+        //     str += '<button class="btn btn-outline-success modifyBtn" type="submit">수정</button>';
+        //     str += '<div>';
+        //     str += '</form>';
+        //
+        //     loadContent.html(str);
+        // }) // cliking modify-myInfo-btn
+
+        // 왼쪽 사이드 이름 클릭시 이름 변경 이벤트
+        $(".userInfo").click(function (e){
+
+            $(".myPage-title").html("이름 변경");
+
+            var str = "";
+
+            str += '<form action="/member/modify" method="post">';
+            str += '<input type="text" class="form-control" name="name" placeholder="NAME">';
+            str += '<input type="hidden" name="email" value="'+email+'">';
+            str += '<div class="modifyBtn">';
+            str += '<button class="btn btn-outline-success modifyBtn" type="submit">수정</button>'
+            str += '<div>';
+            str += '</form>';
+
+            loadContent.html(str);
+        }) // clicking for updating userNicname
+
+
+        $(".modifyBtn").on("click", function (e){
+            e.preventDefault();
+            console.log("clicking");
+        })
+
+        var inputImage = $("input[name='uploadFiles']");
+
+        $(".myPage-left-imgDiv").click(function (){
+
+            console.info("clicking");
+
+            // inputImage.click();
+
+
+        });
+
+
+        inputImage.change(function (){
+
+            var formData = new FormData();
+
+            console.info("changing");
+
+            var file = $(this);
+
+            console.info(file);
+
+            formData.append(file);
+
+        });
+
+
+
+
+
+
+    }) // the end
+
+ </script>
+
+</html>
