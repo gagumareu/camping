@@ -65,12 +65,15 @@
                         <div id="board-title">[[${dto.title}]]</div>
                     </a>
                     <div class="board-list-category">
-                        <div th:if="${dto.regDate == dto.modDate}">
+                        <div>
                             [[${#temporals.format(dto.regDate, 'yyyy/MM/dd') }]]
                         </div>
-                        <div th:unless="${dto.regDate == dto.modDate}">
-                            [[${#temporals.format(dto.modDate, 'yyyy/MM/dd') }]]
-                        </div>
+<!--                        <div th:if="${dto.regDate == dto.modDate}">-->
+<!--                            [[${#temporals.format(dto.regDate, 'yyyy/MM/dd') }]]-->
+<!--                        </div>-->
+<!--                        <div th:unless="${dto.regDate == dto.modDate}">-->
+<!--                            [[${#temporals.format(dto.modDate, 'yyyy/MM/dd') }]]-->
+<!--                        </div>-->
                         <th:block th:switch="${dto.category}">
                             <a th:case="talk" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">커뮤니티</a>
                             <a th:case="party" th:href="@{/board/list(category=${dto.category})}" class="board-list-category-link">캠핑모임</a>
